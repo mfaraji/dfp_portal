@@ -73,10 +73,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     'authtools',
-    'crispy_forms',
-    'easy_thumbnails',
 )
 
 MIDDLEWARE_CLASSES = (

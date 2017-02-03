@@ -15,31 +15,31 @@ class Resource(object):
         self.client = dfp.DfpClient(oauth2_client, APPLICATION_NAME, network_code=NETWORK_CODE)
 
 
-class AdUnit(Resource):
-    
+
+class Order(Resource):
 
     def get(self):
         # Initialize appropriate service.
-        ad_unit_service = self.client.GetService('InventoryService', version='v201611')
+        order_service = self.client.GetService('OrderService', version='v201608')
 
-        # Create a statement to select ad units.
+        # Create a statement to select orders.
         statement = dfp.FilterStatement()
-        # import pdb; pdb.set_trace()
-        # Retrieve a small amount of ad units at a time, paging
-        # through until all ad units have been retrieved.
+
+        # Retrieve a small amount of orders at a time, paging
+        # through until all orders have been retrieved.
         while True:
-            response = ad_unit_service.getAdUnitsByStatement(statement.ToStatement())
+            response = order_service.getOrdersByStatement(statement.ToStatement())
             if 'results' in response:
-              for ad_unit in response['results']:
-                # Print out some information for each ad unit.
-                print ad_unit
-                import pdb; pdb.set_trace()
-                # print('Ad unit with ID "%s" and name "%s" was found.\n' %
-                #       (ad_unit['id'], ad_unit['name']))
+              for order in response['results']:
+                import pdb; pdb.set_trace();
+                # Print out some information for each order.
+                print('Order with ID "%d" and name "%s" was found.\n' % (order['id'],
+                                                                         order['name']))
               statement.offset += dfp.SUGGESTED_PAGE_LIMIT
             else:
               break
 
         print '\nNumber of results found: %s' % response['totalResultSetSize']
 
-AdUnit().get()
+
+Order().get()
