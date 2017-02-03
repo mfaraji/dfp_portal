@@ -10,8 +10,8 @@ urlpatterns = [
 	url(r'^tpl/footer$', views.Footer.as_view(), name='footer'),
 	url(r'^tpl/sidebar$', views.Sidebar.as_view(), name='sidebar'),
 	url(r'^tpl/theme-panel$', views.Sidebar.as_view(), name='theme_panel'),
-	url(r'^view/dashboard$', views.DashboardView.as_view(), name='dashboard'),
-	url(r'^view/quick-sidebar$', views.QuickSideBarView.as_view(), name='quick_sidebar'),
+	url(r'^views/dashboard$', views.DashboardView.as_view(), name='dashboard'),
+	url(r'^views/quick-sidebar$', views.QuickSideBarView.as_view(), name='quick_sidebar'),
 	url(r'^admin/', include(admin.site.urls)),
 ]
 

@@ -1,5 +1,5 @@
 /* Setup blank page controller */
-angular.module('MetronicApp').controller('BlankController', ['$rootScope', '$scope', 'settings', function($rootScope, $scope, settings) {
+angular.module('InspireApp').controller('BlankController', ['$rootScope', '$scope', 'settings', function($rootScope, $scope, settings) {
     $scope.$on('$viewContentLoaded', function() {   
         // initialize core components
         App.initAjax();

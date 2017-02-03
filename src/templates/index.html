@@ -1,14 +1,14 @@
 {% load staticfiles %}
 <!DOCTYPE html>
-<!--[if IE 8]> <html lang="en" class="ie8 no-js" data-ng-app="MetronicApp"> <![endif]-->
-<!--[if IE 9]> <html lang="en" class="ie9 no-js" data-ng-app="MetronicApp"> <![endif]-->
+<!--[if IE 8]> <html lang="en" class="ie8 no-js" data-ng-app="InspireApp"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js" data-ng-app="InspireApp"> <![endif]-->
 <!--[if !IE]><!-->
-<html lang="en" data-ng-app="MetronicApp">
+<html lang="en" data-ng-app="InspireApp">
     <!--<![endif]-->
     <!-- BEGIN HEAD -->
 
     <head>
-        <title data-ng-bind="'Metronic AngularJS | ' + $state.current.data.pageTitle"></title>
+        <title data-ng-bind="'Inspire AngularJS | ' + $state.current.data.pageTitle"></title>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta content="width=device-width, initial-scale=1" name="viewport" />
@@ -76,7 +76,7 @@
                 <a href="javascript:;" class="page-quick-sidebar-toggler">
                     <i class="icon-login"></i>
                 </a>
-                <div data-ng-include="'view/quick-sidebar'" data-ng-controller="QuickSidebarController" class="page-quick-sidebar-wrapper"></div>
+                <div data-ng-include="'views/quick-sidebar'" data-ng-controller="QuickSidebarController" class="page-quick-sidebar-wrapper"></div>
                 <!-- END QUICK SIDEBAR -->
             </div>
             <!-- BEGIN FOOTER -->
