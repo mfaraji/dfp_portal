@@ -50,7 +50,7 @@ InspireApp.controller('AppController', ['$scope', '$rootScope', function($scope,
     $scope.$on('$viewContentLoaded', function() {
         console.log('Main controller is loaded');
         //App.initComponents(); // init core components
-        //Layout.init(); //  Init entire layout(header, footer, sidebar, etc) on page load if the partials included in server side instead of loading with ng-include directive 
+        // Layout.init(); //  Init entire layout(header, footer, sidebar, etc) on page load if the partials included in server side instead of loading with ng-include directive 
     });
 }]);
 
@@ -105,6 +105,8 @@ InspireApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvid
                         name: 'InspireApp',
                         insertBefore: '#ng_load_plugins_before', // load the above css files before a LINK element with this ID. Dynamic CSS files must be loaded between core and theme css files
                         files: [
+                            '/static/js/datatable.js',
+                            '/static/js/dashboard.js',
                             '/static/js/controllers/DashboardController.js',
                         ] 
                     });
@@ -121,10 +123,29 @@ InspireApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvid
             resolve: {
                 deps: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
-                        name: 'MetronicApp',
+                        name: 'InspireApp',
                         insertBefore: '#ng_load_plugins_before', // load the above css files before a LINK element with this ID. Dynamic CSS files must be loaded between core and theme css files
                         files: [
-                            'js/controllers/BlankController.js'
+                            '/static/js/controllers/BlankController.js'
+                        ] 
+                    });
+                }]
+            }
+        })
+
+        // Add Aduience Page
+        .state('addreport', {
+            url: "/dashboard/add",
+            templateUrl: "views/addreport.html",            
+            data: {pageTitle: 'Add New Report'},
+            controller: "AddReportController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'InspireApp',
+                        insertBefore: '#ng_load_plugins_before', // load the above css files before a LINK element with this ID. Dynamic CSS files must be loaded between core and theme css files
+                        files: [
+                            '/static/js/controllers/AddReportController.js'
                         ] 
                     });
                 }]

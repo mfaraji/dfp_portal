@@ -12,6 +12,7 @@ urlpatterns = [
 	url(r'^tpl/theme-panel$', views.Sidebar.as_view(), name='theme_panel'),
 	url(r'^views/dashboard$', views.DashboardView.as_view(), name='dashboard'),
 	url(r'^views/quick-sidebar$', views.QuickSideBarView.as_view(), name='quick_sidebar'),
+	url(r'^views/addreport$', views.AddReportView.as_view(), name='addreport'),
 	url(r'^admin/', include(admin.site.urls)),
 ]
 

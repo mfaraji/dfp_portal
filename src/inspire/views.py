@@ -22,3 +22,6 @@ class DashboardView(generic.TemplateView):
 class QuickSideBarView(generic.TemplateView):
 	template_name = "tpl/quick-sidebar.html"
 
+class AddReportView(generic.TemplateView):
+	template_name = "views/addreport.html"
+
