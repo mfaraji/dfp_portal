@@ -1,5 +1,5 @@
 """
-Django settings for inspire project.
+Django settings for pire project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/dev/topics/settings/
@@ -74,6 +74,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'authtools',
+    'dfp',
 )
 
 MIDDLEWARE_CLASSES = (

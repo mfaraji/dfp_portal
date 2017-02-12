@@ -25,3 +25,5 @@ class QuickSideBarView(generic.TemplateView):
 class AddReportView(generic.TemplateView):
 	template_name = "views/addreport.html"
 
+class AudienceView(generic.TemplateView):
+	template_name = "views/audience.html"

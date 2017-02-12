@@ -30,6 +30,7 @@
     "angular-ui-router": "^0.4.0",
     "oclazyload": "ocLazyLoad#^1.0.9",
     "angular-bootstrap": "^2.4.0",
-    "morris.js": "^0.5.1"
+    "morris.js": "^0.5.1",
+    "bootstrap-datepicker": "^1.6.4"
   }
 }

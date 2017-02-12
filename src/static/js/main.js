@@ -9,6 +9,13 @@ var InspireApp = angular.module("InspireApp", [
     "ngSanitize"
 ]); 
 
+InspireApp.config(['$interpolateProvider',
+    function($interpolateProvider) {
+        $interpolateProvider.startSymbol('{[');
+        $interpolateProvider.endSymbol(']}');
+    }
+]);
+
 /* Configure ocLazyLoader(refer: https://github.com/ocombe/ocLazyLoad) */
 InspireApp.config(['$ocLazyLoadProvider', function($ocLazyLoadProvider) {
     $ocLazyLoadProvider.config({
@@ -117,7 +124,7 @@ InspireApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvid
         // Aduience Page
         .state('audience', {
             url: "/audience",
-            templateUrl: "views/blank.html",            
+            templateUrl: "views/audience",            
             data: {pageTitle: 'Blank Page Template'},
             controller: "BlankController",
             resolve: {
@@ -136,7 +143,7 @@ InspireApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvid
         // Add Aduience Page
         .state('addreport', {
             url: "/dashboard/add",
-            templateUrl: "views/addreport.html",            
+            templateUrl: "views/addreport",            
             data: {pageTitle: 'Add New Report'},
             controller: "AddReportController",
             resolve: {
@@ -145,6 +152,8 @@ InspireApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvid
                         name: 'InspireApp',
                         insertBefore: '#ng_load_plugins_before', // load the above css files before a LINK element with this ID. Dynamic CSS files must be loaded between core and theme css files
                         files: [
+                            '/static/libs/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css',
+                            '/static/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
                             '/static/js/controllers/AddReportController.js'
                         ] 
                     });
