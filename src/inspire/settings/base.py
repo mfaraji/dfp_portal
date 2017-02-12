@@ -77,6 +77,8 @@ INSTALLED_APPS = (
     'dfp',
 )
 
+DEBUG_TOOLBAR_PATCH_SETTINGS = False
+
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
