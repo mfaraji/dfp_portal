@@ -38,7 +38,7 @@
                                                                 <div class="form-group">
                                                                     <label class="control-label col-md-3">Name</label>
                                                                     <div class="col-md-9">
-                                                                        <input type="text" class="form-control" placeholder="Report 1">
+                                                                        <input type="text" ng-model="report.name" class="form-control" placeholder="Report 1">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -49,7 +49,7 @@
                                                                 <div class="form-group">
                                                                     <label class="control-label col-md-3">From</label>
                                                                     <div class="col-md-9">
-                                                                        <input type="text" class="form-control" placeholder="dd/mm/yyyy"> </div>
+                                                                        <input ng-model="report.from" type="text" class="form-control" placeholder="dd/mm/yyyy"> </div>
                                                                 </div>
                                                             </div>
                                                             <!--/span-->
@@ -57,7 +57,7 @@
                                                                 <div class="form-group">
                                                                     <label class="control-label col-md-3">To</label>
                                                                     <div class="col-md-9">
-                                                                        <input type="text" class="form-control" placeholder="dd/mm/yyyy"> </div>
+                                                                        <input ng-model="report.to" type="text" class="form-control" placeholder="dd/mm/yyyy"> </div>
                                                                 </div>
                                                             </div>
                                                             <!--/span-->
@@ -68,7 +68,7 @@
                                                                 <div class="form-group">
                                                                     <label class="control-label col-md-3">Community</label>
                                                                     <div class="col-md-9">
-                                                                        <select multiple="" class="form-control">
+                                                                        <select ng-model="report.adunit" multiple="" class="form-control">
                                                                             <option>Option 1</option>
                                                                             <option>Option 2</option>
                                                                             <option>Option 3</option>
@@ -78,18 +78,16 @@
                                                                     </div>
                                                                 </div>
                                                                 </div>
-                                                                <div class="col-md-6">
+                                                                <div class="col-md-5 col-md-offset-1">
                                                                 <div class="form-group">
-                                                                    <label class="control-label col-md-3">Country</label>
-                                                                    <div class="col-md-9">
-                                                                        <select multiple="" class="form-control">
-                                                                            <option>Option 1</option>
-                                                                            <option>Option 2</option>
-                                                                            <option>Option 3</option>
-                                                                            <option>Option 4</option>
-                                                                            <option>Option 5</option>
-                                                                        </select>
-                                                                    </div>
+                                                                    <ui-select ng-model="report.country" theme="bootstrap">
+                                                                        <ui-select-match placeholder="Select or search a Country in the list...">{[$select.selected.name]}</ui-select-match>
+                                                                        <ui-select-choices repeat="country in countries | filter: $select.search">
+                                                                            <div ng-bind-html="country.name | highlight: $select.search"></div>
+                                                                        </ui-select-choices>
+                                                                      </ui-select>
+
+
                                                                 </div>
                                                            </div>
                                                         </div>
@@ -100,7 +98,7 @@
                                                             <div class="col-md-6">
                                                                 <div class="row">
                                                                     <div class="col-md-offset-3 col-md-9">
-                                                                        <button type="submit" class="btn green">Save</button>
+                                                                        <button ng-click="save()" type="submit" class="btn green">Save</button>
                                                                         <a ui-sref="dashboard" type="button" class="btn default">Cancel</a>
                                                                     </div>
                                                                 </div>

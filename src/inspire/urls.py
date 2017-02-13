@@ -15,6 +15,7 @@ urlpatterns = [
 	url(r'^views/addreport$', views.AddReportView.as_view(), name='addreport'),
 	url(r'^views/audience$', views.AudienceView.as_view(), name='audience'),
 	url(r'^admin/', include(admin.site.urls)),
+	url(r'^dfp/', include('dfp.urls'))
 ]
 
 

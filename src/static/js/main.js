@@ -140,7 +140,7 @@ InspireApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvid
             }
         })
 
-        // Add Aduience Page
+        // Add Report Page
         .state('addreport', {
             url: "/dashboard/add",
             templateUrl: "views/addreport",            
@@ -154,6 +154,8 @@ InspireApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvid
                         files: [
                             '/static/libs/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css',
                             '/static/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
+                            '/static/libs/angular-ui-select/dist/select.min.js',
+                            '/static/libs/angular-ui-select/dist/select.min.css',
                             '/static/js/controllers/AddReportController.js'
                         ] 
                     });
