@@ -16,6 +16,10 @@ STATICFILES_DIRS = [join(BASE_DIR, 'static')]
 MEDIA_ROOT = join(BASE_DIR, 'media')
 MEDIA_URL = "/media/"
 
+# Define STATIC_ROOT for the collectstatic command
+STATIC_ROOT = join(BASE_DIR, '..', 'static')
+
+
 # DFP API configs
 SERVICE_ACCOUNT_EMAIL = 'inspire@inspire-156501.iam.gserviceaccount.com'
 APPLICATION_NAME = 'inspire_web'
