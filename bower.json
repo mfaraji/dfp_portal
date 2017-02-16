@@ -32,6 +32,8 @@
     "angular-bootstrap": "^2.4.0",
     "morris.js": "^0.5.1",
     "bootstrap-datepicker": "^1.6.4",
-    "angular-ui-select": "^0.19.6"
+    "angular-ui-select": "^0.19.6",
+    "angular-bootstrap-multiselect": "https://github.com/bentorfs/angular-bootstrap-multiselect.git#^1.1.6",
+    "lodash": "^4.17.4"
   }
 }

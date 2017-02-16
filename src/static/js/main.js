@@ -156,6 +156,7 @@ InspireApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvid
                             '/static/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
                             '/static/libs/angular-ui-select/dist/select.min.js',
                             '/static/libs/angular-ui-select/dist/select.min.css',
+                            '/static/libs/angular-bootstrap-multiselect/dist/angular-bootstrap-multiselect.min.js',
                             '/static/js/controllers/AddReportController.js'
                         ] 
                     });

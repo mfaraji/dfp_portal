@@ -31,7 +31,6 @@ class Order(Resource):
             response = order_service.getOrdersByStatement(statement.ToStatement())
             if 'results' in response:
               for order in response['results']:
-                import pdb; pdb.set_trace();
                 # Print out some information for each order.
                 print('Order with ID "%d" and name "%s" was found.\n' % (order['id'],
                                                                          order['name']))
