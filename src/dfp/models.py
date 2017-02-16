@@ -39,5 +39,43 @@ class Report(models.Model):
 			'status': self.status
 		}
 
+	def __unicode__(self):
+		return self.name
 
-    
+
+class DimesionCategory(models.Model):
+	name =  models.CharField(max_length=256)
+
+	def __unicode__(self):
+		return self.name
+
+	def as_json(self):
+		return sorted([dimesion.as_json() for dimesion in self.dimension_set.all()], key=lambda k: k['name'])
+
+class Dimension(models.Model):
+	name = models.CharField(max_length=256)
+	code = models.CharField(max_length=256)
+	category = models.ForeignKey(DimesionCategory, on_delete=models.CASCADE, blank=True, null=True)
+
+	def __unicode__(self):
+		return self.name
+
+	def as_json(self):
+		return {
+			'name': self.name,
+			'id': self.id,
+			'category': self.category.name
+		}
+
+class Metric(models.Model):
+	name = models.CharField(max_length=256)
+	code = models.CharField(max_length=256)
+
+	def __unicode__(self):
+		return self.name
+
+	def as_json(self):
+		return {
+			'name': self.name,
+			'code': self.code
+		}

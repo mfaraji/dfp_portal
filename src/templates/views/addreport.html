@@ -38,11 +38,52 @@
                                                                 <div class="form-group">
                                                                     <label class="control-label col-md-3">Name</label>
                                                                     <div class="col-md-9">
-                                                                        <input type="text" ng-model="report.name" class="form-control" placeholder="Report 1">
+                                                                        <input type="text" required ng-model="report.name" class="form-control" placeholder="Report 1">
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
+
+                                                        <!-- row -->
+                                                        <div class="row">
+                                                            
+                                                                <!-- Dimesion -->
+                                                                <div class="col-md-6">
+                                                                <div class="col-md-3">
+                                                                <label class="control-label col-md-3">Dimensions</label>
+                                                                </div>
+                                                                <div class="col-md-9">
+                                                                <div class="form-group">
+
+                                                                    <ui-select multiple ng-model="report.dimensions" sortable="true" theme="bootstrap" close-on-select="false">
+                                                                        <ui-select-match placeholder="Select or search a Dimension in the list...">{[$item.name]}</ui-select-match>
+                                                                        <ui-select-choices group-by="'category'" repeat="dim in dimensions | filter: $select.search">
+                                                                            <div ng-bind-html="dim.name | highlight: $select.search"></div>
+                                                                        </ui-select-choices>
+                                                                      </ui-select>
+                                                                </div>
+                                                                </div>
+                                                                </div>
+
+
+                                                                <div class="col-md-6">
+                                                                <div class="col-md-3">
+                                                                <label class="control-label col-md-3">Metrics</label>
+                                                                </div>
+                                                                <div class="col-md-9">
+                                                                <div class="form-group">
+                                                                    <ui-select multiple ng-model="report.metrics" theme="bootstrap" sortable="true">
+                                                                        <ui-select-match placeholder="Select or search a Metric in the list...">{[$item.name]}</ui-select-match>
+                                                                        <ui-select-choices repeat="metric in metrics | filter: $select.search">
+                                                                            <div ng-bind-html="metric.name | highlight: $select.search"></div>
+                                                                        </ui-select-choices>
+                                                                      </ui-select>
+                                                                </div>
+                                                                </div>
+                                                                </div>
+
+                                                        </div>
+
                                                         <!--/row-->
                                                         <div class="row">
                                                             <div class="col-md-6">
