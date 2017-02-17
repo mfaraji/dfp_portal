@@ -1,8 +1,12 @@
 from django.views import generic
-
+from django.contrib.admin.views.decorators import staff_member_required
 
 class HomePage(generic.TemplateView):
     template_name = "index.html"
+
+    @method_decorator(staff_member_required)
+    def dispatch(self, *args, **kwargs):
+    	return super(HomePage, self).dispatch(*args, **kwargs)
 
 class Header(generic.TemplateView):
 	template_name = "tpl/header.html"
