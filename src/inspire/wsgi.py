@@ -7,9 +7,13 @@ For more information on this file, see
 https://docs.djangoproject.com/en/dev/howto/deployment/wsgi/
 """
 import os
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "inspire.settings.production")
+import sys
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+
+sys.path.append(os.path.join(PROJECT_DIR, 'src'))
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "inspire.settings.production")
+
 
 activate_this = os.path.join(PROJECT_DIR, 'venv/bin/activate_this.py')
 execfile(activate_this, dict(__file__=activate_this))
