@@ -6,7 +6,8 @@ var InspireApp = angular.module("InspireApp", [
     "ui.router", 
     "ui.bootstrap", 
     "oc.lazyLoad",  
-    "ngSanitize"
+    "ngSanitize",
+    'blockUI'
 ]); 
 
 InspireApp.config(['$interpolateProvider',
@@ -96,13 +97,13 @@ InspireApp.controller('FooterController', ['$scope', function($scope) {
 
 InspireApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
     // Redirect any unmatched url
-    $urlRouterProvider.otherwise("/dashboard.html");  
+    $urlRouterProvider.otherwise("/dashboard");  
 
     $stateProvider
 
         // Dashboard
         .state('dashboard', {
-            url: "/dashboard.html",
+            url: "/dashboard",
             templateUrl: "views/dashboard",            
             data: {pageTitle: 'Admin Dashboard Template'},
             controller: "DashboardController",
@@ -121,28 +122,28 @@ InspireApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvid
             }
         })
 
-        // Aduience Page
-        .state('audience', {
-            url: "/audience",
-            templateUrl: "views/audience",            
-            data: {pageTitle: 'Blank Page Template'},
-            controller: "BlankController",
-            resolve: {
-                deps: ['$ocLazyLoad', function($ocLazyLoad) {
-                    return $ocLazyLoad.load({
-                        name: 'InspireApp',
-                        insertBefore: '#ng_load_plugins_before', // load the above css files before a LINK element with this ID. Dynamic CSS files must be loaded between core and theme css files
-                        files: [
-                            '/static/js/controllers/BlankController.js'
-                        ] 
-                    });
-                }]
-            }
-        })
+    // // Aduience Page
+    // .state('audience', {
+    //     url: "/audience",
+    //     templateUrl: "views/audience",            
+    //     data: {pageTitle: 'Blank Page Template'},
+    //     controller: "BlankController",
+    //     resolve: {
+    //         deps: ['$ocLazyLoad', function($ocLazyLoad) {
+    //             return $ocLazyLoad.load({
+    //                 name: 'InspireApp',
+    //                 insertBefore: '#ng_load_plugins_before', // load the above css files before a LINK element with this ID. Dynamic CSS files must be loaded between core and theme css files
+    //                 files: [
+    //                     '/static/js/controllers/BlankController.js'
+    //                 ] 
+    //             });
+    //         }]
+    //     }
+    // })
 
         // Add Report Page
         .state('addreport', {
-            url: "/dashboard/add",
+            url: "/add",
             templateUrl: "views/addreport",            
             data: {pageTitle: 'Add New Report'},
             controller: "AddReportController",
@@ -158,6 +159,25 @@ InspireApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvid
                             '/static/libs/angular-ui-select/dist/select.min.css',
                             '/static/libs/angular-bootstrap-multiselect/dist/angular-bootstrap-multiselect.min.js',
                             '/static/js/controllers/AddReportController.js'
+                        ] 
+                    });
+                }]
+            }
+        })
+
+        // View Report
+        .state('view', {
+            url: "/dashboard/view/:reportId",
+            templateUrl: "views/report_datatable",            
+            data: {pageTitle: 'View Report'},
+            controller: "ViewReportController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'InspireApp',
+                        insertBefore: '#ng_load_plugins_before', // load the above css files before a LINK element with this ID. Dynamic CSS files must be loaded between core and theme css files
+                        files: [
+                            '/static/js/controllers/ViewReportController.js'
                         ] 
                     });
                 }]

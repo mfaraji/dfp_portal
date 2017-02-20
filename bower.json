@@ -34,6 +34,7 @@
     "bootstrap-datepicker": "^1.6.4",
     "angular-ui-select": "^0.19.6",
     "angular-bootstrap-multiselect": "https://github.com/bentorfs/angular-bootstrap-multiselect.git#^1.1.6",
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.4",
+    "angular-block-ui": "^0.2.2"
   }
 }

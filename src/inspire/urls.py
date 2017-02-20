@@ -13,6 +13,7 @@ urlpatterns = [
 	url(r'^views/dashboard$', views.DashboardView.as_view(), name='dashboard'),
 	url(r'^views/quick-sidebar$', views.QuickSideBarView.as_view(), name='quick_sidebar'),
 	url(r'^views/addreport$', views.AddReportView.as_view(), name='addreport'),
+	url(r'^views/report_datatable$', views.ReportDataTableView.as_view(), name='report_datatable'),
 	url(r'^views/audience$', views.AudienceView.as_view(), name='audience'),
 	url(r'^admin/', include(admin.site.urls)),
 	url(r'^dfp/', include('dfp.urls'))

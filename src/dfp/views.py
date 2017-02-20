@@ -1,9 +1,13 @@
 import json
+import csv
 from django.views.decorators.csrf import csrf_exempt
 
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
+from django.shortcuts import render
 from dfp.models import Country, Report, Dimension, Metric, DimesionCategory
 
+from inspire.logger import logger
+from dfp.apis.report import ReportManager
 # Create your views here.
 
 
@@ -30,30 +34,50 @@ def reports(request):
         return JsonResponse({'result': reports})
     if request.method == 'POST':
         body = json.loads(request.body)
-        report = Report(name=body['name'], query=make_report(body), status='complete')
+        report = Report(name=body['name'], query=factory_report(body), status='complete')
         report.save()
         return JsonResponse({'result': 'success'})
 
 
+def generate_report(json_obj):
+    dims = json_obj.get('dims')
+    metrics = json_obj.get('metrics')
+    country = json_obj.get
 
 
-def make_report(params):
-    report_job = {
-            'reportQuery': {
-                'dimensions': ['COUNTRY_NAME'],
-                # 'statement': filter_statement,
-                'columns': ['AD_SERVER_IMPRESSIONS', 'AD_SERVER_CLICKS'],
-                # 'dateRangeType': 'CUSTOM_DATE',
-                'dateRangeType': 'LAST_WEEK',
-                # 'startDate': {'year': start_date.year,
-                #             'month': start_date.month,
-                #             'day': start_date.day},
-                # 'endDate': {'year': end_date.year,
-                #           'month': end_date.month,
-                #           'day': end_date.day}
-          }
-        }
-    return json.dumps(report_job)
+def factory_report(body):
+    return json.dumps({
+        'dims': [dim['id'] for dim in body['dimensions']],
+        'metrics': [metric['id'] for metric in body['metrics']]
+    })
+    
+
+
+def format_data(content, report):
+    result = {
+        'name': report.name,
+        'rows': [],
+        'headers': []
+    }
+    all_headers = content.next()
+    indices = []
+
+    for dim in report.dimensions:
+        indices.append(all_headers.index(dim.column_name))
+        result['headers'].append(dim.name)
+
+    for metric in report.metrics:
+        indices.append(all_headers.index(metric.column_name))
+        result['headers'].append(metric.name)
+
+    for row in content:
+        new_row = []
+        for index in indices:
+            new_row.append(row[index])
+        result['rows'].append(new_row)
+
+    return result
+
 
 
 @csrf_exempt
@@ -67,4 +91,14 @@ def report(request, pk):
             return JsonResponse({'result': 'failure', 'message':'Report Not Found'})
     if request.method == 'GET':
         report = Report.objects.get(id=pk)
-        report_job = json.loads(report.query)
+        report_params = json.loads(report.query)
+        report_manager = ReportManager()
+        job_id, file_name = report_manager.run(report)
+        content = None
+        logger.debug('Reading content of the report')
+        with open(file_name, 'r') as f:
+            content = csv.reader(f)
+            data = format_data(content, report)
+        os.remove(file_name)
+        return JsonResponse({'report': data})
+

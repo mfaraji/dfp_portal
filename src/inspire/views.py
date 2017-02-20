@@ -32,3 +32,6 @@ class AddReportView(generic.TemplateView):
 
 class AudienceView(generic.TemplateView):
 	template_name = "views/audience.html"
+
+class ReportDataTableView(generic.TemplateView):
+	template_name = "views/report_datatable.html"
