@@ -1,3 +1,4 @@
+import os
 import json
 import csv
 from django.views.decorators.csrf import csrf_exempt
@@ -28,7 +29,6 @@ def metrics(request):
 
 @csrf_exempt
 def reports(request):
-    print request.body
     if request.method == 'GET':
         reports = [obj.as_json() for obj in Report.objects.all()]
         return JsonResponse({'result': reports})
@@ -48,7 +48,12 @@ def generate_report(json_obj):
 def factory_report(body):
     return json.dumps({
         'dims': [dim['id'] for dim in body['dimensions']],
-        'metrics': [metric['id'] for metric in body['metrics']]
+        'metrics': [metric['id'] for metric in body['metrics']],
+        'daterange': {
+            'type': 'custom',
+            'start': body['from'],
+            'end': body['to']
+        }
     })
     
 

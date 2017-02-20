@@ -10,6 +10,10 @@ var InspireApp = angular.module("InspireApp", [
     'blockUI'
 ]); 
 
+InspireApp.config(function(blockUIConfig){
+    blockUIConfig.message = 'Processing...';
+});
+
 InspireApp.config(['$interpolateProvider',
     function($interpolateProvider) {
         $interpolateProvider.startSymbol('{[');

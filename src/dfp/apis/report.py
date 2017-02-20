@@ -26,6 +26,14 @@ class Resource(object):
         self.client = dfp.DfpClient(oauth2_client, APPLICATION_NAME, network_code=NETWORK_CODE)
 
 
+def parse_date(date_str):
+    date_obj =  datetime.strptime(date_str, '%m/%d/%Y')
+    return {
+        'year': date_obj.year,
+        'month': date_obj.month,
+        'day': date_obj.day
+    }
+
 
 def make_report_job(params):
     report_job = {
@@ -34,7 +42,7 @@ def make_report_job(params):
                 # 'statement': filter_statement,
                 'columns': [],
                 # 'dateRangeType': 'CUSTOM_DATE',
-                'dateRangeType': 'LAST_WEEK',
+                # 'dateRangeType': 'LAST_WEEK',
                 # 'startDate': {'year': start_date.year,
                 #             'month': start_date.month,
                 #             'day': start_date.day},
@@ -49,6 +57,11 @@ def make_report_job(params):
 
     for metric in params['metrics']:
         report_job['reportQuery']['columns'].append(Metric.objects.get(pk=metric).code)
+
+    if params['daterange']['type'] =='custom':
+        report_job['reportQuery']['dateRangeType'] = 'CUSTOM_DATE'
+        report_job['reportQuery']['startDate'] = parse_date(params['daterange']['start'])
+        report_job['reportQuery']['endDate'] = parse_date(params['daterange']['end'])
 
     return report_job
 

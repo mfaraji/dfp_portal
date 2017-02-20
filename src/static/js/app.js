@@ -345,9 +345,9 @@ var App = function() {
     var handleModals = function() {        
         // fix stackable modal issue: when 2 or more modals opened, closing one of modal will remove .modal-open class. 
         $('body').on('hide.bs.modal', function() {
-            if ($('.modal:visible').size() > 1 && $('html').hasClass('modal-open') === false) {
+            if ($('.modal:visible').length > 1 && $('html').hasClass('modal-open') === false) {
                 $('html').addClass('modal-open');
-            } else if ($('.modal:visible').size() <= 1) {
+            } else if ($('.modal:visible').length <= 1) {
                 $('html').removeClass('modal-open');
             }
         });
