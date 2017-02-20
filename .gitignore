@@ -1,7 +1,6 @@
 # Byte-compiled / optimized / DLL files
 venv
 
-static
 src/static/libs
 
 __pycache__/

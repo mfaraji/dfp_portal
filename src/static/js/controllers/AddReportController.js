@@ -4,7 +4,6 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
         App.initAjax();
         $scope.load_countries();
         $scope.load_metrics();
-
         $('.date-picker').datepicker({
             autoclose: true
         });
