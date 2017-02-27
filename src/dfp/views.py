@@ -31,7 +31,6 @@ def metrics(request):
 
 @csrf_exempt
 def reports(request):
-    print request.body
     if request.method == 'GET':
         reports = [obj.as_json() for obj in Report.objects.all()]
         return JsonResponse({'result': reports})

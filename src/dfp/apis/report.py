@@ -84,8 +84,8 @@ def make_report_job(params):
     #             'value': '"chaos=2"'
     #         }
     #     }
-    filter_statement = {'query': 'WHERE CUSTOM_CRITERIA = ',
-            'values': []}
+    # filter_statement = {'query': 'WHERE CUSTOM_CRITERIA = ',
+    #         'values': []}
 
     # if params['daterange']['type'] =='custom':
     #     report_job['reportQuery']['dateRangeType'] = 'CUSTOM_DATE'
@@ -146,7 +146,7 @@ class ReportManager(Resource):
 
 
     def query_report(self, report_job):
-        print report_job
+        logger.info(report_job)
         report_downloader = self.client.GetDataDownloader(version='v201611')
         try:
             report_job_id = report_downloader.WaitForReport(report_job)
