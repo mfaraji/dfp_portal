@@ -90,6 +90,6 @@ def report(request, pk):
         with open(file_name, 'r') as f:
             content = csv.reader(f)
             data = format_data(content, report)
-        # os.remove(file_name)
+        os.remove(file_name)
         return JsonResponse({'report': data})
 

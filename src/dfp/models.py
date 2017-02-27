@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 import json
 
 from django.db import models
+from authtools.models import User
 
 # Create your models here.
 
@@ -31,12 +32,14 @@ class Report(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=256, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
 
     def as_json(self):
         return {
             'id': self.id,
             'name': self.name,
             'created_at': self.created_at.date(),
+            'creator': self.user.email,
             'status': self.status
         }
 

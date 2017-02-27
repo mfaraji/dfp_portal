@@ -40,6 +40,7 @@
                         <tr>
                             <th> Name </th>
                             <th> Created </th>
+                            <th> Creator </th>
                             <th> Status </th>
                             <th> Action </th>
                         </tr>
@@ -49,6 +50,7 @@
                         <tr class="odd gradeX" ng-repeat="report in reports">
                             <td> {[report.name]} </td>
                             <td class="center"> {[report.created_at]} </td>
+                            <td class="center"> {[report.creator]} </td>
                             <td>
                                 <span class="label label-sm label-success"> {[report.status]} </span>
                             </td>
