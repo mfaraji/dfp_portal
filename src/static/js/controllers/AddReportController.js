@@ -5,8 +5,12 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
         $scope.load_countries();
         $scope.load_metrics();
         $('.date-picker').datepicker({
-            autoclose: true
+            autoclose: true,
+            clearBtn: true,
+            todayHighlight: true
         });
+        $scope.load_dimensions();
+        $scope.load_ad_units();
     });
 
     $scope.report = {};
@@ -16,7 +20,7 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
         $http({
             method: 'POST',
             url: '/dfp/reports/',
-            data: JSON.stringify($scope.report)
+            data: angular.toJson($scope.report)
         });
     };
 
@@ -28,8 +32,6 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
         }).then(function successCallback(response) {
 
             $scope.dimensions = response.data.result;
-            console.log($scope.dimensions);
-
         });
     };
 
@@ -51,10 +53,15 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
         });
     };
 
-    $scope.load_dimensions();
-        
-
-    // set sidebar closed and body solid layout mode
+    $scope.load_ad_units = function() {
+        $http({
+            method: 'GET',
+            url: '/dfp/units'
+        }).then(function successCallback(response) {
+            $scope.ad_units = response.data.result;
+        });
+    };
+        // set sidebar closed and body solid layout mode
     $rootScope.settings.layout.pageContentWhite = true;
     $rootScope.settings.layout.pageBodySolid = false;
     $rootScope.settings.layout.pageSidebarClosed = false;

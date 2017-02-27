@@ -87,3 +87,15 @@ LOGGING = {
 logging.config.dictConfig(LOGGING)
 
 SECRET_KEY = 'test'
+
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/tmp/django_cache',
+        'TIMEOUT': 60,
+        'OPTIONS': {
+            'MAX_ENTRIES': 1000
+        }
+    }
+}

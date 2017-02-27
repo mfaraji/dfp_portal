@@ -7,12 +7,8 @@ var InspireApp = angular.module("InspireApp", [
     "ui.bootstrap", 
     "oc.lazyLoad",  
     "ngSanitize",
-    'blockUI'
+    'blockUI',
 ]); 
-
-InspireApp.config(function(blockUIConfig){
-    blockUIConfig.message = 'Processing...';
-});
 
 InspireApp.config(['$interpolateProvider',
     function($interpolateProvider) {

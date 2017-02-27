@@ -2,7 +2,6 @@ import os
 import json
 from datetime import datetime, timedelta
 import tempfile
-from googleads import oauth2
 from googleads import dfp
 from googleads import errors
 
@@ -10,20 +9,9 @@ from googleads import errors
 from dfp.models import Dimension, Metric
 from inspire.logger import logger
 
+from .base import Resource
 
 import subprocess
-
-SERVICE_ACCOUNT_EMAIL = 'inspire@inspire-156501.iam.gserviceaccount.com'
-APPLICATION_NAME = 'inspire_web'
-NETWORK_CODE = 54511533
-KEY_FILE = os.path.join(os.path.dirname(__file__), 'inspire-0900e6e69fc3.p12')
-
-class Resource(object):
-
-    def __init__(self):
-        oauth2_client = oauth2.GoogleServiceAccountClient(oauth2.GetAPIScope('dfp'),
-                SERVICE_ACCOUNT_EMAIL, KEY_FILE)
-        self.client = dfp.DfpClient(oauth2_client, APPLICATION_NAME, network_code=NETWORK_CODE)
 
 
 def parse_date(date_str):
@@ -34,7 +22,6 @@ def parse_date(date_str):
         'day': date_obj.day
     }
 
-
 def make_report_job(params):
     report_job = {
             'reportQuery': {
@@ -42,7 +29,7 @@ def make_report_job(params):
                 # 'statement': filter_statement,
                 'columns': [],
                 # 'dateRangeType': 'CUSTOM_DATE',
-                # 'dateRangeType': 'LAST_WEEK',
+                'dateRangeType': 'LAST_WEEK',
                 # 'startDate': {'year': start_date.year,
                 #             'month': start_date.month,
                 #             'day': start_date.day},
@@ -52,16 +39,61 @@ def make_report_job(params):
           }
         }
 
-    for dim in params['dims']:
-        report_job['reportQuery']['dimensions'].append(str(Dimension.objects.get(pk=dim).code))
+    values = []
+    filter_statement = {}
+    conditions = []
+
+    for dim in params['dimensions']:
+        report_job['reportQuery']['dimensions'].append(str(Dimension.objects.get(pk=dim['id']).code))
 
     for metric in params['metrics']:
-        report_job['reportQuery']['columns'].append(Metric.objects.get(pk=metric).code)
+        report_job['reportQuery']['columns'].append(Metric.objects.get(pk=metric['id']).code)
 
-    if params['daterange']['type'] =='custom':
-        report_job['reportQuery']['dateRangeType'] = 'CUSTOM_DATE'
-        report_job['reportQuery']['startDate'] = parse_date(params['daterange']['start'])
-        report_job['reportQuery']['endDate'] = parse_date(params['daterange']['end'])
+    if 'country' in params:
+        conditions.append('COUNTRY_NAME = :country')
+        val = {
+            'key': 'country',
+            'value': {
+                'xsi_type': 'TextValue',
+                'value': params['country']['name']
+            }
+        }
+        values.append(val)
+
+    if 'ad_units' in params and params['ad_units']:
+        conditions.append('PARENT_AD_UNIT_ID  IN (:units)')
+        val = {
+            'key': 'units',
+            'value': {
+                'xsi_type': 'NumberValue',
+                # 'value': '64313693'
+                'value': ",".join([str(ad_unit['id']) for ad_unit in params['ad_units']])
+            }
+        }
+        values.append(val)
+
+
+    if conditions:
+        CONDITIONS = ' AND '.join(conditions)
+        filter_statement = {'query': 'WHERE %s' % CONDITIONS, 'values': values}
+
+    # val = {
+    #         'key': 'condition',
+    #         'value': {
+    #             'xsi_type': 'TextValue',
+    #             'value': '"chaos=2"'
+    #         }
+    #     }
+    filter_statement = {'query': 'WHERE CUSTOM_CRITERIA = ',
+            'values': []}
+
+    # if params['daterange']['type'] =='custom':
+    #     report_job['reportQuery']['dateRangeType'] = 'CUSTOM_DATE'
+    #     report_job['reportQuery']['startDate'] = parse_date(params['daterange']['start'])
+    #     report_job['reportQuery']['endDate'] = parse_date(params['daterange']['end'])
+
+    if filter_statement:
+        report_job['reportQuery']['statement'] = filter_statement
 
     return report_job
 
@@ -72,7 +104,7 @@ class ReportManager(Resource):
         values = [{
           'key': 'id',
           'value': {
-              'xsi_type': 'NumberValue',
+              'xsi_type': 'TextValue',
               'value': 'US'
           }
         }]
@@ -86,7 +118,7 @@ class ReportManager(Resource):
             'reportQuery': {
                 'dimensions': ['COUNTRY_NAME'],
                 'statement': filter_statement,
-                'columns': ['AD_SERVER_IMPRESSIONS', 'AD_SERVER_CLICKS'],
+                'columns': ['AD_SERVER_IMPRESSIONS_OUT_OF_NETWORK'],
                 # 'dateRangeType': 'CUSTOM_DATE',
                 'dateRangeType': 'LAST_WEEK',
                 # 'startDate': {'year': start_date.year,
@@ -109,37 +141,11 @@ class ReportManager(Resource):
         report_file.close()
         print 'Report job with id \'%s\' downloaded to:\n%s' % (
                 report_job_id, report_file.name)
-        import pdb; pdb.set_trace()
         subprocess.call(['gunzip', report_file.name])
+        print report_file.name[:-3] 
+
 
     def query_report(self, report_job):
-        # values = [{
-        #   'key': 'id',
-        #   'value': {
-        #       'xsi_type': 'NumberValue',
-        #       'value': 'US'
-        #   }
-        # }]
-        # filter_statement = {'query': 'WHERE ORDER_ID = :id',
-        #     'values': values}
-
-        # end_date = datetime.now()
-        # start_date = end_date - timedelta(days=7)
-        # report_job = {
-        #     'reportQuery': {
-        #         'dimensions': ['ADVERTISER_NAME'],
-        #         # 'statement': filter_statement,
-        #         'columns': ['AD_SERVER_IMPRESSIONS', 'AD_SERVER_CLICKS'],
-        #         # 'dateRangeType': 'CUSTOM_DATE',
-        #         'dateRangeType': 'LAST_WEEK',
-        #         # 'startDate': {'year': start_date.year,
-        #         #             'month': start_date.month,
-        #         #             'day': start_date.day},
-        #         # 'endDate': {'year': end_date.year,
-        #         #           'month': end_date.month,
-        #         #           'day': end_date.day}
-        #   }
-        # }
         print report_job
         report_downloader = self.client.GetDataDownloader(version='v201611')
         try:
@@ -161,4 +167,3 @@ class ReportManager(Resource):
         logger.debug('Query report %s', report.name)
         report_job = make_report_job(json.loads(report.query))
         return self.query_report(report_job)
-

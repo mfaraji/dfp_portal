@@ -3,9 +3,11 @@ import json
 import csv
 from django.views.decorators.csrf import csrf_exempt
 
+from django.conf import settings
+from django.core.cache import cache
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
-from dfp.models import Country, Report, Dimension, Metric, DimesionCategory
+from dfp.models import Country, Report, Dimension, Metric, DimesionCategory, AdUnit
 
 from inspire.logger import logger
 from dfp.apis.report import ReportManager
@@ -29,34 +31,19 @@ def metrics(request):
 
 @csrf_exempt
 def reports(request):
+    print request.body
     if request.method == 'GET':
         reports = [obj.as_json() for obj in Report.objects.all()]
         return JsonResponse({'result': reports})
     if request.method == 'POST':
         body = json.loads(request.body)
-        report = Report(name=body['name'], query=factory_report(body), status='complete')
+        report = Report(name=body['name'], query=request.body, status='complete')
         report.save()
         return JsonResponse({'result': 'success'})
-
-
-def generate_report(json_obj):
-    dims = json_obj.get('dims')
-    metrics = json_obj.get('metrics')
-    country = json_obj.get
-
-
-def factory_report(body):
-    return json.dumps({
-        'dims': [dim['id'] for dim in body['dimensions']],
-        'metrics': [metric['id'] for metric in body['metrics']],
-        'daterange': {
-            'type': 'custom',
-            'start': body['from'],
-            'end': body['to']
-        }
-    })
     
 
+def get_ad_units(request):
+    return JsonResponse({'result': [unit.as_json() for unit in AdUnit.objects.all()]})
 
 def format_data(content, report):
     result = {
@@ -104,6 +91,6 @@ def report(request, pk):
         with open(file_name, 'r') as f:
             content = csv.reader(f)
             data = format_data(content, report)
-        os.remove(file_name)
+        # os.remove(file_name)
         return JsonResponse({'report': data})
 

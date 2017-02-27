@@ -1,21 +1,17 @@
-from googleads import oauth2
+import pprint
 from googleads import dfp
 
-SERVICE_ACCOUNT_EMAIL = 'inspire@inspire-156501.iam.gserviceaccount.com'
-APPLICATION_NAME = 'inspire_web'
-NETWORK_CODE = 54511533
-KEY_FILE = './inspire-0900e6e69fc3.p12'
+from .base import Resource
 
 
-class Resource(object):
+def format_hierarchy(root, parents):
+    result = ''
+    for parent in parents:
+        if parent['name'] != root:
+            result += '%s > ' % parent['name']
+    return result
 
-    def __init__(self):
-        oauth2_client = oauth2.GoogleServiceAccountClient(oauth2.GetAPIScope('dfp'),
-                SERVICE_ACCOUNT_EMAIL, KEY_FILE)
-        self.client = dfp.DfpClient(oauth2_client, APPLICATION_NAME, network_code=NETWORK_CODE)
-
-
-class AdUnit(Resource):
+class AdUnitService(Resource):
     
 
     def get(self):
@@ -24,22 +20,31 @@ class AdUnit(Resource):
 
         # Create a statement to select ad units.
         statement = dfp.FilterStatement()
-        # import pdb; pdb.set_trace()
-        # Retrieve a small amount of ad units at a time, paging
-        # through until all ad units have been retrieved.
+        result = []
+        root_name = ''
         while True:
             response = ad_unit_service.getAdUnitsByStatement(statement.ToStatement())
             if 'results' in response:
               for ad_unit in response['results']:
-                # Print out some information for each ad unit.
-                print ad_unit
-                import pdb; pdb.set_trace()
-                # print('Ad unit with ID "%s" and name "%s" was found.\n' %
-                #       (ad_unit['id'], ad_unit['name']))
+                # import pdb; pdb.set_trace()
+                if ad_unit['name'] == 'ca-pub-3989517083387651:':
+                    continue
+                if 'parentPath' not in ad_unit:
+                    root_name = ad_unit['name']
+                    continue
+
+                node = {
+                    'unit_id': ad_unit['id'],
+                    'code': ad_unit['adUnitCode'],
+                    'name': ad_unit['name'],
+                    'hierarchy': format_hierarchy(root_name, ad_unit['parentPath']) + ad_unit['name'] + ' (%s)' % ad_unit['id']
+                }
+
+                print format_hierarchy(root_name, ad_unit['parentPath']) + ad_unit['name'] + '(%s)' % ad_unit['id']
+
+                result.append(node)
               statement.offset += dfp.SUGGESTED_PAGE_LIMIT
             else:
               break
-
-        print '\nNumber of results found: %s' % response['totalResultSetSize']
-
-AdUnit().get()
+            # print result
+            return result

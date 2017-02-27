@@ -21,7 +21,7 @@ class Country(models.Model):
     def as_json(self):
         return {
             'name': self.name,
-            'code': self.code
+            'id': self.code
         }
 
 
@@ -47,8 +47,8 @@ class Report(models.Model):
     def dimensions(self):
         params = json.loads(self.query)
         result = []
-        for dim in params['dims']:
-            result.append(Dimension.objects.get(pk=dim))
+        for dim in params['dimensions']:
+            result.append(Dimension.objects.get(pk=dim['id']))
         return result
 
     @property
@@ -56,7 +56,7 @@ class Report(models.Model):
         params = json.loads(self.query)
         result = []
         for metric in params['metrics']:
-            result.append(Metric.objects.get(pk=metric))
+            result.append(Metric.objects.get(pk=metric['id']))
         return result
 
 
@@ -104,3 +104,19 @@ class Metric(models.Model):
     @property
     def column_name(self):
         return 'Column.%s' % self.code
+
+
+class AdUnit(models.Model):
+    unit_id = models.IntegerField()
+    name = models.CharField(max_length=256)
+    code = models.CharField(max_length=256)
+    hierarchy = models.TextField()
+
+    def __unicode__(self):
+        return self.hierarchy
+
+    def as_json(self):
+        return {
+            'id': self.unit_id,
+            'name': self.hierarchy
+        }

@@ -65,6 +65,7 @@
                                                                 </div>
                                                                 </div>
 
+
                                                                 <div class="col-md-6">
                                                                 <div class="col-md-3">
                                                                 <label class="control-label col-md-3">Metrics</label>
@@ -89,7 +90,7 @@
                                                                 <div class="form-group">
                                                                     <label class="control-label col-md-3">From</label>
                                                                     <div class="col-md-9">
-                                                                        <input ng-model="report.from" type="text" class="form-control date-picker" required="true" placeholder="dd/mm/yyyy"> </div>
+                                                                        <input ng-model="report.from" type="text" class="form-control date-picker" placeholder="dd/mm/yyyy" data-date-end-date="0d"> </div>
                                                                 </div>
                                                             </div>
                                                             <!--/span-->
@@ -97,7 +98,7 @@
                                                                 <div class="form-group">
                                                                     <label class="control-label col-md-3">To</label>
                                                                     <div class="col-md-9">
-                                                                        <input ng-model="report.to" type="text" class="form-control date-picker" required="true" placeholder="dd/mm/yyyy"> </div>
+                                                                        <input ng-model="report.to" type="text" class="form-control date-picker" placeholder="dd/mm/yyyy" data-date-end-date="0d"> </div>
                                                                 </div>
                                                             </div>
                                                             <!--/span-->
@@ -105,17 +106,18 @@
                                                         <!--/row-->
                                                         <div class="row">
                                                                 <div class="col-md-6">
+                                                                <div class="col-md-3">
+                                                                <label class="control-label col-md-3">AdUnit</label>
+                                                                </div>
+                                                                <div class="col-md-9">
                                                                 <div class="form-group">
-                                                                    <label class="control-label col-md-3">Community</label>
-                                                                    <div class="col-md-9">
-                                                                        <select ng-model="report.adunit" multiple="" class="form-control">
-                                                                            <option>Option 1</option>
-                                                                            <option>Option 2</option>
-                                                                            <option>Option 3</option>
-                                                                            <option>Option 4</option>
-                                                                            <option>Option 5</option>
-                                                                        </select>
-                                                                    </div>
+                                                                    <ui-select multiple ng-model="report.ad_units" sortable="true" theme="bootstrap" close-on-select="false">
+                                                                        <ui-select-match placeholder="Select or search a Ad Unit in the list...">{[$item.name]}</ui-select-match>
+                                                                        <ui-select-choices repeat="unit in ad_units | filter: $select.search">
+                                                                            <div ng-bind-html="unit.name | highlight: $select.search"></div>
+                                                                        </ui-select-choices>
+                                                                      </ui-select>
+                                                                </div>
                                                                 </div>
                                                                 </div>
                                                                 <div class="col-md-5 col-md-offset-1">
@@ -125,7 +127,7 @@
                                                                         <ui-select-choices repeat="country in countries | filter: $select.search">
                                                                             <div ng-bind-html="country.name | highlight: $select.search"></div>
                                                                         </ui-select-choices>
-                                                                      </ui-select>
+                                                                    </ui-select>
 
 
                                                                 </div>
