@@ -36,7 +36,7 @@ def reports(request):
         return JsonResponse({'result': reports})
     if request.method == 'POST':
         body = json.loads(request.body)
-        report = Report(name=body['name'], query=request.body, status='complete')
+        report = Report(name=body['name'], query=request.body, status='complete', user=request.user)
         report.save()
         return JsonResponse({'result': 'success'})
     
