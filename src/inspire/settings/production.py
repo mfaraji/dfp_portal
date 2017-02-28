@@ -8,7 +8,7 @@ DEBUG = False
 TEMPLATE_DEBUG = False
 
 # Must mention ALLOWED_HOSTS in production!
-# ALLOWED_HOSTS = ["inspire.com"]
+ALLOWED_HOSTS = ["inspire.mfaraji.me"]
 
 # Cache the templates in memory for speed-up
 loaders = [
