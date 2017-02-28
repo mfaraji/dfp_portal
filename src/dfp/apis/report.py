@@ -61,7 +61,7 @@ def make_report_job(params):
         values.append(val)
 
     if 'ad_units' in params and params['ad_units']:
-        conditions.append('PARENT_AD_UNIT_ID  IN (:units)')
+        conditions.append('AD_UNIT_ID  IN (:units)')
         val = {
             'key': 'units',
             'value': {
