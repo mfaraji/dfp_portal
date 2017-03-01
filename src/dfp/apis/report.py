@@ -61,7 +61,7 @@ def make_report_job(params):
         values.append(val)
 
     if 'ad_units' in params and params['ad_units']:
-        conditions.append('PARENT_AD_UNIT_ID  IN (:units)')
+        conditions.append('AD_UNIT_ID  IN (:units)')
         val = {
             'key': 'units',
             'value': {
@@ -87,12 +87,9 @@ def make_report_job(params):
     # filter_statement = {'query': 'WHERE CUSTOM_CRITERIA = ',
     #         'values': []}
 
-    if params['daterange']['type'] =='custom':
-        report_job['reportQuery']['dateRangeType'] = 'CUSTOM_DATE'
-        report_job['reportQuery']['startDate'] = parse_date(params['daterange']['start'])
-        report_job['reportQuery']['endDate'] = parse_date(params['daterange']['end'])
-    else:
-        report_job['reportQuery']['dateRangeType'] = 'LAST_WEEK'
+    report_job['reportQuery']['dateRangeType'] = 'CUSTOM_DATE'
+    report_job['reportQuery']['startDate'] = parse_date(params['from'])
+    report_job['reportQuery']['endDate'] = parse_date(params['to'])
 
     if filter_statement:
         report_job['reportQuery']['statement'] = filter_statement
@@ -122,7 +119,7 @@ class ReportManager(Resource):
                 'statement': filter_statement,
                 'columns': ['AD_SERVER_IMPRESSIONS_OUT_OF_NETWORK'],
                 # 'dateRangeType': 'CUSTOM_DATE',
-                'dateRangeType': 'LAST_WEEK',
+                # 'dateRangeType': 'LAST_WEEK',
                 # 'startDate': {'year': start_date.year,
                 #             'month': start_date.month,
                 #             'day': start_date.day},
