@@ -34,7 +34,12 @@ class ReportFormatter(object):
 				new_row.append(row[item.column_name])
 
 		for item in self.report.metrics:
-			new_row.append("{:,d}".format(int(row[item.column_name])))
+			value = row[item.column_name]
+			try:
+				value = "{:,d}".format(int(row[item.column_name]))
+			except ValueError:
+				pass
+			new_row.append(value)
 		return new_row
 
 
