@@ -36,7 +36,7 @@
                     </thead>
                     <tbody>
                         <tr class="odd gradeX" ng-repeat="row in report.rows">
-                            <td ng-repeat="value in row">{[value]}</td>
+                            <td ng-repeat="value in row track by $index">{[value]}</td>
                         </tr>
                     </tbody>
                 </table>

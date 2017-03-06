@@ -1,4 +1,4 @@
-angular.module('InspireApp').controller('AddReportController', function($rootScope, $scope, $http, $timeout) {
+angular.module('InspireApp').controller('AddReportController', function($rootScope, $scope, $http, $state) {
     $scope.$on('$viewContentLoaded', function() {
         // initialize core components
         App.initAjax();
@@ -9,8 +9,10 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
             clearBtn: true,
             todayHighlight: true
         });
+        $('.bs-select').selectpicker();
         $scope.load_dimensions();
         $scope.load_ad_units();
+        $scope.initialize_report_options();
     });
 
     $scope.report = {};
@@ -21,9 +23,14 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
             method: 'POST',
             url: '/dfp/reports/',
             data: angular.toJson($scope.report)
+        }).then(function successCallback(response){
+            $state.go('dashboard');
         });
     };
 
+    $scope.report = {
+        type: 'historical'
+    };
 
     $scope.load_dimensions = function() {
         $http({
@@ -61,6 +68,19 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
             $scope.ad_units = response.data.result;
         });
     };
+
+
+    $scope.initialize_report_options = function(){
+        console.log($scope.report.type);
+
+        if ($scope.report.type == 'historical') {
+            
+        } else {
+           
+        }
+    };
+
+    $scope.report_types = ['Historical', 'Future'];
         // set sidebar closed and body solid layout mode
     $rootScope.settings.layout.pageContentWhite = true;
     $rootScope.settings.layout.pageBodySolid = false;

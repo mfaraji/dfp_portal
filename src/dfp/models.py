@@ -62,6 +62,10 @@ class Report(models.Model):
             result.append(Metric.objects.get(pk=metric['id']))
         return result
 
+    def has_dimension(self, code):
+        dim = Dimension.objects.get(code=code)
+        return dim in self.dimensions
+
 
 class DimesionCategory(models.Model):
     name =  models.CharField(max_length=256)

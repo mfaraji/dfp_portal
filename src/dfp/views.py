@@ -11,7 +11,7 @@ from dfp.models import Country, Report, Dimension, Metric, DimesionCategory, AdU
 
 from inspire.logger import logger
 from dfp.apis.report import ReportManager
-# Create your views here.
+from dfp.utils import ReportFormatter
 
 
 def list_countries(request):
@@ -88,8 +88,8 @@ def report(request, pk):
         content = None
         logger.debug('Reading content of the report')
         with open(file_name, 'r') as f:
-            content = csv.reader(f)
-            data = format_data(content, report)
-        os.remove(file_name)
+            content = csv.DictReader(f)
+            data = ReportFormatter(content, report).format()
+        # os.remove(file_name)
         return JsonResponse({'report': data})
 

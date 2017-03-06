@@ -44,7 +44,11 @@ def make_report_job(params):
     conditions = []
 
     for dim in params['dimensions']:
-        report_job['reportQuery']['dimensions'].append(str(Dimension.objects.get(pk=dim['id']).code))
+        dimobj = Dimension.objects.get(pk=dim['id'])
+        if dimobj.code == 'AD_UNIT_NAME':
+            report_job['reportQuery']['adUnitView'] = 'HIERARCHICAL'
+        report_job['reportQuery']['dimensions'].append(str(dimobj.code))
+
 
     for metric in params['metrics']:
         report_job['reportQuery']['columns'].append(Metric.objects.get(pk=metric['id']).code)
@@ -61,7 +65,7 @@ def make_report_job(params):
         values.append(val)
 
     if 'ad_units' in params and params['ad_units']:
-        conditions.append('AD_UNIT_ID  IN (:units)')
+        conditions.append('PARENT_AD_UNIT_ID  IN (:units)')
         val = {
             'key': 'units',
             'value': {
@@ -71,7 +75,7 @@ def make_report_job(params):
             }
         }
         values.append(val)
-
+ 
 
     if conditions:
         CONDITIONS = ' AND '.join(conditions)
@@ -98,51 +102,6 @@ def make_report_job(params):
 
 
 class ReportManager(Resource):
-
-    def test_query(self):
-        values = [{
-          'key': 'id',
-          'value': {
-              'xsi_type': 'TextValue',
-              'value': 'US'
-          }
-        }]
-        filter_statement = {'query': 'WHERE ORDER_ID = :id',
-            'values': values}
-
-        end_date = datetime.now()
-        start_date = end_date - timedelta(days=7)
-
-        report_job = {
-            'reportQuery': {
-                'dimensions': ['COUNTRY_NAME'],
-                'statement': filter_statement,
-                'columns': ['AD_SERVER_IMPRESSIONS_OUT_OF_NETWORK'],
-                # 'dateRangeType': 'CUSTOM_DATE',
-                # 'dateRangeType': 'LAST_WEEK',
-                # 'startDate': {'year': start_date.year,
-                #             'month': start_date.month,
-                #             'day': start_date.day},
-                # 'endDate': {'year': end_date.year,
-                #           'month': end_date.month,
-                #           'day': end_date.day}
-          }
-        }
-        report_downloader = self.client.GetDataDownloader(version='v201611')
-        try:
-            report_job_id = report_downloader.WaitForReport(report_job)
-        except errors.DfpReportError, e:
-            print 'Failed to generate report. Error was: %s' % e
-        export_format = 'CSV_DUMP'
-        report_file = tempfile.NamedTemporaryFile(suffix='.csv.gz', delete=False)
-        report_downloader.DownloadReportToFile(
-            report_job_id, export_format, report_file)
-        report_file.close()
-        print 'Report job with id \'%s\' downloaded to:\n%s' % (
-                report_job_id, report_file.name)
-        subprocess.call(['gunzip', report_file.name])
-        print report_file.name[:-3] 
-
 
     def query_report(self, report_job):
         logger.info(report_job)
