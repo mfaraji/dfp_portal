@@ -56,7 +56,9 @@
                             </td>
                             <td>
                                 <a ui-sref= "view({reportId: report.id})" class="btn btn-outline btn-circle btn-sm purple">
-                                <i class="fa fa-edit"></i> Run </a>
+                                <i class="fa fa-server"></i> Run </a>
+                                <a ui-sref= "editReport({reportId: report.id})" class="btn btn-outline btn-circle btn-sm purple">
+                                <i class="fa fa-edit"></i> Edit </a>
                                 <a ng-click="delete_report(report)" class="btn btn-outline btn-circle red btn-sm blue">
                                 <i class="fa fa-trash-o"></i> Delete </a>
                             </td>
@@ -72,6 +74,6 @@
 <!-- END MAIN CONTENT -->
 <!-- BEGIN MAIN JS -->
 <script>
-    ReportTable.init();
+    // ReportTable.init();
 </script>
 <!-- END MAIN JS

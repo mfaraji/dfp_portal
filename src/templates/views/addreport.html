@@ -13,22 +13,19 @@
         <li>
             <a ui-sref="addreport">Add Report</a>
         </li>
-    </ul>
-</div>
+    </ul>   
+</div>             
+                    <div ng-switch="step">
 
-                        <div class="portlet light ">
+                                    <div class="portlet light" ng-switch-default>
                                             <div class="portlet-title">
                                                 <div class="caption">
                                                     <i class="icon-equalizer font-green-haze"></i>
                                                     <span class="caption-subject font-green-haze bold uppercase">Add A New Report</span>
                                                 </div>
-                                                <div class="tools">
-                                                    <a href="" class="collapse" data-original-title="" title=""> </a>
-                                                    <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title=""> </a>
-                                                    <a href="" class="reload" data-original-title="" title=""> </a>
-                                                    <a href="" class="remove" data-original-title="" title=""> </a>
-                                                </div>
+
                                             </div>
+
                                             <div class="portlet-body form">
                                                 <!-- BEGIN FORM-->
                                                 <form action="#" class="form-horizontal">
@@ -39,32 +36,65 @@
                                                                     <label class="control-label">Name</label>
                                                             </div>
                                                                 
-                                                                    
                                                                     <div class="col-md-8">
                                                                         <div class="form-group">
                                                                             <input type="text" required ng-model="report.name" class="form-control" placeholder="Report 1">
                                                                         </div>
                                                                 </div>
                                                                 </div>
+                                                            </div>
 
+                                                        <div class="row">
 
                                                                 <div class="col-md-6">
-                                                                    <div class="col-md-2">
+                                                                    <div class="col-md-4">
                                                                         <label class="control-label col-md-2">Type</label>
                                                                     </div>
-                                                                <div class="form-group">
+                                                                <div class="col-md-8">
+                                                                    
+                                                                    <div class="form-group">
 
-                                                                    <div class="col-md-8">
-                                                                            <select class="bs-select form-control" tabindex="-98" ng-model="report.type" ng-change="initialize_report_options()">
-                                                                            <option value="historical">Historical</option>
-                                                                            <option value="future">Future</option>
-                                                                            </select>
+                                                                                <select class="bs-select form-control" tabindex="-98" ng-model="report.type" ng-change="initialize_report_options()">
+                                                                                <option value="historical">Historical</option>
+                                                                                <option value="future">Future</option>
+                                                                                <option value="sale">Sale</option>
+                                                                                </select>
                                                                     </div>
-                                                </div>
+                                                                    </div>
                                                                 </div>
                                                                 </div>
                                     
                                                         </div>
+
+                                                    <div class="form-actions">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="row">
+                                                                    <div class="col-md-offset-3 col-md-9">
+                                                                        <button ng-click="setStep(2)" class="btn green">Next</button>
+                                                                        <!-- <a ui-sref="dashboard" type="button" class="btn default">Cancel</a> -->
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6"> </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                                <!-- END FORM-->
+                                            </div>
+                                    </div>
+
+                                    <div class="portlet light " ng-switch-when="2">
+                                            <div class="portlet-title">
+                                                <div class="caption">
+                                                    <i class="icon-equalizer font-green-haze"></i>
+                                                    <span class="caption-subject font-green-haze bold uppercase">Configure DFP</span>
+                                                </div>
+                                            </div>
+                                            <div class="portlet-body form">
+                                                <!-- BEGIN FORM-->
+                                                <form action="#" class="form-horizontal">
+                                                    <div class="form-body">
 
                                                         <!-- row -->
                                                         <div class="row">
@@ -76,7 +106,7 @@
                                                                 <div class="col-md-9">
                                                                 <div class="form-group">
 
-                                                                    <ui-select multiple ng-model="report.dimensions" sortable="true" theme="bootstrap" close-on-select="false">
+                                                                    <ui-select multiple ng-model="report.dimensions" sortable="true" theme="bootstrap" close-on-select="false" id="dim_selector">
                                                                         <ui-select-match placeholder="Select or search a Dimension in the list...">{[$item.name]}</ui-select-match>
                                                                         <ui-select-choices group-by="'category'" repeat="dim in dimensions | filter: $select.search">
                                                                             <div ng-bind-html="dim.name | highlight: $select.search"></div>
@@ -108,11 +138,11 @@
                                                         <!--/row-->
                                                         <div class="row">
                                                             <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label class="control-label col-md-3">From</label>
+                                                            
+                                                                    <label class="control-label col-md-2">From</label>
                                                                     <div class="col-md-9">
                                                                         <input ng-model="report.from" type="text" class="form-control date-picker" placeholder="dd/mm/yyyy"> </div>
-                                                                </div>
+                                                        
                                                             </div>
                                                             <!--/span-->
                                                             <div class="col-md-6">
@@ -161,8 +191,8 @@
                                                             <div class="col-md-6">
                                                                 <div class="row">
                                                                     <div class="col-md-offset-3 col-md-9">
-                                                                        <button ng-click="save()" type="submit" class="btn green">Save</button>
-                                                                        <a ui-sref="dashboard" type="button" class="btn default">Cancel</a>
+                                                                        <button ng-click="setStep(3)" class="btn green">{[ report.type == 'sale' ? 'Next' : 'Save']}</button>
+                                                                        <button ng-click="setStep(1)" class="btn default">Back</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -172,4 +202,78 @@
                                                 </form>
                                                 <!-- END FORM-->
                                             </div>
-                                        </div>
+                                    </div>
+
+                                    <div class="portlet light " ng-switch-when="3">
+                                            <div class="portlet-title">
+                                                <div class="caption">
+                                                    <i class="icon-equalizer font-green-haze"></i>
+                                                    <span class="caption-subject font-green-haze bold uppercase">Configure AWS Report</span>
+                                                </div>
+                                            </div>
+                                            <div class="portlet-body form">
+                                                <!-- BEGIN FORM-->
+                                                <form action="#" class="form-horizontal">
+                                                    <div class="form-body">
+
+                                                        <!-- row -->
+                                                        <div class="row">
+                                                            
+                                                                <!-- Dimesion -->
+                                                                <div class="col-md-2">
+                                                                <label class="control-label col-md-2">Metrics</label>
+                                                                </div>
+                                                                <div class="col-md-9">
+                                                                <div class="form-group">
+                                                                    <ui-select multiple ng-model="report.aws_metrics" sortable="true" theme="bootstrap" close-on-select="false" id="dim_selector">
+                                                                        <ui-select-match placeholder="Select or search a Dimension in the list...">{[$item.name]}</ui-select-match>
+                                                                        <ui-select-choices group-by="'category'" repeat="dim in dimensions | filter: $select.search">
+                                                                            <div ng-bind-html="dim.name | highlight: $select.search"></div>
+                                                                        </ui-select-choices>
+                                                                      </ui-select>
+                                                                </div>
+                                                                </div>
+                                                            
+                                                        </div>
+
+                                                         <div class="row">
+                                                            
+                                                                <!-- Dimesion -->
+                                                                <div class="col-md-2">
+                                                                <label class="control-label col-md-2">Interest</label>
+                                                                </div>
+                                                                <div class="col-md-9">
+                                                                <div class="form-group">
+
+                                                                    <ui-select multiple ng-model="report.aws_interest" sortable="true" theme="bootstrap" close-on-select="false" id="dim_selector">
+                                                                        <ui-select-match placeholder="Select or search a Dimension in the list...">{[$item.name]}</ui-select-match>
+                                                                        <ui-select-choices group-by="'category'" repeat="dim in dimensions | filter: $select.search">
+                                                                            <div ng-bind-html="dim.name | highlight: $select.search"></div>
+                                                                        </ui-select-choices>
+                                                                      </ui-select>
+                                                                </div>
+                                                                </div>
+                                                            
+                                                        </div>
+
+
+                                                    </div>
+                                                    <div class="form-actions">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="row">
+                                                                    <div class="col-md-offset-3 col-md-9">
+                                                                        <button ng-click="save()" class="btn green">Save</button>
+                                                                        <button ng-click="setStep(2)" class="btn default">Back</button>
+                                                                        <button ui-sref="dashboard" type="submit" class="btn default">Cancel</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6"> </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                                <!-- END FORM-->
+                                            </div>
+                                    </div>
+                    </div>

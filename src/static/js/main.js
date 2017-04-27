@@ -183,6 +183,30 @@ InspireApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvid
                 }]
             }
         })
+
+        .state('editReport', {
+            url: "/edit/:reportId",
+            templateUrl: "views/addreport",            
+            data: {pageTitle: 'Edit Report'},
+            controller: "AddReportController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'InspireApp',
+                        insertBefore: '#ng_load_plugins_before', // load the above css files before a LINK element with this ID. Dynamic CSS files must be loaded between core and theme css files
+                        files: [
+                            '/static/libs/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css',
+                            '/static/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
+                            '/static/libs/angular-ui-select/dist/select.min.js',
+                            '/static/libs/angular-ui-select/dist/select.min.css',
+                            '/static/libs/angular-bootstrap-multiselect/dist/angular-bootstrap-multiselect.min.js',
+                            '/static/js/controllers/AddReportController.js'
+                        ] 
+                    });
+                }]
+            }
+        })
+
 }]);
 
 /* Init global settings and run the app */

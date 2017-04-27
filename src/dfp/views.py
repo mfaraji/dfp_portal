@@ -80,6 +80,10 @@ def report(request, pk):
             return JsonResponse({'result': 'success'})
         else:
             return JsonResponse({'result': 'failure', 'message':'Report Not Found'})
+    if request.method == 'HEAD':
+        report = Report.objects.get(id=pk)
+        if report:
+            return JsonResponse({'result':'success', 'data': report.as_json(full=True)})
     if request.method == 'GET':
         report = Report.objects.get(id=pk)
         report_params = json.loads(report.query)

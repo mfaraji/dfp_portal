@@ -25,6 +25,11 @@ class Country(models.Model):
             'id': self.code
         }
 
+class ReportType(models.Model):
+    name = models.CharField(max_length=256)
+
+    def __unicode__(self):
+        return self.name
 
 class Report(models.Model):
     name = models.CharField(max_length=256)
@@ -34,14 +39,22 @@ class Report(models.Model):
     status = models.CharField(max_length=256, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
 
-    def as_json(self):
-        return {
-            'id': self.id,
-            'name': self.name,
-            'created_at': self.created_at.date(),
-            'creator': self.user.email,
-            'status': self.status
-        }
+    def as_json(self, full=False):
+        if not full:
+            return {
+                'id': self.id,
+                'name': self.name,
+                'created_at': self.created_at.date(),
+                'creator': self.user.email,
+                'status': self.status
+            }
+        else:
+             return {
+                'id': self.id,
+                'name': self.name,
+                'status': self.status,
+                'job': self.query
+            }
 
     def __unicode__(self):
         return self.name
@@ -80,6 +93,7 @@ class Dimension(models.Model):
     name = models.CharField(max_length=256)
     code = models.CharField(max_length=256)
     category = models.ForeignKey(DimesionCategory, on_delete=models.CASCADE, blank=True, null=True)
+    report_types = models.ManyToManyField(ReportType)
 
     def __unicode__(self):
         return self.name
@@ -88,7 +102,8 @@ class Dimension(models.Model):
         return {
             'name': self.name,
             'id': self.id,
-            'category': self.category.name
+            'category': self.category.name,
+            'type': [report_type.name for report_type in self.report_types.all()]
         }
 
     @property
@@ -98,6 +113,7 @@ class Dimension(models.Model):
 class Metric(models.Model):
     name = models.CharField(max_length=256)
     code = models.CharField(max_length=256)
+    report_types = models.ManyToManyField(ReportType)
 
     def __unicode__(self):
         return self.name
@@ -105,7 +121,8 @@ class Metric(models.Model):
     def as_json(self):
         return {
             'name': self.name,
-            'id': self.id
+            'id': self.id,
+            'type': [report_type.name for report_type in self.report_types.all()]
         }
 
     @property

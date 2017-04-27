@@ -1,4 +1,6 @@
-angular.module('InspireApp').controller('AddReportController', function($rootScope, $scope, $http, $state) {
+angular.module('InspireApp').controller('AddReportController', function($rootScope, $scope, $http, $state, $stateParams) {
+
+    $scope.is_edit = false;
     $scope.$on('$viewContentLoaded', function() {
         // initialize core components
         App.initAjax();
@@ -16,21 +18,35 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
     });
 
     $scope.report = {};
+    $scope.step = "1";
+    $scope.isDisabled = false;
     $scope.dimensions = [];
+    $scope.all_dimensions = [];
+    $scope.all_metrics = [];
     $scope.save = function() {
         console.log($scope.report);
         $http({
             method: 'POST',
             url: '/dfp/reports/',
             data: angular.toJson($scope.report)
-        }).then(function successCallback(response){
+        }).then(function successCallback(response) {
             $state.go('dashboard');
         });
     };
 
-    $scope.report = {
-        type: 'historical'
-    };
+    if ($stateParams.reportId) {
+        $http({
+            method: 'HEAD',
+            url: '/dfp/report/' + $stateParams.reportId,
+            data: angular.toJson($scope.report)
+        }).then(function successCallback(response) {
+            console.log(response.data.data);
+        });
+    } else {
+        $scope.report = {
+            type: 'historical'
+        };
+    }
 
     $scope.load_dimensions = function() {
         $http({
@@ -38,7 +54,7 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
             url: '/dfp/dimensions'
         }).then(function successCallback(response) {
 
-            $scope.dimensions = response.data.result;
+            $scope.all_dimensions = response.data.result;
         });
     };
 
@@ -47,7 +63,7 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
             method: 'GET',
             url: '/dfp/metrics'
         }).then(function successCallback(response) {
-            $scope.metrics = response.data.result;
+            $scope.all_metrics = response.data.result;
         });
     };
 
@@ -70,18 +86,21 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
     };
 
 
-    $scope.initialize_report_options = function(){
+    $scope.initialize_report_options = function() {
         console.log($scope.report.type);
-
-        if ($scope.report.type == 'historical') {
-            
-        } else {
-           
-        }
+        $scope.dimensions = _.filter($scope.all_dimensions, function(obj){return _.includes(obj.type, $scope.report.type)})
+        $scope.metrics = _.filter($scope.all_metrics, function(obj){return _.includes(obj.type, $scope.report.type)})
     };
 
-    $scope.report_types = ['Historical', 'Future'];
-        // set sidebar closed and body solid layout mode
+    $scope.setStep = function(value) {
+        if (value == '3' && $scope.report.type != 'sale') {
+            $scope.save()
+        } else {
+            $scope.step = value
+        }
+        console.log($scope.report);
+    };
+
     $rootScope.settings.layout.pageContentWhite = true;
     $rootScope.settings.layout.pageBodySolid = false;
     $rootScope.settings.layout.pageSidebarClosed = false;
