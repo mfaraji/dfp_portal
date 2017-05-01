@@ -53,7 +53,7 @@ class Topic(models.Model):
         return {
             'name': self.name,
             'code': self.code,
-            'community': self.community.code
+            'community': self.community.name
         }
 
 class ReportType(models.Model):

@@ -12,6 +12,7 @@ from dfp.models import Country, Report, Dimension, Metric, DimesionCategory, AdU
 from inspire.logger import logger
 from dfp.apis.report import ReportManager
 from dfp.utils import ReportFormatter, SaleReportFormatter
+from dfp.aws_db import activity_summary
 
 
 def list_countries(request):
@@ -71,14 +72,22 @@ def report(request, pk):
     if request.method == 'GET':
         report = Report.objects.get(id=pk)
         report_params = json.loads(report.query)
-        # report_manager = ReportManager()
+        report_manager = ReportManager()
         # job_id, file_name = report_manager.run(report)
         content = None
         logger.debug('Reading content of the report')
-        FOMATTER = SaleReportFormatter if report.r_type.name == 'sale' else ReportFormatter
-        with open('/tmp/tmp7rlWee.csv', 'r') as f:
+        with open('/tmp/tmpaG3x4h.csv', 'r') as f:
             content = csv.DictReader(f)
-            data = FOMATTER(content, report).format()
+            if report.r_type.name != 'sale':
+                data = ReportFormatter(content, report).format()
+            else:
+                emails_stat = generate_emails_report(report_params)
+                data = SaleReportFormatter(content, emails_stat, report).format()
         # os.remove(file_name)
         return JsonResponse({'report': data})
+
+
+def generate_emails_report(report_params):
+    communities = [item['code'] for item in report_params.get('communities', [])]
+    return activity_summary(communities)
 

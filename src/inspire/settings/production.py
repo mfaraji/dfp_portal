@@ -105,7 +105,7 @@ LOGGING = {
 
 logging.config.dictConfig(LOGGING)
 
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = env('SECRET_KEY', '1234')
 
 CACHES = {
     'default': {

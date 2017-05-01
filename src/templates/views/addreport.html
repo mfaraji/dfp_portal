@@ -309,7 +309,7 @@
                                             </div>
                                     </div>
 
-                                    <div class="portlet light " ng-switch-when="4">
+                                    <div class="portlet light " ng-switch-when="4" data-ng-init="initialize_report_options()">
                                             <div class="portlet-title">
                                                 <div class="caption">
                                                     <i class="icon-equalizer font-green-haze"></i>
@@ -330,10 +330,10 @@
                                                                 </div>
                                                                 <div class="col-md-9">
                                                                 <div class="form-group">
-                                                                    <ui-select multiple ng-model="report.aws_metrics" sortable="true" theme="bootstrap" close-on-select="false" id="dim_selector">
-                                                                        <ui-select-match placeholder="Select or search a Dimension in the list...">{[$item.name]}</ui-select-match>
-                                                                        <ui-select-choices group-by="'category'" repeat="dim in dimensions | filter: $select.search">
-                                                                            <div ng-bind-html="dim.name | highlight: $select.search"></div>
+                                                                    <ui-select multiple ng-model="report.email_metrics" sortable="true" theme="bootstrap" close-on-select="false">
+                                                                        <ui-select-match placeholder="Select or search a Metric in the list...">{[$item.name]}</ui-select-match>
+                                                                        <ui-select-choices group-by="'category'" repeat="metric in email_metrics | filter: $select.search">
+                                                                            <div ng-bind-html="metric.name | highlight: $select.search"></div>
                                                                         </ui-select-choices>
                                                                       </ui-select>
                                                                 </div>
@@ -345,15 +345,15 @@
                                                             
                                                                 <!-- Dimesion -->
                                                                 <div class="col-md-2">
-                                                                <label class="control-label col-md-2">Interest</label>
+                                                                <label class="control-label col-md-2">Topic</label>
                                                                 </div>
                                                                 <div class="col-md-9">
                                                                 <div class="form-group">
 
-                                                                    <ui-select multiple ng-model="report.aws_interest" sortable="true" theme="bootstrap" close-on-select="false" id="dim_selector">
-                                                                        <ui-select-match placeholder="Select or search a Dimension in the list...">{[$item.name]}</ui-select-match>
-                                                                        <ui-select-choices group-by="'category'" repeat="dim in dimensions | filter: $select.search">
-                                                                            <div ng-bind-html="dim.name | highlight: $select.search"></div>
+                                                                    <ui-select multiple ng-model="report.topic" sortable="true" theme="bootstrap" close-on-select="false">
+                                                                        <ui-select-match placeholder="Select or search a topic in the list...">{[$item.name]}</ui-select-match>
+                                                                        <ui-select-choices group-by="'category'" repeat="topic in topics | filter: $select.search">
+                                                                            <div ng-bind-html="format_topic_name(topic) | highlight: $select.search"></div>
                                                                         </ui-select-choices>
                                                                       </ui-select>
                                                                 </div>

@@ -11,7 +11,7 @@ TEMPLATES[0]['OPTIONS'].update({'debug': True})
 if "celery" in sys.argv[0]:
     DEBUG = False
 
-ALLOWED_HOSTS=['10.10.10.11']
+# ALLOWED_HOSTS=['10.10.10.11']
 # Django Debug Toolbar
 INSTALLED_APPS += (
     'debug_toolbar',
@@ -33,6 +33,7 @@ INTERNAL_IPS = [
     '0.0.0.1',
 ]
 
+AWS_DATABASE_URL = 'mysql://inventory:inventory_for_all@chaos-cluster.cluster-c6ziwtzns3sb.us-east-1.rds.amazonaws.com/mfaraji_bc'
 # Log everything to the logs directory at the top
 LOGFILE_ROOT = join(dirname(BASE_DIR), 'logs')
 

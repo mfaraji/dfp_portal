@@ -104,8 +104,26 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
 
     $scope.initialize_report_options = function() {
         console.log($scope.report.type);
-        $scope.dimensions = _.filter($scope.all_dimensions, function(obj){return _.includes(obj.type, $scope.report.type)})
-        $scope.metrics = _.filter($scope.all_metrics, function(obj){return _.includes(obj.type, $scope.report.type)});
+        if ($scope.step == '2') {
+            $scope.dimensions = _.filter($scope.all_dimensions, function(obj) {
+                return _.includes(obj.type, $scope.report.type)
+            });
+        }
+        if ($scope.step == '3' || $scope.step == '2') {
+            $scope.metrics = _.filter($scope.all_metrics, function(obj) {
+                return _.includes(obj.type, $scope.report.type)
+            });
+        }
+        if ($scope.step == '4') {
+            if ($scope.report.communities != undefined) {
+                var coms = _.map($scope.report.communities, 'name');
+                $scope.topics = _.filter($scope.all_topics, function(obj) {
+                    return _.includes(obj.community, coms)
+                });
+            } else {
+                $scope.topics = $scope.all_topics;
+            }
+        }
         $('.date-picker').datepicker({
             autoclose: true,
             clearBtn: true,
@@ -117,7 +135,7 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
         console.log($scope.report);
         if (value == '2' && $scope.report.type == 'sale') {
             $scope.step = '3';
-        } else if (value == '4'){
+        } else if (value == '4') {
             $scope.step = '4';
         } else {
             $scope.step = value;
@@ -125,6 +143,25 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
         console.log($scope.report);
     };
 
+    $scope.format_topic_name = function(topic) {
+        return topic.community + " > " + topic.name;
+    };
+    $scope.email_metrics = [{
+        'name': 'Emails Sent',
+        'code': 'n_sent'
+    }, {
+        'name': 'Emails Opened',
+        'code': 'n_opened'
+    }, {
+        'name': 'Emails Clicked',
+        'code': 'n_clicked'
+    }, {
+        'name': 'Number of Clicks',
+        'code': 'n_clicks'
+    },{
+        'name': 'Summary',
+        'code': 'summary'
+    }, ];
     $rootScope.settings.layout.pageContentWhite = true;
     $rootScope.settings.layout.pageBodySolid = false;
     $rootScope.settings.layout.pageSidebarClosed = false;
