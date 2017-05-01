@@ -94,11 +94,13 @@ def make_report_job(params):
     # filter_statement = {'query': 'WHERE CUSTOM_CRITERIA = ',
     #         'values': []}
 
-    # report_job['reportQuery']['dateRangeType'] = 'CUSTOM_DATE'
-    # report_job['reportQuery']['startDate'] = parse_date(params['from'])
-    # report_job['reportQuery']['endDate'] = parse_date(params['to'])
-
-    report_job['reportQuery']['dateRangeType'] = 'LAST_WEEK'
+    if params['type'] == 'sale':
+        report_job['reportQuery']['dateRangeType'] = 'LAST_WEEK'
+    else:
+        report_job['reportQuery']['dateRangeType'] = 'CUSTOM_DATE'
+        report_job['reportQuery']['startDate'] = parse_date(params['from'])
+        report_job['reportQuery']['endDate'] = parse_date(params['to'])
+    
 
     if filter_statement:
         report_job['reportQuery']['statement'] = filter_statement
