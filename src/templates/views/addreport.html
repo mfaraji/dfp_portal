@@ -54,7 +54,7 @@
                                                                     
                                                                     <div class="form-group">
 
-                                                                                <select class="bs-select form-control" tabindex="-98" ng-model="report.type" ng-change="initialize_report_options()">
+                                                                                <select class="bs-select form-control" tabindex="-98" ng-model="report.type">
                                                                                 <option value="historical">Historical</option>
                                                                                 <option value="future">Future</option>
                                                                                 <option value="sale">Sale</option>
@@ -84,7 +84,7 @@
                                             </div>
                                     </div>
 
-                                    <div class="portlet light " ng-switch-when="2">
+                                    <div class="portlet light " ng-switch-when="2" data-ng-init="initialize_report_options()">
                                             <div class="portlet-title">
                                                 <div class="caption">
                                                     <i class="icon-equalizer font-green-haze"></i>
@@ -191,7 +191,7 @@
                                                             <div class="col-md-6">
                                                                 <div class="row">
                                                                     <div class="col-md-offset-3 col-md-9">
-                                                                        <button ng-click="setStep(3)" class="btn green">{[ report.type == 'sale' ? 'Next' : 'Save']}</button>
+                                                                        <button ng-click="save()" class="btn green">Save</button>
                                                                         <button ng-click="setStep(1)" class="btn default">Back</button>
                                                                     </div>
                                                                 </div>
@@ -204,7 +204,112 @@
                                             </div>
                                     </div>
 
-                                    <div class="portlet light " ng-switch-when="3">
+                                    <div class="portlet light " ng-switch-when="3" data-ng-init="initialize_report_options()">
+                                            <div class="portlet-title">
+                                                <div class="caption">
+                                                    <i class="icon-equalizer font-green-haze"></i>
+                                                    <span class="caption-subject font-green-haze bold uppercase">Configure DFP</span>
+                                                </div>
+                                            </div>
+                                            <div class="portlet-body form">
+                                                <!-- BEGIN FORM-->
+                                                <form action="#" class="form-horizontal">
+                                                    <div class="form-body">
+
+                                                        <!-- row -->
+                                                        <div class="row">
+                                                            
+                                                                <!-- Dimesion -->
+                                                                <div class="col-md-2">
+                                                                <label class="control-label col-md-2">Communities</label>
+                                                                </div>
+                                                                <div class="col-md-9">
+                                                                <div class="form-group">
+
+                                                                    <ui-select multiple ng-model="report.communities" sortable="true" theme="bootstrap" close-on-select="false">
+                                                                        <ui-select-match placeholder="Select or search a Community in the list...">{[$item.name]}</ui-select-match>
+                                                                        <ui-select-choices repeat="community in communities | filter: $select.search">
+                                                                            <div ng-bind-html="community.name | highlight: $select.search"></div>
+                                                                        </ui-select-choices>
+                                                                      </ui-select>
+                                                                </div>
+                                                                </div>
+                                                            
+                                                            </div>
+                                                            <div class="row">
+
+
+                                                                <div class="col-md-2">
+                                                                <label class="control-label col-md-3">Metrics</label>
+                                                                </div>
+                                                                <div class="col-md-9">
+                                                                <div class="form-group">
+                                                                    <ui-select multiple ng-model="report.metrics" theme="bootstrap" sortable="true">
+                                                                        <ui-select-match placeholder="Select or search a Metric in the list...">{[$item.name]}</ui-select-match>
+                                                                        <ui-select-choices repeat="metric in metrics | filter: $select.search">
+                                                                            <div ng-bind-html="metric.name | highlight: $select.search"></div>
+                                                                        </ui-select-choices>
+                                                                      </ui-select>
+                                                                </div>
+                                                                </div>
+
+                                                        </div>
+
+                                                        <!--/row-->
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                            
+                                                                    <label class="control-label col-md-2">From</label>
+                                                                    <div class="col-md-9">
+                                                                        <input ng-model="report.from" type="text" class="form-control date-picker" placeholder="dd/mm/yyyy"> </div>
+                                                        
+                                                            </div>
+                                                            <!--/span-->
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label class="control-label col-md-3">To</label>
+                                                                    <div class="col-md-9">
+                                                                        <input ng-model="report.to" type="text" class="form-control date-picker" placeholder="dd/mm/yyyy"> </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--/span-->
+                                                        </div>
+                                                        <!--/row-->
+                                                        <div class="row">
+                                                                <div class="col-md-5 col-md-offset-1">
+                                                                <div class="form-group">
+                                                                    <ui-select ng-model="report.country" theme="bootstrap">
+                                                                        <ui-select-match placeholder="Select or search a Country in the list...">{[$select.selected.name]}</ui-select-match>
+                                                                        <ui-select-choices repeat="country in countries | filter: $select.search">
+                                                                            <div ng-bind-html="country.name | highlight: $select.search"></div>
+                                                                        </ui-select-choices>
+                                                                    </ui-select>
+
+
+                                                                </div>
+                                                           </div>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    <div class="form-actions">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="row">
+                                                                    <div class="col-md-offset-3 col-md-9">
+                                                                        <button ng-click="setStep(4)" class="btn green">Next</button>
+                                                                        <button ng-click="setStep(1)" class="btn default">Back</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6"> </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                                <!-- END FORM-->
+                                            </div>
+                                    </div>
+
+                                    <div class="portlet light " ng-switch-when="4">
                                             <div class="portlet-title">
                                                 <div class="caption">
                                                     <i class="icon-equalizer font-green-haze"></i>

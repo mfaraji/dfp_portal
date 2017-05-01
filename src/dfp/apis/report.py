@@ -43,11 +43,14 @@ def make_report_job(params):
     filter_statement = {}
     conditions = []
 
-    for dim in params['dimensions']:
-        dimobj = Dimension.objects.get(pk=dim['id'])
-        if dimobj.code == 'AD_UNIT_NAME':
-            report_job['reportQuery']['adUnitView'] = 'HIERARCHICAL'
-        report_job['reportQuery']['dimensions'].append(str(dimobj.code))
+    if params['type'] == 'sale':
+        report_job['reportQuery']['dimensions'].append('CUSTOM_CRITERIA')
+    else:
+        for dim in params['dimensions']:
+            dimobj = Dimension.objects.get(pk=dim['id'])
+            if dimobj.code == 'AD_UNIT_NAME':
+                report_job['reportQuery']['adUnitView'] = 'HIERARCHICAL'
+            report_job['reportQuery']['dimensions'].append(str(dimobj.code))
 
 
     for metric in params['metrics']:
@@ -91,9 +94,11 @@ def make_report_job(params):
     # filter_statement = {'query': 'WHERE CUSTOM_CRITERIA = ',
     #         'values': []}
 
-    report_job['reportQuery']['dateRangeType'] = 'CUSTOM_DATE'
-    report_job['reportQuery']['startDate'] = parse_date(params['from'])
-    report_job['reportQuery']['endDate'] = parse_date(params['to'])
+    # report_job['reportQuery']['dateRangeType'] = 'CUSTOM_DATE'
+    # report_job['reportQuery']['startDate'] = parse_date(params['from'])
+    # report_job['reportQuery']['endDate'] = parse_date(params['to'])
+
+    report_job['reportQuery']['dateRangeType'] = 'LAST_WEEK'
 
     if filter_statement:
         report_job['reportQuery']['statement'] = filter_statement

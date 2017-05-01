@@ -9,4 +9,6 @@ urlpatterns = [
 	url(r'^dimensions/$', views.dimensions, name='dimensions'),
 	url(r'^metrics/$', views.metrics, name='metrics'),
 	url(r'^units/$', views.get_ad_units, name='ad_units'),
+	url(r'^communities/$', views.communities, name='communities'),
+	url(r'^topics/$', views.topics, name='topics')
 ]

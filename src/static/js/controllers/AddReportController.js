@@ -6,15 +6,12 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
         App.initAjax();
         $scope.load_countries();
         $scope.load_metrics();
-        $('.date-picker').datepicker({
-            autoclose: true,
-            clearBtn: true,
-            todayHighlight: true
-        });
         $('.bs-select').selectpicker();
         $scope.load_dimensions();
         $scope.load_ad_units();
-        $scope.initialize_report_options();
+        $scope.load_communities();
+        $scope.load_topics();
+        // $scope.initialize_report_options();
     });
 
     $scope.report = {};
@@ -23,6 +20,8 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
     $scope.dimensions = [];
     $scope.all_dimensions = [];
     $scope.all_metrics = [];
+    $scope.all_topics = [];
+    $scope.communities = [];
     $scope.save = function() {
         console.log($scope.report);
         $http({
@@ -85,18 +84,43 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
         });
     };
 
+    $scope.load_topics = function() {
+        $http({
+            method: 'GET',
+            url: '/dfp/topics'
+        }).then(function successCallback(response) {
+            $scope.all_topics = response.data.result;
+        });
+    };
+
+    $scope.load_communities = function() {
+        $http({
+            method: 'GET',
+            url: '/dfp/communities'
+        }).then(function successCallback(response) {
+            $scope.communities = response.data.result;
+        });
+    };
 
     $scope.initialize_report_options = function() {
         console.log($scope.report.type);
         $scope.dimensions = _.filter($scope.all_dimensions, function(obj){return _.includes(obj.type, $scope.report.type)})
-        $scope.metrics = _.filter($scope.all_metrics, function(obj){return _.includes(obj.type, $scope.report.type)})
+        $scope.metrics = _.filter($scope.all_metrics, function(obj){return _.includes(obj.type, $scope.report.type)});
+        $('.date-picker').datepicker({
+            autoclose: true,
+            clearBtn: true,
+            todayHighlight: true
+        });
     };
 
     $scope.setStep = function(value) {
-        if (value == '3' && $scope.report.type != 'sale') {
-            $scope.save()
+        console.log($scope.report);
+        if (value == '2' && $scope.report.type == 'sale') {
+            $scope.step = '3';
+        } else if (value == '4'){
+            $scope.step = '4';
         } else {
-            $scope.step = value
+            $scope.step = value;
         }
         console.log($scope.report);
     };

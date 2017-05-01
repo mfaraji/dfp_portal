@@ -25,6 +25,37 @@ class Country(models.Model):
             'id': self.code
         }
 
+class Community(models.Model):
+    name = models.CharField(max_length=256)
+    code = models.CharField(max_length=256)
+
+    class Meta:
+        verbose_name_plural = 'communities'
+
+    def __unicode__(self):
+        return self.name
+
+    def as_json(self):
+        return {
+            'name': self.name,
+            'code': self.code
+        }
+
+class Topic(models.Model):
+    name = models.CharField(max_length=256)
+    code = models.CharField(max_length=256)
+    community = models.ForeignKey(Community, on_delete=models.CASCADE, blank=True, null=True)
+
+    def __unicode__(self):
+        return self.name
+
+    def as_json(self):
+        return {
+            'name': self.name,
+            'code': self.code,
+            'community': self.community.code
+        }
+
 class ReportType(models.Model):
     name = models.CharField(max_length=256)
 
@@ -38,6 +69,7 @@ class Report(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=256, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    r_type = models.ForeignKey(ReportType, on_delete=models.CASCADE, blank=True, null=True)
 
     def as_json(self, full=False):
         if not full:

@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from dfp.models import Country, Report, Dimension, Metric, DimesionCategory, AdUnit, ReportType
+from dfp.models import Country, Report, Dimension, Metric, DimesionCategory, AdUnit, ReportType, Community, Topic
 
 
 class ReportAdmin(admin.ModelAdmin):
@@ -17,3 +17,5 @@ admin.site.register(Metric)
 admin.site.register(DimesionCategory)
 admin.site.register(AdUnit)
 admin.site.register(ReportType)
+admin.site.register(Community)
+admin.site.register(Topic)
