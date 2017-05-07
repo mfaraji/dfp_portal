@@ -28,6 +28,7 @@ class Country(models.Model):
 class Community(models.Model):
     name = models.CharField(max_length=256)
     code = models.CharField(max_length=256)
+    ad_unit_code = models.CharField(max_length=256, blank=True, null=True)
 
     class Meta:
         verbose_name_plural = 'communities'
@@ -35,10 +36,14 @@ class Community(models.Model):
     def __unicode__(self):
         return self.name
 
+    def __str__(self):
+        return self.name
+
     def as_json(self):
         return {
             'name': self.name,
-            'code': self.code
+            'code': self.code,
+            'ad_unit_code': self.ad_unit_code
         }
 
 class Topic(models.Model):
@@ -160,19 +165,3 @@ class Metric(models.Model):
     @property
     def column_name(self):
         return 'Column.%s' % self.code
-
-
-class AdUnit(models.Model):
-    unit_id = models.IntegerField()
-    name = models.CharField(max_length=256)
-    code = models.CharField(max_length=256)
-    hierarchy = models.TextField()
-
-    def __unicode__(self):
-        return self.hierarchy
-
-    def as_json(self):
-        return {
-            'id': self.unit_id,
-            'name': self.hierarchy
-        }

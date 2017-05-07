@@ -8,7 +8,6 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
         $scope.load_metrics();
         $('.bs-select').selectpicker();
         $scope.load_dimensions();
-        $scope.load_ad_units();
         $scope.load_communities();
         $scope.load_topics();
         // $scope.initialize_report_options();
@@ -72,15 +71,6 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
             url: '/dfp/countries'
         }).then(function successCallback(response) {
             $scope.countries = response.data.result;
-        });
-    };
-
-    $scope.load_ad_units = function() {
-        $http({
-            method: 'GET',
-            url: '/dfp/units'
-        }).then(function successCallback(response) {
-            $scope.ad_units = response.data.result;
         });
     };
 

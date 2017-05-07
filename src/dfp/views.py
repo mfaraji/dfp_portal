@@ -7,7 +7,7 @@ from django.conf import settings
 from django.core.cache import cache
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
-from dfp.models import Country, Report, Dimension, Metric, DimesionCategory, AdUnit, Community, Topic, ReportType
+from dfp.models import Country, Report, Dimension, Metric, DimesionCategory, Community, Topic, ReportType
 
 from inspire.logger import logger
 from dfp.apis.report import ReportManager
@@ -50,10 +50,6 @@ def reports(request):
         report = Report(name=body['name'], query=request.body, status='complete', user=request.user, r_type=r_type)
         report.save()
         return JsonResponse({'result': 'success'})
-    
-
-def get_ad_units(request):
-    return JsonResponse({'result': [unit.as_json() for unit in AdUnit.objects.all()]})
 
 
 @csrf_exempt

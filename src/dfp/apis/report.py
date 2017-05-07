@@ -67,14 +67,14 @@ def make_report_job(params):
         }
         values.append(val)
 
-    if 'ad_units' in params and params['ad_units']:
+    if 'communities' in params and params['communities']:
         conditions.append('PARENT_AD_UNIT_ID  IN (:units)')
         val = {
             'key': 'units',
             'value': {
                 'xsi_type': 'NumberValue',
                 # 'value': '64313693'
-                'value': ",".join([str(ad_unit['id']) for ad_unit in params['ad_units']])
+                'value': ",".join([community['ad_unit_code'] for community in params['communities']])
             }
         }
         values.append(val)
@@ -83,16 +83,6 @@ def make_report_job(params):
     if conditions:
         CONDITIONS = ' AND '.join(conditions)
         filter_statement = {'query': 'WHERE %s' % CONDITIONS, 'values': values}
-
-    # val = {
-    #         'key': 'condition',
-    #         'value': {
-    #             'xsi_type': 'TextValue',
-    #             'value': '"chaos=2"'
-    #         }
-    #     }
-    # filter_statement = {'query': 'WHERE CUSTOM_CRITERIA = ',
-    #         'values': []}
 
     if params['type'] == 'sale':
         report_job['reportQuery']['dateRangeType'] = 'LAST_WEEK'
