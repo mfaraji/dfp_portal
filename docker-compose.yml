@@ -1,13 +1,16 @@
-version: '2'
- services:
-   db:
-     image: mysql
-   web:
-     build: .
-     command: python manage.py runserver 0.0.0.0:8000
-     volumes:
-       - .:/code
-     ports:
-       - "8000:8000"
-     depends_on:
-       - db
+web:
+  restart: always
+  build: .
+  expose:
+    - "8000"
+
+
+nginx:
+  restart: always
+  build: ./nginx/
+  ports:
+    - "80:80"
+  volumes_from:
+    - web
+  links:
+    - web:web
