@@ -12,7 +12,7 @@ from dfp.models import Country, Report, Dimension, Metric, DimesionCategory, Com
 from inspire.logger import logger
 from dfp.apis.report import ReportManager
 from dfp.utils import ReportFormatter, SaleReportFormatter
-from dfp.aws_db import activity_summary
+from dfp.aws_db import generate_aws_report
 
 
 def list_countries(request):
@@ -77,13 +77,14 @@ def report(request, pk):
             if report.r_type.name != 'sale':
                 data = ReportFormatter(content, report).format()
             else:
-                emails_stat = generate_emails_report(report_params)
-                data = SaleReportFormatter(content, emails_stat, report).format()
-        os.remove(file_name)
+                summary, market_research, offers = generate_emails_report(report_params)
+                data = SaleReportFormatter(content, report, summary=summary, market_research=market_research, offers=offers).format()
+        # os.remove(file_name)
         return JsonResponse({'report': data})
 
 
 def generate_emails_report(report_params):
     communities = [item['code'] for item in report_params.get('communities', [])]
-    return activity_summary(communities)
+    metrics = [item['code'] for item in report_params.get('email_metrics', [])]
+    return generate_aws_report(communities=communities, metrics=metrics)
 

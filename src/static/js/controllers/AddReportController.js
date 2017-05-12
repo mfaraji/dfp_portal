@@ -13,7 +13,7 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
         // $scope.initialize_report_options();
     });
 
-    $scope.report = {};
+    $scope.report = {'name':'test'};
     $scope.step = "1";
     $scope.isDisabled = false;
     $scope.dimensions = [];
@@ -149,9 +149,13 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
         'name': 'Number of Clicks',
         'code': 'n_clicks'
     },{
-        'name': 'Summary',
-        'code': 'summary'
-    }, ];
+        'name': 'Market Research',
+        'code': 'market_research'
+    },
+    {
+        'name': 'Offers',
+        'code':'offers'
+    } ];
     $rootScope.settings.layout.pageContentWhite = true;
     $rootScope.settings.layout.pageBodySolid = false;
     $rootScope.settings.layout.pageSidebarClosed = false;

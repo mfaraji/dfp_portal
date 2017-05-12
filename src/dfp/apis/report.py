@@ -44,7 +44,8 @@ def make_report_job(params):
     conditions = []
 
     if params['type'] == 'sale':
-        report_job['reportQuery']['dimensions'].append('CUSTOM_CRITERIA')
+        report_job['reportQuery']['dimensions'].append('AD_UNIT_NAME')
+        report_job['reportQuery']['adUnitView'] = 'HIERARCHICAL'
     else:
         for dim in params['dimensions']:
             dimobj = Dimension.objects.get(pk=dim['id'])
@@ -68,28 +69,28 @@ def make_report_job(params):
         values.append(val)
 
     if 'communities' in params and params['communities']:
-        conditions.append('PARENT_AD_UNIT_ID  IN (:units)')
-        val = {
-            'key': 'units',
-            'value': {
-                'xsi_type': 'NumberValue',
-                # 'value': '64313693'
-                'value': ",".join([community['ad_unit_code'] for community in params['communities']])
-            }
-        }
-        values.append(val)
+        conditions.append('PARENT_AD_UNIT_ID  IN (%s)' % ",".join([community['ad_unit_code'] for community in params['communities']]))
+        # val = {
+        #     'key': 'units',
+        #     'value': {
+        #         'xsi_type': 'NumberValue',
+        #         # 'value': '64313693'
+        #         'value': ",".join([community['ad_unit_code'] for community in params['communities']])
+        #     }
+        # }
+        # values.append(val)
  
 
     if conditions:
         CONDITIONS = ' AND '.join(conditions)
         filter_statement = {'query': 'WHERE %s' % CONDITIONS, 'values': values}
 
-    if params['type'] == 'sale':
-        report_job['reportQuery']['dateRangeType'] = 'LAST_WEEK'
-    else:
-        report_job['reportQuery']['dateRangeType'] = 'CUSTOM_DATE'
-        report_job['reportQuery']['startDate'] = parse_date(params['from'])
-        report_job['reportQuery']['endDate'] = parse_date(params['to'])
+    # if params['type'] == 'sale':
+    #     report_job['reportQuery']['dateRangeType'] = 'LAST_WEEK'
+    # else:
+    report_job['reportQuery']['dateRangeType'] = 'CUSTOM_DATE'
+    report_job['reportQuery']['startDate'] = parse_date(params['from'])
+    report_job['reportQuery']['endDate'] = parse_date(params['to'])
     
 
     if filter_statement:
