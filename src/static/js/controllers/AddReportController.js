@@ -137,16 +137,16 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
         return topic.community + " > " + topic.name;
     };
     $scope.email_metrics = [{
-        'name': 'Emails Sent',
+        'name': 'AS Emails Sent',
         'code': 'n_sent'
     }, {
-        'name': 'Emails Opened',
+        'name': 'AS Emails Opened',
         'code': 'n_opened'
     }, {
-        'name': 'Emails Clicked',
+        'name': 'AS Emails Clicked',
         'code': 'n_clicked'
     }, {
-        'name': 'Number of Clicks',
+        'name': 'AS Number of Clicks',
         'code': 'n_clicks'
     },{
         'name': 'Market Research',
