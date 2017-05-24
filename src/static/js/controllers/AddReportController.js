@@ -10,12 +10,12 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
         $scope.load_dimensions();
         $scope.load_communities();
         $scope.load_topics();
-        
+
         console.log($scope.report);
         // $scope.initialize_report_options();
     });
 
-    $scope.report = {'name':'test'};
+    $scope.report = {};
     $scope.step = "1";
     $scope.isDisabled = false;
     $scope.dimensions = [];
@@ -26,7 +26,7 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
 
     $scope.create_new_report = function() {
         var report = {
-            "type": 'banner'
+            "type": 'sale'
         };
         return report;
     };

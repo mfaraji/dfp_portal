@@ -148,6 +148,7 @@ class Dimension(models.Model):
 class Metric(models.Model):
     name = models.CharField(max_length=256)
     code = models.CharField(max_length=256)
+    is_default = models.BooleanField(default=False)
     
     def __unicode__(self):
         return self.name
