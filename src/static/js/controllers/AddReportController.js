@@ -10,6 +10,8 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
         $scope.load_dimensions();
         $scope.load_communities();
         $scope.load_topics();
+        
+        console.log($scope.report);
         // $scope.initialize_report_options();
     });
 
@@ -21,6 +23,14 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
     $scope.all_metrics = [];
     $scope.all_topics = [];
     $scope.communities = [];
+
+    $scope.create_new_report = function() {
+        var report = {
+            "type": 'banner'
+        };
+        return report;
+    };
+
     $scope.save = function() {
         console.log($scope.report);
         $http({
@@ -41,9 +51,7 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
             console.log(response.data.data);
         });
     } else {
-        $scope.report = {
-            type: 'historical'
-        };
+        $scope.report = $scope.create_new_report();
     }
 
     $scope.load_dimensions = function() {
@@ -133,9 +141,8 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
         console.log($scope.report);
     };
 
-    $scope.format_topic_name = function(topic) {
-        return topic.community + " > " + topic.name;
-    };
+    
+
     $scope.email_metrics = [{
         'name': 'AS Emails Sent',
         'code': 'n_sent'

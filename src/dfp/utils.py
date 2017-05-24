@@ -66,6 +66,7 @@ class SaleReportFormatter(object):
     def format(self):
         return {
             'name': self.report.name,
+            'dateRange': "%s - %s" % (self.params['from'], self.params['to']),
             'headers': self.format_headers(),
             'rows': self.format_rows()
         }

@@ -130,8 +130,7 @@ class Dimension(models.Model):
     name = models.CharField(max_length=256)
     code = models.CharField(max_length=256)
     category = models.ForeignKey(DimesionCategory, on_delete=models.CASCADE, blank=True, null=True)
-    report_types = models.ManyToManyField(ReportType)
-
+    
     def __unicode__(self):
         return self.name
 
@@ -140,7 +139,6 @@ class Dimension(models.Model):
             'name': self.name,
             'id': self.id,
             'category': self.category.name,
-            'type': [report_type.name for report_type in self.report_types.all()]
         }
 
     @property
@@ -150,8 +148,7 @@ class Dimension(models.Model):
 class Metric(models.Model):
     name = models.CharField(max_length=256)
     code = models.CharField(max_length=256)
-    report_types = models.ManyToManyField(ReportType)
-
+    
     def __unicode__(self):
         return self.name
 
@@ -159,7 +156,6 @@ class Metric(models.Model):
         return {
             'name': self.name,
             'id': self.id,
-            'type': [report_type.name for report_type in self.report_types.all()]
         }
 
     @property
