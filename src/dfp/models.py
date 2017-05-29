@@ -157,6 +157,7 @@ class Metric(models.Model):
         return {
             'name': self.name,
             'id': self.id,
+            'default': self.is_default
         }
 
     @property

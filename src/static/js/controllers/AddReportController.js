@@ -1,33 +1,24 @@
-angular.module('InspireApp').controller('AddReportController', function($rootScope, $scope, $http, $state, $stateParams) {
+angular.module('InspireApp').controller('AddReportController', function($rootScope, $scope, $http, $state, $stateParams, $q) {
 
     $scope.is_edit = false;
-    $scope.$on('$viewContentLoaded', function() {
-        // initialize core components
-        App.initAjax();
-        $scope.load_countries();
-        $scope.load_metrics();
-        $('.bs-select').selectpicker();
-        $scope.load_dimensions();
-        $scope.load_communities();
-        $scope.load_topics();
 
-        console.log($scope.report);
-        // $scope.initialize_report_options();
-    });
 
     $scope.report = {};
     $scope.step = "1";
     $scope.isDisabled = false;
     $scope.dimensions = [];
-    $scope.all_dimensions = [];
-    $scope.all_metrics = [];
-    $scope.all_topics = [];
     $scope.communities = [];
+    $scope.metrics = [];
 
-    $scope.create_new_report = function() {
+    function create_new_report() {
         var report = {
-            "type": 'sale'
+            "type": 'sale',
+            "metrics": _.filter($scope.metrics, {
+                'default': true
+            }),
+            "country": _.find($scope.countries, {'id':'US'})
         };
+        console.log(report);
         return report;
     };
 
@@ -42,39 +33,27 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
         });
     };
 
-    if ($stateParams.reportId) {
-        $http({
-            method: 'HEAD',
-            url: '/dfp/report/' + $stateParams.reportId,
-            data: angular.toJson($scope.report)
-        }).then(function successCallback(response) {
-            console.log(response.data.data);
-        });
-    } else {
-        $scope.report = $scope.create_new_report();
-    }
-
-    $scope.load_dimensions = function() {
-        $http({
+    function load_dimensions() {
+        return $http({
             method: 'GET',
             url: '/dfp/dimensions'
         }).then(function successCallback(response) {
-
-            $scope.all_dimensions = response.data.result;
+            $scope.dimensions = response.data.result;
         });
-    };
+    }
 
-    $scope.load_metrics = function() {
-        $http({
+    function load_metrics() {
+        return $http({
             method: 'GET',
             url: '/dfp/metrics'
         }).then(function successCallback(response) {
-            $scope.all_metrics = response.data.result;
+            console.log('done metrics');
+            $scope.metrics = response.data.result;
         });
     };
 
-    $scope.load_countries = function() {
-        $http({
+    function load_countries() {
+        return $http({
             method: 'GET',
             url: '/dfp/countries'
         }).then(function successCallback(response) {
@@ -82,17 +61,8 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
         });
     };
 
-    $scope.load_topics = function() {
-        $http({
-            method: 'GET',
-            url: '/dfp/topics'
-        }).then(function successCallback(response) {
-            $scope.all_topics = response.data.result;
-        });
-    };
-
-    $scope.load_communities = function() {
-        $http({
+    function load_communities() {
+        return $http({
             method: 'GET',
             url: '/dfp/communities'
         }).then(function successCallback(response) {
@@ -102,26 +72,18 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
 
     $scope.initialize_report_options = function() {
         console.log($scope.report.type);
-        if ($scope.step == '2') {
-            $scope.dimensions = _.filter($scope.all_dimensions, function(obj) {
-                return _.includes(obj.type, $scope.report.type)
+        if ($stateParams.reportId) {
+            $http({
+                method: 'HEAD',
+                url: '/dfp/report/' + $stateParams.reportId,
+                data: angular.toJson($scope.report)
+            }).then(function successCallback(response) {
+                console.log(response.data.data);
             });
+        } else {
+            $scope.report = create_new_report();
         }
-        if ($scope.step == '3' || $scope.step == '2') {
-            $scope.metrics = _.filter($scope.all_metrics, function(obj) {
-                return _.includes(obj.type, $scope.report.type)
-            });
-        }
-        if ($scope.step == '4') {
-            if ($scope.report.communities != undefined) {
-                var coms = _.map($scope.report.communities, 'name');
-                $scope.topics = _.filter($scope.all_topics, function(obj) {
-                    return _.includes(obj.community, coms)
-                });
-            } else {
-                $scope.topics = $scope.all_topics;
-            }
-        }
+
         $('.date-picker').datepicker({
             autoclose: true,
             clearBtn: true,
@@ -141,7 +103,7 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
         console.log($scope.report);
     };
 
-    
+
 
     $scope.email_metrics = [{
         'name': 'AS Emails Sent',
@@ -155,14 +117,29 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
     }, {
         'name': 'AS Number of Clicks',
         'code': 'n_clicks'
-    },{
+    }, {
         'name': 'Market Research',
         'code': 'market_research'
-    },
-    {
+    }, {
         'name': 'Offers',
-        'code':'offers'
-    } ];
+        'code': 'offers'
+    }];
+
+
+    $scope.$on('$viewContentLoaded', function() {
+        // initialize core components
+        App.initAjax();
+        var p_countries = load_countries();
+        var p_metrics = load_metrics();
+        $('.bs-select').selectpicker();
+        var p_dims = load_dimensions();
+        var p_communities = load_communities();
+        var all = $q.all([p_countries, p_metrics, p_dims, p_dims, p_communities])
+        all.then(function(){
+            $scope.initialize_report_options();
+        });
+        console.log($scope.report);
+    });
     $rootScope.settings.layout.pageContentWhite = true;
     $rootScope.settings.layout.pageBodySolid = false;
     $rootScope.settings.layout.pageSidebarClosed = false;
