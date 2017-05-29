@@ -275,8 +275,11 @@
                                                         </div>
                                                         <!--/row-->
                                                         <div class="row">
-                                                                <div class="col-md-5 col-md-offset-1">
-                                                                <div class="form-group">
+                                                                <div class="col-md-6">
+                                                                <div class="col-md-3">
+                                                                    <label class="control-label">Country</label>
+                                                                </div>
+                                                                <div class="form-group col-md-6">
                                                                     <ui-select ng-model="report.country" theme="bootstrap">
                                                                         <ui-select-match placeholder="Select or search a Country in the list...">{[$select.selected.name]}</ui-select-match>
                                                                         <ui-select-choices repeat="country in countries | filter: $select.search">
