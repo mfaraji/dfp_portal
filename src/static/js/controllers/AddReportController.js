@@ -70,7 +70,7 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
         });
     };
 
-    $scope.initialize_report_options = function() {
+    function initialize_report(){
         console.log($scope.report.type);
         if ($stateParams.reportId) {
             $http({
@@ -83,14 +83,15 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
         } else {
             $scope.report = create_new_report();
         }
+    };
 
+    $scope.intialize_report_options = function() {
         $('.date-picker').datepicker({
             autoclose: true,
             clearBtn: true,
             todayHighlight: true
         });
-    };
-
+    }
     $scope.setStep = function(value) {
         console.log($scope.report);
         if (value == '2' && $scope.report.type == 'sale') {
@@ -100,10 +101,7 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
         } else {
             $scope.step = value;
         }
-        console.log($scope.report);
     };
-
-
 
     $scope.email_metrics = [{
         'name': 'AS Emails Sent',
@@ -136,7 +134,7 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
         var p_communities = load_communities();
         var all = $q.all([p_countries, p_metrics, p_dims, p_dims, p_communities])
         all.then(function(){
-            $scope.initialize_report_options();
+            initialize_report();
         });
         console.log($scope.report);
     });

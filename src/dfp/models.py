@@ -29,6 +29,8 @@ class Community(models.Model):
     name = models.CharField(max_length=256)
     code = models.CharField(max_length=256)
     ad_unit_code = models.CharField(max_length=256, blank=True, null=True)
+    banner_rate = models.IntegerField(default=0)
+    email_rate = models.IntegerField(default=0)
 
     class Meta:
         verbose_name_plural = 'communities'

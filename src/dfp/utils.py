@@ -1,7 +1,10 @@
 import re
 import json
 
-from dfp.models import Community, Topic
+from dfp.models import Community, Topic, Metric
+
+FUTURE_METRICS = ('SELL_THROUGH_AVAILABLE_IMPRESSIONS','SELL_THROUGH_FORECASTED_IMPRESSIONS')
+
 class ReportFormatter(object):
 
     def __init__(self, csv_reader, report):
@@ -9,36 +12,58 @@ class ReportFormatter(object):
         self._content = {}
         self._headers = []
         self.report = report
-
+        self.params = json.loads(report.query)
+        self.is_future_report = (True if filter(lambda x: x.code in FUTURE_METRICS, self.report.metrics) else False)
 
     def format_headers(self):
         return [item.name for item in self.report.dimensions+ self.report.metrics]
 
     def format(self):
-        return {
+
+        data = self.format_data()
+        result = {
             'name': self.report.name,
             'headers': self.format_headers(),
-            'rows': sorted([self._format_row(row) for row in self.reader], key=lambda item: item[0])
+            'dateRange': "%s - %s" % (self.params['from'], self.params['to']),
         }
+        result.update(data)
+        return result
             
 
+    def format_data(self):
+        result = {'rows':[], 'prices':[]}
+        for row in self.reader:
+            item = self._format_row(row)
+            if item:
+                result['rows'].append(item)
+            else:
+                continue
+            if self.is_future_report:
+                result['prices'].append('0.5')
+        return result
+
+
     def _format_row(self, row):
-        # import pdb; pdb.set_trace()
         new_row = []
         for item in self.report.dimensions:
             if item.code == 'AD_UNIT_NAME':
-                hierarchy = []
-                for key, value in row.iteritems():
-                    if re.match('Ad unit [1-9]', key) and value != 'N/A':
-                        hierarchy.append(key)
-                new_row.append(' > '.join([row[key] for key in sorted(hierarchy)]))
+                if row['Ad unit 1'] != 'community' or ('Ad unit 3' in row and row['Ad unit 3'] != 'N/A'):
+                    return
+                ad_unit = Community.objects.filter(ad_unit_code=row['Ad unit ID 2']).first()
+
+                if not ad_unit:
+                    return
+                new_row.append(ad_unit.name)
             else:
                 new_row.append(row[item.column_name])
 
         for item in self.report.metrics:
             value = row[item.column_name]
             try:
-                value = "{:,d}".format(int(row[item.column_name]))
+                if self.is_future_report:
+                    value = "{:,d}".format(int(row[item.column_name])*0.9)
+                else:
+                    value = "{:,d}".format(int(row[item.column_name]))
             except ValueError:
                 pass
             new_row.append(value)

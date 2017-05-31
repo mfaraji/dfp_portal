@@ -33,7 +33,7 @@ def get_activity_summary(communities=[]):
     Session = sessionmaker(bind=db)
     session = Session()
     today = datetime.datetime.today().date()
-    last_month = today - datetime.timedelta(weeks=14)
+    last_month = today - datetime.timedelta(weeks=4)
     meta = MetaData()
     summary = Table('asat_summary', meta, autoload=True, autoload_with=db)
     if not communities:

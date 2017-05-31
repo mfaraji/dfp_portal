@@ -69,10 +69,10 @@ def report(request, pk):
         report = Report.objects.get(id=pk)
         report_params = json.loads(report.query)
         report_manager = ReportManager()
-        job_id, file_name = report_manager.run(report)
+        # job_id, file_name = report_manager.run(report)
         content = None
         logger.debug('Reading content of the report')
-        with open(file_name, 'r') as f:
+        with open('/tmp/tmpprUk40.csv', 'r') as f:
             content = csv.DictReader(f)
             if report.r_type.name != 'sale':
                 data = ReportFormatter(content, report).format()
@@ -80,6 +80,7 @@ def report(request, pk):
                 summary, market_research, offers = generate_emails_report(report_params)
                 data = SaleReportFormatter(content, report, summary=summary, market_research=market_research, offers=offers).format()
         # os.remove(file_name)
+        print data
         return JsonResponse({'report': data})
 
 
