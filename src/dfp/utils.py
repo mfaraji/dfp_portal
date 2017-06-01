@@ -1,13 +1,16 @@
 import re
+import locale
 import json
 
 from dfp.models import Community, Topic, Metric
 
-FUTURE_METRICS = ('SELL_THROUGH_AVAILABLE_IMPRESSIONS','SELL_THROUGH_FORECASTED_IMPRESSIONS')
+FUTURE_METRICS = ('SELL_THROUGH_AVAILABLE_IMPRESSIONS')
+
+locale.setlocale( locale.LC_ALL, '' )
 
 class ReportFormatter(object):
 
-    def __init__(self, csv_reader, report):
+    def __init__(self, csv_reader, report, output_format='dict'):
         self.reader = csv_reader
         self._content = {}
         self._headers = []
@@ -16,32 +19,31 @@ class ReportFormatter(object):
         self.is_future_report = (True if filter(lambda x: x.code in FUTURE_METRICS, self.report.metrics) else False)
 
     def format_headers(self):
-        return [item.name for item in self.report.dimensions+ self.report.metrics]
+        dims = [item.name for item in self.report.dimensions]
+        metrics = []
+        for metric in self.report.metrics:
+            metrics.append(metric.name)
+            if metric.code == 'SELL_THROUGH_AVAILABLE_IMPRESSIONS':
+                metrics.append('Price')
+                metrics.append('Total')
+        return dims + metrics
 
     def format(self):
-
-        data = self.format_data()
         result = {
             'name': self.report.name,
             'headers': self.format_headers(),
             'dateRange': "%s - %s" % (self.params['from'], self.params['to']),
+            'rows': self.format_data()
         }
-        result.update(data)
         return result
-            
 
     def format_data(self):
-        result = {'rows':[], 'prices':[]}
+        result = []
         for row in self.reader:
             item = self._format_row(row)
             if item:
-                result['rows'].append(item)
-            else:
-                continue
-            if self.is_future_report:
-                result['prices'].append('0.5')
+                result.append(item)
         return result
-
 
     def _format_row(self, row):
         new_row = []
@@ -57,16 +59,19 @@ class ReportFormatter(object):
             else:
                 new_row.append(row[item.column_name])
 
-        for item in self.report.metrics:
-            value = row[item.column_name]
+        for metric in self.report.metrics:
+            value = row[metric.column_name]
             try:
-                if self.is_future_report:
-                    value = "{:,d}".format(int(row[item.column_name])*0.9)
-                else:
-                    value = "{:,d}".format(int(row[item.column_name]))
+                int_value = int(row[metric.column_name])
             except ValueError:
                 pass
-            new_row.append(value)
+            if metric.code in ('SELL_THROUGH_AVAILABLE_IMPRESSIONS','SELL_THROUGH_FORECASTED_IMPRESSIONS'):
+                int_value = int(int_value * 0.9)
+
+            if metric.code == 'SELL_THROUGH_AVAILABLE_IMPRESSIONS':
+                new_row.extend([int_value, locale.currency(ad_unit.banner_rate), locale.currency(int_value * ad_unit.banner_rate)])
+            else:
+                new_row.append("{:,d}".format(int_value))
         return new_row
 
 
@@ -86,7 +91,19 @@ class SaleReportFormatter(object):
         self.metrics = [item.code for item in self.report.metrics] + [item['code'] for item in self.params['email_metrics']]
 
     def format_headers(self):
-        return ['Community'] + [item.name for item in self.report.metrics] + [item['name'] for item in self.params['email_metrics']]
+        metrics = []
+        for metric in self.report.metrics:
+            metrics.append(metric.name)
+            if metric.code == 'SELL_THROUGH_AVAILABLE_IMPRESSIONS':
+                metrics.append('Price')
+                metrics.append('Total')
+
+        for metric in self.params['email_metrics']:
+            metrics.append(metric['name'])
+            if metric['code'] == 'n_sent':
+                metrics.append('Price')
+                metrics.append('Total Emails')
+        return metrics
 
     def format(self):
         return {
@@ -163,12 +180,18 @@ class SaleReportFormatter(object):
 
         # new_row.append(community.name)
         
-        for item in self.report.metrics:
-            value = row[item.column_name]
+        for metric in self.report.metrics:
+            value = row[metric.column_name]
             try:
-                value = "{:,d}".format(int(row[item.column_name]))
+                int_value = int(row[metric.column_name])
             except ValueError:
                 pass
-            new_row[item.code] = value
+            if metric.code in ('SELL_THROUGH_AVAILABLE_IMPRESSIONS','SELL_THROUGH_FORECASTED_IMPRESSIONS'):
+                int_value = int(int_value * 0.9)
+
+            if metric.code == 'SELL_THROUGH_AVAILABLE_IMPRESSIONS':
+                new_row.extend([int_value, locale.currency(community.banner_rate), locale.currency(int_value * community.banner_rate)])
+            else:
+                new_row.append("{:,d}".format(int_value))
         return (community.code, new_row)
 

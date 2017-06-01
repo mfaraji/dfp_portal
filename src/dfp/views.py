@@ -39,6 +39,17 @@ def metrics(request):
     objs = [obj.as_json() for obj in Metric.objects.all()]
     return  JsonResponse({'result': objs})
 
+def download_report(request, pk):
+    report = Report.objects.get(id=pk)
+    data = generate_report(report)
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment;filename=%s.csv' % report.name
+    writer = csv.writer(response)
+    writer.writerow(data['headers'])
+    for row in data['rows']:
+        writer.writerow(row)
+    return response
+
 @csrf_exempt
 def reports(request):
     if request.method == 'GET':
@@ -67,22 +78,35 @@ def report(request, pk):
             return JsonResponse({'result':'success', 'data': report.as_json(full=True)})
     if request.method == 'GET':
         report = Report.objects.get(id=pk)
-        report_params = json.loads(report.query)
-        report_manager = ReportManager()
-        # job_id, file_name = report_manager.run(report)
-        content = None
-        logger.debug('Reading content of the report')
-        with open('/tmp/tmpprUk40.csv', 'r') as f:
-            content = csv.DictReader(f)
-            if report.r_type.name != 'sale':
-                data = ReportFormatter(content, report).format()
-            else:
-                summary, market_research, offers = generate_emails_report(report_params)
-                data = SaleReportFormatter(content, report, summary=summary, market_research=market_research, offers=offers).format()
-        # os.remove(file_name)
-        print data
+        data = generate_report(report)
         return JsonResponse({'report': data})
 
+
+def generate_report(report, cached=True):
+    cache_key = "%s_%s" % (report.id, report.name)
+    
+    if cached:
+        logger.debug('Loading data from cach for report %s', report.name)
+        value = cache.get(cache_key)
+        if value:
+            logger.debug('Returning cached data')
+            return json.loads(value)
+    report_params = json.loads(report.query)
+    report_manager = ReportManager()
+    # job_id, file_name = report_manager.run(report)
+    content = None
+    logger.debug('Reading content of the report')
+    with open('/tmp/tmpprUk40.csv', 'r') as f:
+        content = csv.DictReader(f)
+        if report.r_type.name != 'sale':
+            data = ReportFormatter(content, report).format()
+        else:
+            summary, market_research, offers = generate_emails_report(report_params)
+            data = SaleReportFormatter(content, report, summary=summary, market_research=market_research, offers=offers).format()
+    # os.remove(file_name)
+    
+    cache.set(cache_key, json.dumps(data), 3600)
+    return data
 
 def generate_emails_report(report_params):
     communities = [item['code'] for item in report_params.get('communities', [])]

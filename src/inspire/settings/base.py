@@ -20,6 +20,13 @@ MEDIA_URL = "/media/"
 STATIC_ROOT = join(BASE_DIR, '..', 'static')
 
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/var/tmp/django_cache',
+    }
+}
+
 # DFP API configs
 SERVICE_ACCOUNT_EMAIL = 'inspire@inspire-156501.iam.gserviceaccount.com'
 APPLICATION_NAME = 'inspire_web'
