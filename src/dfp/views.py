@@ -78,7 +78,7 @@ def report(request, pk):
             return JsonResponse({'result':'success', 'data': report.as_json(full=True)})
     if request.method == 'GET':
         report = Report.objects.get(id=pk)
-        data = generate_report(report)
+        data = generate_report(report, cached=False)
         return JsonResponse({'report': data})
 
 
@@ -93,10 +93,10 @@ def generate_report(report, cached=True):
             return json.loads(value)
     report_params = json.loads(report.query)
     report_manager = ReportManager()
-    # job_id, file_name = report_manager.run(report)
+    job_id, file_name = report_manager.run(report)
     content = None
     logger.debug('Reading content of the report')
-    with open('/tmp/tmpprUk40.csv', 'r') as f:
+    with open(file_name, 'r') as f:
         content = csv.DictReader(f)
         if report.r_type.name != 'sale':
             data = ReportFormatter(content, report).format()
@@ -104,7 +104,6 @@ def generate_report(report, cached=True):
             summary, market_research, offers = generate_emails_report(report_params)
             data = SaleReportFormatter(content, report, summary=summary, market_research=market_research, offers=offers).format()
     # os.remove(file_name)
-    
     cache.set(cache_key, json.dumps(data), 3600)
     return data
 

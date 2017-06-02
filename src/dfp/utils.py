@@ -2,6 +2,7 @@ import re
 import locale
 import json
 
+from inspire.logger import logger
 from dfp.models import Community, Topic, Metric
 
 FUTURE_METRICS = ('SELL_THROUGH_AVAILABLE_IMPRESSIONS')
@@ -88,22 +89,25 @@ class SaleReportFormatter(object):
         self.offers = offers
         self.communities = [item['code'] for item in self.params.get('communities', [])]
         self.community_metrics = {}
-        self.metrics = [item.code for item in self.report.metrics] + [item['code'] for item in self.params['email_metrics']]
+        self.metrics = self.format_metrics()
 
-    def format_headers(self):
+    def format_metrics(self):
         metrics = []
         for metric in self.report.metrics:
-            metrics.append(metric.name)
+            metrics.append({'name': metric.name, 'code': metric.code})
             if metric.code == 'SELL_THROUGH_AVAILABLE_IMPRESSIONS':
-                metrics.append('Price')
-                metrics.append('Total')
+                metrics.append({'name':'Banner Price', 'code':'banner_price'})
+                metrics.append({'name':'Banner Total','code':'banner_total'})
 
         for metric in self.params['email_metrics']:
-            metrics.append(metric['name'])
+            metrics.append(metric)
             if metric['code'] == 'n_sent':
-                metrics.append('Price')
-                metrics.append('Total Emails')
+                metrics.append({'name':'Email Price', 'code':'email_price'})
+                metrics.append({'name':'Total Emails','code':'total_emails'})
         return metrics
+
+    def format_headers(self):
+        return ['Community']+ [metric['name'] for metric in self.metrics]
 
     def format(self):
         return {
@@ -114,14 +118,13 @@ class SaleReportFormatter(object):
         }
 
     def format_rows(self):
-        result = {}
-        
         self.community_metrics = {}
         for row in self.reader:
             formatted_row = self._format_row(row)
             if formatted_row:
+                logger.debug('Adding %s to list', formatted_row[0])
                 self.community_metrics[formatted_row[0]]= formatted_row[1]
-
+        
         if self.summary:
             summary = [item for item in self.summary]
         for metric in self.params['email_metrics']:
@@ -146,13 +149,12 @@ class SaleReportFormatter(object):
                 for row in self.offers:
                     self.add_row(metric['code'], row)
 
-
         result = []
         for community, values in self.community_metrics.iteritems():
             row = [Community.objects.get(code=community).name]
             for metric in self.metrics:
-                if metric in values:
-                    row.append(values[metric])
+                if metric['code'] in values:
+                    row.append(values[metric['code']])
                 else:
                     row.append(0)
             result.append(row)
@@ -169,6 +171,11 @@ class SaleReportFormatter(object):
         else:
             self.community_metrics[community][metric] = str(row[position])
 
+        if metric == 'n_sent':
+            c = Community.objects.get(code=community)
+            self.community_metrics[community]['email_price'] = locale.currency(c.email_rate)
+            self.community_metrics[community]['total_emails'] = locale.currency(c.email_rate * int(self.community_metrics[community][metric]))
+
     def _format_row(self, row):
         new_row = {}
         if row['Ad unit 1'] != 'community' or ('Ad unit 3' in row and row['Ad unit 3'] != 'N/A'):
@@ -176,10 +183,9 @@ class SaleReportFormatter(object):
         community = Community.objects.filter(ad_unit_code=row['Ad unit ID 2']).first()
 
         if not community or (self.communities and community.code not in self.communities):
+            logger.debug('%s not found in the list', community.name)
             return
 
-        # new_row.append(community.name)
-        
         for metric in self.report.metrics:
             value = row[metric.column_name]
             try:
@@ -190,8 +196,8 @@ class SaleReportFormatter(object):
                 int_value = int(int_value * 0.9)
 
             if metric.code == 'SELL_THROUGH_AVAILABLE_IMPRESSIONS':
-                new_row.extend([int_value, locale.currency(community.banner_rate), locale.currency(int_value * community.banner_rate)])
+                new_row.update({'SELL_THROUGH_AVAILABLE_IMPRESSIONS': int_value, 'banner_price': locale.currency(community.banner_rate), 'banner_total': locale.currency(int_value * community.banner_rate)})
             else:
-                new_row.append("{:,d}".format(int_value))
+                new_row[metric.code] = "{:,d}".format(int_value)
         return (community.code, new_row)
 
