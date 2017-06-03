@@ -2,7 +2,9 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
 
     $scope.is_edit = false;
 
-
+    if ($stateParams.reportId != undefined) {
+        $scope.is_edit = true;
+    }
     $scope.report = {};
     $scope.step = "1";
     $scope.isDisabled = false;
@@ -18,15 +20,14 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
             }),
             "country": _.find($scope.countries, {'id':'US'})
         };
-        console.log(report);
         return report;
     };
 
     $scope.save = function() {
         console.log($scope.report);
         $http({
-            method: 'POST',
-            url: '/dfp/reports/',
+            method: $scope.is_edit ? 'PUT': 'POST',
+            url: ($scope.is_edit ? '/dfp/report/' + $stateParams.reportId : '/dfp/reports/'),
             data: angular.toJson($scope.report)
         }).then(function successCallback(response) {
             $state.go('dashboard');
@@ -47,7 +48,6 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
             method: 'GET',
             url: '/dfp/metrics'
         }).then(function successCallback(response) {
-            console.log('done metrics');
             $scope.metrics = response.data.result;
         });
     };
@@ -71,14 +71,13 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
     };
 
     function initialize_report(){
-        console.log($scope.report.type);
         if ($stateParams.reportId) {
             $http({
-                method: 'HEAD',
-                url: '/dfp/report/' + $stateParams.reportId,
+                method: 'GET',
+                url: '/dfp/report/config/' + $stateParams.reportId,
                 data: angular.toJson($scope.report)
             }).then(function successCallback(response) {
-                console.log(response.data.data);
+                $scope.report = response.data.data.job;
             });
         } else {
             $scope.report = create_new_report();
@@ -93,7 +92,6 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
         });
     }
     $scope.setStep = function(value) {
-        console.log($scope.report);
         if (value == '2' && $scope.report.type == 'sale') {
             $scope.step = '3';
         } else if (value == '4') {
@@ -136,7 +134,6 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
         all.then(function(){
             initialize_report();
         });
-        console.log($scope.report);
     });
     $rootScope.settings.layout.pageContentWhite = true;
     $rootScope.settings.layout.pageBodySolid = false;

@@ -62,7 +62,6 @@ def reports(request):
         report.save()
         return JsonResponse({'result': 'success'})
 
-
 @csrf_exempt
 def report(request, pk):
     if request.method == 'DELETE':
@@ -72,15 +71,26 @@ def report(request, pk):
             return JsonResponse({'result': 'success'})
         else:
             return JsonResponse({'result': 'failure', 'message':'Report Not Found'})
-    if request.method == 'HEAD':
-        report = Report.objects.get(id=pk)
-        if report:
-            return JsonResponse({'result':'success', 'data': report.as_json(full=True)})
     if request.method == 'GET':
         report = Report.objects.get(id=pk)
         data = generate_report(report, cached=True)
         return JsonResponse({'report': data})
 
+    if request.method == 'PUT':
+        report = Report.objects.get(id=pk)
+        body = json.loads(request.body)
+        r_type = ReportType.objects.get(name=body['type'])
+        report.name = body['name']
+        report.query = request.body
+        report.r_type = r_type
+        report.save()
+        return HttpResponse(status=200)
+
+@csrf_exempt
+def report_config(request, pk):
+    report = Report.objects.get(id=pk)
+    if report:
+        return JsonResponse({'result':'success', 'data': report.as_json(full=True)})
 
 def generate_report(report, cached=True):
     cache_key = "%s_%s" % (report.id, report.name)

@@ -92,7 +92,7 @@ class Report(models.Model):
                 'id': self.id,
                 'name': self.name,
                 'status': self.status,
-                'job': self.query
+                'job': json.loads(self.query)
             }
 
     def __unicode__(self):

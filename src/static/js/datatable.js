@@ -13,7 +13,7 @@ var Datatable = function() {
     var the;
 
     var countSelectedRecords = function() {
-        var selected = $('tbody > tr > td:nth-child(1) input[type="checkbox"]:checked', table).size();
+        var selected = $('tbody > tr > td:nth-child(1) input[type="checkbox"]:checked', table).length;
         var text = tableOptions.dataTable.language.metronicGroupActions;
         if (selected > 0) {
             $('.table-group-actions > span', tableWrapper).text(text.replace("_TOTAL_", selected));
@@ -108,7 +108,7 @@ var Datatable = function() {
                                 }
                             }
 
-                            if ($('.group-checkable', table).size() === 1) {
+                            if ($('.group-checkable', table).length === 1) {
                                 $('.group-checkable', table).attr("checked", false);
                             }
 
@@ -177,7 +177,7 @@ var Datatable = function() {
             tableWrapper = table.parents('.dataTables_wrapper');
 
             // build table group actions panel
-            if ($('.table-actions-wrapper', tableContainer).size() === 1) {
+            if ($('.table-actions-wrapper', tableContainer).length === 1) {
                 $('.table-group-actions', tableWrapper).html($('.table-actions-wrapper', tableContainer).html()); // place the panel inside the wrapper
                 $('.table-actions-wrapper', tableContainer).remove(); // remove the template container
             }
@@ -243,7 +243,7 @@ var Datatable = function() {
         },
 
         getSelectedRowsCount: function() {
-            return $('tbody > tr > td:nth-child(1) input[type="checkbox"]:checked', table).size();
+            return $('tbody > tr > td:nth-child(1) input[type="checkbox"]:checked', table).length;
         },
 
         getSelectedRows: function() {
