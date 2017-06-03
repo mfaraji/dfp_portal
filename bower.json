@@ -36,6 +36,8 @@
     "angular-bootstrap-multiselect": "https://github.com/bentorfs/angular-bootstrap-multiselect.git#^1.1.6",
     "lodash": "^4.17.4",
     "angular-block-ui": "^0.2.2",
-    "bootstrap-select": "^1.12.2"
+    "bootstrap-select": "^1.12.2",
+    "datatables.net-scroller": "^1.4.2",
+    "datatables.net-scroller-bs": "^1.4.2"
   }
 }

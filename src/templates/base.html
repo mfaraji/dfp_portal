@@ -22,6 +22,7 @@
         <link href="{% static 'libs/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css' %}" rel="stylesheet" type="text/css" />
         <link href="{% static 'libs/angular-block-ui/dist/angular-block-ui.min.css' %}" rel="stylesheet" type="text/css" />
         <link href="{% static 'libs/bootstrap-select/dist/css/bootstrap-select.min.css' %}" rel="stylesheet" type="text/css" />
+
         <!-- END GLOBAL MANDATORY STYLES -->
         <!-- BEGIN DYMANICLY LOADED CSS FILES(all plugin and page related styles must be loaded between GLOBAL and THEME css files ) -->
         <link id="ng_load_plugins_before" />
@@ -74,8 +75,11 @@
         <script src="{% static 'libs/angular-bootstrap/ui-bootstrap.min.js' %}" type="text/javascript"></script>
         <script src="{% static 'libs/angular-block-ui/dist/angular-block-ui.min.js' %}" type="text/javascript"></script>
         <script src="{% static 'libs/bootstrap-select/dist/js/bootstrap-select.min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js' %}" type="text/javascript"></script>
+
         <!-- END CORE ANGULARJS PLUGINS -->
         <!-- BEGIN APP LEVEL ANGULARJS SCRIPTS -->
+        <script src="{% static '/static/js/datatable.js' %}" type="text/javascript"></script>
         <script src="{% static 'js/main.js' %}" type="text/javascript"></script>
         <script src="{% static 'js/directives/mainDirectives.js' %}" type="text/javascript"></script>
         <!-- END APP LEVEL ANGULARJS SCRIPTS -->

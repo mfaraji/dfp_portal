@@ -78,7 +78,7 @@ def report(request, pk):
             return JsonResponse({'result':'success', 'data': report.as_json(full=True)})
     if request.method == 'GET':
         report = Report.objects.get(id=pk)
-        data = generate_report(report, cached=False)
+        data = generate_report(report, cached=True)
         return JsonResponse({'report': data})
 
 
