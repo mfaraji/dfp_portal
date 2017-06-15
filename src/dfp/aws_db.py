@@ -2,6 +2,7 @@ import datetime
 from sqlalchemy import *
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql import *
+from django.core.cache import cache
 
 from django.conf import settings
 from inspire.logger import logger
@@ -22,7 +23,13 @@ def generate_aws_report(communities=[], interests=[], metrics=[]):
     if 'offers' in metrics:
         offers = fetch_offers(interests=interests, communities=communities)
 
-    return summary, market_research, offers
+    us_users_ratio = cache.get('us_users_ratio')
+    if not us_users_ratio:
+        us_users_ratio = find_us_users_ratio()
+        logger.debug('The ratio is %s', us_users_ratio)
+        cache.set('us_users_ratio', us_users_ratio, 24*3600)
+
+    return summary, market_research, offers, us_users_ratio
 
 def db_connect():
     return create_engine(AWS_DATABASE_URL)
@@ -40,10 +47,12 @@ def get_activity_summary(communities=[]):
         query = (select([summary.c.group_id.label('community_id'), func.sum(summary.c.n_sent).label('n_sent'), func.sum(summary.c.n_opened).label('n_opened'), \
             func.sum(summary.c.n_clicked).label('n_clicked'), func.sum(summary.c.n_clicks).label('n_clicks')])\
             .where(summary.c.d_sent > last_month).group_by(summary.c.group_id))
+        logger.debug("AS %s", str(query))
     else:
         query = (select([summary.c.group_id.label('community_id'), func.sum(summary.c.n_sent).label('n_sent'), func.sum(summary.c.n_opened).label('n_opened'), \
             func.sum(summary.c.n_clicked).label('n_clicked'), func.sum(summary.c.n_clicks).label('n_clicks')])\
             .where(and_(summary.c.d_sent > last_month, summary.c.group_id.in_(communities))).group_by(summary.c.group_id))
+        logger.debug("AS %s", str(query))
     result = session.execute(query)
     logger.info('Acitivity Summary: %s' % result.rowcount)
     return result
@@ -70,16 +79,16 @@ def fetch_market_research(interests=[], communities=[]):
         (SELECT interests.uid AS uid 
         FROM interests 
         WHERE interests.i_ref_id = 500192) AS interests_query JOIN (SELECT users_preferences.uid AS uid 
-        FROM users_preferences 
-        WHERE users_preferences.pref_id = 'msg_market_research' AND users_preferences.value = 1) 
+        FROM users_preferences JOIN users ON users_preferences.uid = users.uid
+        WHERE users_preferences.pref_id = 'msg_market_research' AND users_preferences.value = 1 AND users.country = 'US') 
         AS users_prefs ON interests_query.uid = users_prefs.uid) AS users_interests ON roles.r_uid =  users_interests.uid GROUP BY roles.r_obj_id
     """
 
     sql_roles_users_no_interests = """
         SELECT roles.r_obj_id AS community_id, count(roles.r_obj_id) AS offers FROM roles JOIN 
         (SELECT users_preferences.uid AS uid 
-        FROM users_preferences 
-        WHERE users_preferences.pref_id = 'msg_market_research' AND users_preferences.value = 1) AS users_prefs ON roles.r_uid =  users_prefs.uid GROUP BY roles.r_obj_id
+        FROM users_preferences JOIN users ON users_preferences.uid = users.uid
+        WHERE users_preferences.pref_id = 'msg_market_research' AND users_preferences.value = 1 AND users.country = 'US') AS users_prefs ON roles.r_uid =  users_prefs.uid GROUP BY roles.r_obj_id
     """
     if interests:
         query = sql_roles_users_with_interests
@@ -98,16 +107,16 @@ def fetch_offers(interests=[], communities=[]):
         (SELECT interests.uid AS uid 
         FROM interests 
         WHERE interests.i_ref_id = 500192) AS interests_query JOIN (SELECT users_preferences.uid AS uid 
-        FROM users_preferences 
-        WHERE users_preferences.pref_id = 'msg_offers' AND users_preferences.value = 1) 
+        FROM users_preferences JOIN users ON users_preferences.uid = users.uid
+        WHERE users_preferences.pref_id = 'msg_offers' AND users_preferences.value = 1 AND users.country = 'US') 
         AS users_prefs ON interests_query.uid = users_prefs.uid) AS users_interests ON roles.r_uid =  users_interests.uid GROUP BY roles.r_obj_id
     """
 
     sql_roles_users_no_interests = """
-        SELECT roles.r_obj_id AS community_id, count(roles.r_obj_id) AS offers FROM roles JOIN 
+       SELECT roles.r_obj_id AS community_id, count(roles.r_obj_id) AS offers FROM roles JOIN 
         (SELECT users_preferences.uid AS uid 
-        FROM users_preferences 
-        WHERE users_preferences.pref_id = 'msg_offers' AND users_preferences.value = 1) AS users_prefs ON roles.r_uid =  users_prefs.uid GROUP BY roles.r_obj_id
+        FROM users_preferences JOIN users ON users_preferences.uid = users.uid
+        WHERE users_preferences.pref_id = 'msg_offers' AND users_preferences.value = 1 AND users.country = 'US') AS users_prefs ON roles.r_uid =  users_prefs.uid GROUP BY roles.r_obj_id
     """
     query = None
 
@@ -118,4 +127,12 @@ def fetch_offers(interests=[], communities=[]):
     result = db.engine.execute(query)
     logger.info('Offers: %s' % result.rowcount)
     return result
+
+
+def find_us_users_ratio():
+    logger.debug('Calculating the ratio of user users')
+    db = db_connect()
+    query = "select sum(case when country = 'US' then 1 else 0 end) / count(*) from users"
+    result = db.engine.execute(query)
+    return float(result.fetchone()[0])
     

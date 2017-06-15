@@ -5,6 +5,8 @@ import json
 from inspire.logger import logger
 from dfp.models import Community, Topic, Metric
 
+from babel.numbers import format_currency
+
 FUTURE_METRICS = ('SELL_THROUGH_AVAILABLE_IMPRESSIONS')
 
 locale.setlocale( locale.LC_ALL, '' )
@@ -78,7 +80,7 @@ class ReportFormatter(object):
 
 class SaleReportFormatter(object):
 
-    def __init__(self, csv_reader, report, summary=None, market_research=None, offers=None, ):
+    def __init__(self, csv_reader, report, summary=None, market_research=None, offers=None, ratio=None):
         self.reader = csv_reader
         self._content = {}
         self._headers = []
@@ -87,6 +89,7 @@ class SaleReportFormatter(object):
         self.summary = summary
         self.market_research = market_research
         self.offers = offers
+        self.ratio = ratio
         self.communities = [item['code'] for item in self.params.get('communities', [])]
         self.community_metrics = {}
         self.metrics = self.format_metrics()
@@ -167,14 +170,15 @@ class SaleReportFormatter(object):
         if self.communities and community not in self.communities:
             return
         if str(community) not in self.community_metrics:
-            self.community_metrics[community] =  {metric: str(row[position])}
+            self.community_metrics[community] =  {metric: int(row[position]) * self.ratio}
         else:
-            self.community_metrics[community][metric] = str(row[position])
+            self.community_metrics[community][metric] = int(row[position]) * self.ratio
 
         if metric == 'n_sent':
             c = Community.objects.get(code=community)
             self.community_metrics[community]['email_price'] = locale.currency(c.email_rate)
-            self.community_metrics[community]['total_emails'] = locale.currency(c.email_rate * int(self.community_metrics[community][metric]))
+            self.community_metrics[community]['total_emails'] = format_currency(c.email_rate * (int(self.community_metrics[community][metric])/1000), 'USD', locale='en_US')
+        self.community_metrics[community][metric] = "{:,d}".format(int(row[position]))
 
     def _format_row(self, row):
         new_row = {}
@@ -196,7 +200,7 @@ class SaleReportFormatter(object):
                 int_value = int(int_value * 0.9)
 
             if metric.code == 'SELL_THROUGH_AVAILABLE_IMPRESSIONS':
-                new_row.update({'SELL_THROUGH_AVAILABLE_IMPRESSIONS': int_value, 'banner_price': locale.currency(community.banner_rate), 'banner_total': locale.currency(int_value * community.banner_rate)})
+                new_row.update({'SELL_THROUGH_AVAILABLE_IMPRESSIONS': int_value, 'banner_price': locale.currency(community.banner_rate), 'banner_total': format_currency((int_value /1000) * community.banner_rate, 'USD', locale='en_US')})
             else:
                 new_row[metric.code] = "{:,d}".format(int_value)
         return (community.code, new_row)
