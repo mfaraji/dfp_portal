@@ -72,7 +72,7 @@ class ReportFormatter(object):
                 int_value = int(int_value * 0.9)
 
             if metric.code == 'SELL_THROUGH_AVAILABLE_IMPRESSIONS':
-                new_row.extend([int_value, locale.currency(ad_unit.banner_rate), locale.currency(int_value * ad_unit.banner_rate)])
+                new_row.extend([int_value, locale.currency(ad_unit.banner_rate), locale.currency((int_value * ad_unit.banner_rate)/1000)])
             else:
                 new_row.append("{:,d}".format(int_value))
         return new_row
@@ -177,8 +177,8 @@ class SaleReportFormatter(object):
         if metric == 'n_sent':
             c = Community.objects.get(code=community)
             self.community_metrics[community]['email_price'] = locale.currency(c.email_rate)
-            self.community_metrics[community]['total_emails'] = format_currency(c.email_rate * (int(self.community_metrics[community][metric])/1000), 'USD', locale='en_US')
-        self.community_metrics[community][metric] = "{:,d}".format(int(row[position]))
+            self.community_metrics[community]['total_emails'] = format_currency((c.email_rate * self.community_metrics[community][metric])/1000, 'USD', locale='en_US')
+        self.community_metrics[community][metric] = "{:,d}".format(int(self.community_metrics[community][metric]))
 
     def _format_row(self, row):
         new_row = {}
@@ -200,7 +200,7 @@ class SaleReportFormatter(object):
                 int_value = int(int_value * 0.9)
 
             if metric.code == 'SELL_THROUGH_AVAILABLE_IMPRESSIONS':
-                new_row.update({'SELL_THROUGH_AVAILABLE_IMPRESSIONS': int_value, 'banner_price': locale.currency(community.banner_rate), 'banner_total': format_currency((int_value /1000) * community.banner_rate, 'USD', locale='en_US')})
+                new_row.update({'SELL_THROUGH_AVAILABLE_IMPRESSIONS': int_value, 'banner_price': locale.currency(community.banner_rate), 'banner_total': format_currency((int_value * community.banner_rate)/1000, 'USD', locale='en_US')})
             else:
                 new_row[metric.code] = "{:,d}".format(int_value)
         return (community.code, new_row)
