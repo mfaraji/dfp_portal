@@ -111,8 +111,8 @@ def generate_report(report, cached=True):
         if report.r_type.name != 'sale':
             data = ReportFormatter(content, report).format()
         else:
-            summary, market_research, offers, ratio = generate_emails_report(report_params)
-            data = SaleReportFormatter(content, report, summary=summary, market_research=market_research, offers=offers, ratio=ratio).format()
+            summary, market_research, offers = generate_emails_report(report_params)
+            data = SaleReportFormatter(content, report, summary=summary, market_research=market_research, offers=offers).format()
     os.remove(file_name)
     cache.set(cache_key, json.dumps(data), 3600)
     return data

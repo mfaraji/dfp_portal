@@ -23,13 +23,7 @@ def generate_aws_report(communities=[], interests=[], metrics=[]):
     if 'offers' in metrics:
         offers = fetch_offers(interests=interests, communities=communities)
 
-    us_users_ratio = cache.get('us_users_ratio')
-    if not us_users_ratio:
-        us_users_ratio = find_us_users_ratio()
-        logger.debug('The ratio is %s', us_users_ratio)
-        cache.set('us_users_ratio', us_users_ratio, 24*3600)
-
-    return summary, market_research, offers, us_users_ratio
+    return summary, market_research, offers
 
 def db_connect():
     return create_engine(AWS_DATABASE_URL)
@@ -40,19 +34,19 @@ def get_activity_summary(communities=[]):
     Session = sessionmaker(bind=db)
     session = Session()
     today = datetime.datetime.today().date()
-    last_month = today - datetime.timedelta(weeks=4)
+    last_month = today - datetime.timedelta(days=38)
     meta = MetaData()
     summary = Table('asat_summary', meta, autoload=True, autoload_with=db)
     if not communities:
         query = (select([summary.c.group_id.label('community_id'), func.sum(summary.c.n_sent).label('n_sent'), func.sum(summary.c.n_opened).label('n_opened'), \
             func.sum(summary.c.n_clicked).label('n_clicked'), func.sum(summary.c.n_clicks).label('n_clicks')])\
-            .where(summary.c.d_sent > last_month).group_by(summary.c.group_id))
+            .where(summary.c.d_sent >= last_month).group_by(summary.c.group_id))
         logger.debug("AS %s", str(query))
     else:
         query = (select([summary.c.group_id.label('community_id'), func.sum(summary.c.n_sent).label('n_sent'), func.sum(summary.c.n_opened).label('n_opened'), \
             func.sum(summary.c.n_clicked).label('n_clicked'), func.sum(summary.c.n_clicks).label('n_clicks')])\
-            .where(and_(summary.c.d_sent > last_month, summary.c.group_id.in_(communities))).group_by(summary.c.group_id))
-        logger.debug("AS %s", str(query))
+            .where(and_(summary.c.d_sent >= last_month, summary.c.group_id.in_(communities))).group_by(summary.c.group_id))
+    logger.debug('ASAT query: %s', str(query))
     result = session.execute(query)
     logger.info('Acitivity Summary: %s' % result.rowcount)
     return result
@@ -129,10 +123,13 @@ def fetch_offers(interests=[], communities=[]):
     return result
 
 
-def find_us_users_ratio():
+def update_us_users_ratio():
     logger.debug('Calculating the ratio of user users')
     db = db_connect()
-    query = "select sum(case when country = 'US' then 1 else 0 end) / count(*) from users"
+    query = "select roles.r_obj_id, sum(case when users.country = 'US' then 1 else 0 end) / count(roles.r_obj_id) from users join roles on users.uid = roles.r_uid group by roles.r_obj_id;"
     result = db.engine.execute(query)
-    return float(result.fetchone()[0])
+    for row in result:
+        if row[0] not in (None, 0):
+            logger.debug('setting us_ratio_%s to %s', row[0], float(row[1]))
+            cache.set('us_ratio_%s' % row[0], float(row[1]), 24*3600)
     
