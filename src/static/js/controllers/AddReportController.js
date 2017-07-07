@@ -19,7 +19,19 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
             "metrics": _.filter($scope.metrics, {
                 'default': true
             }),
-            "country": _.find($scope.countries, {'id':'US'})
+            "country": _.find($scope.countries, {
+                'id': 'US'
+            }),
+            "email_metrics": [{
+                'name': 'AS Emails Sent',
+                'code': 'n_sent'
+            }, {
+                'name': 'AS Emails Opened',
+                'code': 'n_opened'
+            }, {
+                'name': 'AS Emails Clicked',
+                'code': 'n_clicked'
+            }]
         };
         return report;
     };
@@ -27,7 +39,7 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
     $scope.save = function() {
         console.log($scope.report);
         $http({
-            method: $scope.is_edit ? 'PUT': 'POST',
+            method: $scope.is_edit ? 'PUT' : 'POST',
             url: ($scope.is_edit ? '/dfp/report/' + $stateParams.reportId : '/dfp/reports/'),
             data: angular.toJson($scope.report)
         }).then(function successCallback(response) {
@@ -71,7 +83,7 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
         });
     };
 
-    function initialize_report(){
+    function initialize_report() {
         if ($stateParams.reportId) {
             $http({
                 method: 'GET',
@@ -124,9 +136,9 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
     }];
 
 
-    $scope.refresh_interests = function(value){
+    $scope.refresh_interests = function(value) {
         console.log(value);
-        if (value){
+        if (value) {
             $http({
                 method: 'GET',
                 url: '/dfp/search/?interest=' + value,
@@ -147,7 +159,7 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
         var p_dims = load_dimensions();
         var p_communities = load_communities();
         var all = $q.all([p_countries, p_metrics, p_dims, p_dims, p_communities])
-        all.then(function(){
+        all.then(function() {
             initialize_report();
         });
     });
