@@ -73,7 +73,7 @@ def report(request, pk):
             return JsonResponse({'result': 'failure', 'message':'Report Not Found'})
     if request.method == 'GET':
         report = Report.objects.get(id=pk)
-        data = generate_report(report, cached=False)
+        data = generate_report(report, cached=True)
         return JsonResponse({'report': data})
 
     if request.method == 'PUT':
