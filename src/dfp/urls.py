@@ -11,5 +11,6 @@ urlpatterns = [
     url(r'^dimensions/$', views.dimensions, name='dimensions'),
     url(r'^metrics/$', views.metrics, name='metrics'),
     url(r'^communities/$', views.communities, name='communities'),
-    url(r'^topics/$', views.topics, name='topics')
+    url(r'^topics/$', views.topics, name='topics'),
+    url(r'^search/$', views.search, name='search')
 ]

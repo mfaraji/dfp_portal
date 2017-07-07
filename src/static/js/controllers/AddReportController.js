@@ -11,6 +11,7 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
     $scope.dimensions = [];
     $scope.communities = [];
     $scope.metrics = [];
+    $scope.interests = []
 
     function create_new_report() {
         var report = {
@@ -101,6 +102,7 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
         }
     };
 
+
     $scope.email_metrics = [{
         'name': 'AS Emails Sent',
         'code': 'n_sent'
@@ -122,6 +124,20 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
     }];
 
 
+    $scope.refresh_interests = function(value){
+        console.log(value);
+        if (value){
+            $http({
+                method: 'GET',
+                url: '/dfp/search/?interest=' + value,
+            }).then(function successCallback(response) {
+                console.log(response.data);
+                $scope.interests = response.data.result;
+            });
+        }
+
+    }
+
     $scope.$on('$viewContentLoaded', function() {
         // initialize core components
         App.initAjax();
@@ -135,6 +151,7 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
             initialize_report();
         });
     });
+
     $rootScope.settings.layout.pageContentWhite = true;
     $rootScope.settings.layout.pageBodySolid = false;
     $rootScope.settings.layout.pageSidebarClosed = false;

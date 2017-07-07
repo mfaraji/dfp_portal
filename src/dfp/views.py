@@ -12,7 +12,7 @@ from dfp.models import Country, Report, Dimension, Metric, DimesionCategory, Com
 from inspire.logger import logger
 from dfp.apis.report import ReportManager
 from dfp.utils import ReportFormatter, SaleReportFormatter
-from dfp.aws_db import generate_aws_report
+from dfp.aws_db import generate_aws_report, search_interests
 
 
 def list_countries(request):
@@ -87,6 +87,13 @@ def report(request, pk):
         return HttpResponse(status=200)
 
 @csrf_exempt
+def search(request):
+    if request.method == 'GET':
+        interest_name = request.GET['interest']
+        logger.debug('searching for %s', interest_name)
+        return JsonResponse({'result': search_interests(interest_name)})
+
+@csrf_exempt
 def report_config(request, pk):
     report = Report.objects.get(id=pk)
     if report:
@@ -120,5 +127,6 @@ def generate_report(report, cached=True):
 def generate_emails_report(report_params):
     communities = [item['code'] for item in report_params.get('communities', [])]
     metrics = [item['code'] for item in report_params.get('email_metrics', [])]
-    return generate_aws_report(communities=communities, metrics=metrics)
+    interests = [str(interest['id']) for interest in report_params.get('interests' ,[])]
+    return generate_aws_report(communities=communities, metrics=metrics, interests=interests)
 

@@ -326,7 +326,7 @@
                                                         <!-- row -->
                                                         <div class="row">
                                                             
-                                                                <!-- Dimesion -->
+                                                                <!-- Metric -->
                                                                 <div class="col-md-2">
                                                                 <label class="control-label col-md-2">Metrics</label>
                                                                 </div>
@@ -345,21 +345,22 @@
 
                                                          <div class="row">
                                                             
-                                                                <!-- Dimesion -->
+                                                                <!-- Interest -->
                                                                 <div class="col-md-2">
                                                                 <label class="control-label col-md-2">Interest</label>
                                                                 </div>
                                                                 <div class="col-md-9">
                                                                 <div class="form-group">
 
-                                                                    <ui-select multiple ng-model="report.topic" sortable="true" theme="bootstrap" close-on-select="false">
-                                                                        <ui-select-match placeholder="Select or search a topic in the list...">{[$item.name]}</ui-select-match>
-                                                                        <ui-select-choices group-by="'category'" repeat="topic in topics | filter: $select.search">
-                                                                            <div ng-bind-html="format_topic_name(topic) | highlight: $select.search"></div>
+                                                                    <ui-select multiple ng-model="report.interests" theme="bootstrap" close-on-select="false">
+                                                                    <ui-select-match placeholder="Select or search an Interest in the list...">{[$item.name]}</ui-select-match>
+                                                                        <ui-select-choices repeat="interest in interests track by $index" refresh="refresh_interests($select.search)" refresh-delay="500">
+                                                                            <div ng-bind-html="interest.name | highlight: $select.search"></div>
                                                                         </ui-select-choices>
                                                                       </ui-select>
                                                                 </div>
                                                                 </div>
+
                                                             
                                                         </div>
 
