@@ -14,6 +14,7 @@ def generate_aws_report(communities=[], interests=[], metrics=[]):
     summary = None
     market_research = None
     offers = None
+
     if 'n_sent' in metrics or 'n_opened' in metrics or 'n_clicked' in metrics or 'n_clicks' in metrics:
         summary = get_activity_summary(communities=communities)
 
@@ -120,7 +121,7 @@ def fetch_offers(interests=[], communities=[]):
 
     if interests:
         ids_list = '(%s)' % ','.join(interests)
-        query = sql_roles_users_with_interests.format(interests)
+        query = sql_roles_users_with_interests.format(ids_list)
     else:
         query = sql_roles_users_no_interests
     logger.debug('Query to fetch offers: %s', query)

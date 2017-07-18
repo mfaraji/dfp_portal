@@ -121,7 +121,7 @@ def generate_report(report, cached=True):
             summary, market_research, offers = generate_emails_report(report_params)
             data = SaleReportFormatter(content, report, summary=summary, market_research=market_research, offers=offers).format()
     os.remove(file_name)
-    cache.set(cache_key, json.dumps(data), 3600)
+    cache.set(cache_key, json.dumps(data), 12*3600)
     return data
 
 def generate_emails_report(report_params):

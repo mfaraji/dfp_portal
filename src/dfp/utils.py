@@ -155,7 +155,11 @@ class SaleReportFormatter(object):
 
         result = []
         for community, values in self.community_metrics.iteritems():
-            row = [Community.objects.get(code=community).name]
+            comObj = Community.objects.filter(code=community).first()
+            if not comObj:
+                logger.error('Community Does not exist: %s', community)
+                continue
+            row = [comObj.name]
             for metric in self.metrics:
                 if metric['code'] in values:
                     row.append(values[metric['code']])
@@ -181,7 +185,10 @@ class SaleReportFormatter(object):
             self.community_metrics[community][metric] = int(row[position]) * ratio
 
         if metric == 'n_sent':
-            c = Community.objects.get(code=community)
+            c = Community.objects.filter(code=community).first()
+            if not c:
+                logger.debug('Community Not Found: %s', community)
+                return
             self.community_metrics[community]['email_price'] = locale.currency(c.email_rate)
             self.community_metrics[community]['total_emails'] = format_currency((c.email_rate * self.community_metrics[community][metric])/1000, 'USD', locale='en_US')
         logger.debug('Original %s number is: %s', metric, row[position])
@@ -195,7 +202,6 @@ class SaleReportFormatter(object):
         community = Community.objects.filter(ad_unit_code=row['Ad unit ID 2']).first()
 
         if not community or (self.communities and community.code not in self.communities):
-            logger.debug('%s not found in the list', community.name)
             return
 
         for metric in self.report.metrics:
