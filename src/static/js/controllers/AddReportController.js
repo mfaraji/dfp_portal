@@ -31,7 +31,9 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
             }, {
                 'name': 'AS Emails Clicked',
                 'code': 'n_clicked'
-            }]
+            }],
+            "include_cpm": true,
+            "include_cps": true
         };
         return report;
     };

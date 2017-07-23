@@ -21,7 +21,7 @@ class ReportFormatter(object):
         self._headers = []
         self.report = report
         self.params = json.loads(report.query)
-        self.is_future_report = (True if filter(lambda x: x.code in FUTURE_METRICS, self.report.metrics) else False)
+        self.include_cpm = self.params.get('include_cpm', True)
 
     def format_headers(self):
         dims = [item.name for item in self.report.dimensions]
@@ -31,7 +31,8 @@ class ReportFormatter(object):
             if metric.code == 'SELL_THROUGH_AVAILABLE_IMPRESSIONS':
                 metrics.append('Price')
                 metrics.append('Total')
-        return dims + metrics
+        _headers = dims + metrics
+        return _headers
 
     def format(self):
         result = {
@@ -92,8 +93,10 @@ class SaleReportFormatter(object):
         self.market_research = market_research
         self.offers = offers
         self.communities = [item['code'] for item in self.params.get('communities', [])]
+        self.include_cpm = self.params.get('include_cpm', True)
+        self.include_cps = self.params.get('include_cps', True)
         self.community_metrics = {}
-        self.metrics = self.format_metrics()
+        self.metrics= self.format_metrics()
 
     def format_metrics(self):
         metrics = []
@@ -103,11 +106,16 @@ class SaleReportFormatter(object):
                 metrics.append({'name':'Banner Price', 'code':'banner_price'})
                 metrics.append({'name':'Banner Total','code':'banner_total'})
 
+        # if self.include_cpm:
+        #     metrics.append({'name': 'CPM', 'code': 'cpm'})
+
         for metric in self.params['email_metrics']:
             metrics.append(metric)
             if metric['code'] == 'n_sent':
                 metrics.append({'name':'Email Price', 'code':'email_price'})
                 metrics.append({'name':'Total Emails','code':'total_emails'})
+
+        # if self.include_cps
         return metrics
 
     def format_headers(self):

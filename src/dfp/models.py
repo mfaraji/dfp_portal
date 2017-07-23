@@ -4,7 +4,15 @@ import json
 from django.db import models
 from authtools.models import User
 
-# Create your models here.
+class Tier(models.Model):
+    TYPES = (
+        ('cps', 'CPS'),
+        ('cpm', 'CPM')
+        )
+    code = models.IntegerField()
+    tierType = models.CharField(max_length=10, choices=TYPES)
+    price = models.FloatField()
+
 
 class Country(models.Model):
     name = models.CharField(max_length=256)
@@ -31,6 +39,8 @@ class Community(models.Model):
     ad_unit_code = models.CharField(max_length=256, blank=True, null=True)
     banner_rate = models.IntegerField(default=0)
     email_rate = models.IntegerField(default=0)
+    cpm = models.ForeignKey(Tier, on_delete=models.CASCADE, blank=True, null=True, related_name='cpm')
+    cps = models.ForeignKey(Tier, on_delete=models.CASCADE, blank=True, null=True, related_name='cps')
 
     class Meta:
         verbose_name_plural = 'communities'

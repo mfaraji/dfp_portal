@@ -624,7 +624,7 @@ Page container
 @media (min-width: 1260px) {
   /* 1200px */
   .container {
-    width: 1400px; } }
+    width: 1270px; } }
 
 @media (min-width: 992px) {
   /* Page container in fixed footer */
