@@ -38,6 +38,8 @@
     "angular-block-ui": "^0.2.2",
     "bootstrap-select": "^1.12.2",
     "datatables.net-scroller": "^1.4.2",
-    "datatables.net-scroller-bs": "^1.4.2"
+    "datatables.net-scroller-bs": "^1.4.2",
+    "jquery-backstretch": "^2.1.16",
+    "jquery-validation": "^1.16.0"
   }
 }
