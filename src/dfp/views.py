@@ -78,6 +78,7 @@ def report(request, pk):
 
     if request.method == 'PUT':
         report = Report.objects.get(id=pk)
+        delete_report_result(report)
         body = json.loads(request.body)
         r_type = ReportType.objects.get(name=body['type'])
         report.name = body['name']
@@ -100,7 +101,7 @@ def report_config(request, pk):
         return JsonResponse({'result':'success', 'data': report.as_json(full=True)})
 
 def generate_report(report, cached=True):
-    cache_key = "%s_%s" % (report.id, report.name)
+    cache_key = "report_result_%s" % report.id
     
     if cached:
         logger.debug('Loading data from cach for report %s', report.name)
@@ -123,6 +124,11 @@ def generate_report(report, cached=True):
     os.remove(file_name)
     cache.set(cache_key, json.dumps(data), 3600)
     return data
+
+def delete_report_result(report):
+    cache_key = "report_result_%s" % report.id
+    cache.delete(cache_key)
+
 
 def generate_emails_report(report_params):
     communities = [item['code'] for item in report_params.get('communities', [])]
