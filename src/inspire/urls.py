@@ -2,10 +2,14 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
+from authtools.views import PasswordResetView
+from django.core.urlresolvers import reverse_lazy
 from . import views
 
 urlpatterns = [
 	url(r'^$', views.HomePage.as_view(), name='home'),
+	url(r'^accounts/password/reset/$', PasswordResetView.as_view(html_email_template_name='registration/password_reset_email.html'), name='password_reset'),
+	url(r'^accounts/', include('authtools.urls'), name="accounts"),
 	url(r'^tpl/header$', views.Header.as_view(), name='header'),
 	url(r'^tpl/footer$', views.Footer.as_view(), name='footer'),
 	url(r'^tpl/sidebar$', views.Sidebar.as_view(), name='sidebar'),
@@ -16,7 +20,8 @@ urlpatterns = [
 	url(r'^views/report_datatable$', views.ReportDataTableView.as_view(), name='report_datatable'),
 	url(r'^views/audience$', views.AudienceView.as_view(), name='audience'),
 	url(r'^admin/', include(admin.site.urls)),
-	url(r'^dfp/', include('dfp.urls'))
+	url(r'^dfp/', include('dfp.urls')),
+	
 ]
 
 

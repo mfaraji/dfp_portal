@@ -75,13 +75,13 @@ InspireApp.controller('SidebarController', ['$state', '$scope', function($state,
     });
 }]);
 
-InspireApp.controller('QuickSidebarController', ['$scope', function($scope) {    
-    $scope.$on('$includeContentLoaded', function() {
-       setTimeout(function(){
-            QuickSidebar.init(); // init quick sidebar        
-        }, 2000)
-    });
-}]);
+// InspireApp.controller('QuickSidebarController', ['$scope', function($scope) {    
+//     $scope.$on('$includeContentLoaded', function() {
+//        setTimeout(function(){
+//             QuickSidebar.init(); // init quick sidebar        
+//         }, 2000)
+//     });
+// }]);
 
 InspireApp.controller('ThemePanelController', ['$scope', function($scope) {    
     $scope.$on('$includeContentLoaded', function() {

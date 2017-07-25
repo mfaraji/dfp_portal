@@ -21,12 +21,13 @@
         <div class="top-menu">
             <ul class="nav navbar-nav pull-right">
                 <li class="dropdown dropdown-extended quick-sidebar-toggler">
-                    <span class="sr-only">Toggle Quick Sidebar</span>
-                    <i class="icon-logout"></i>
+                    <a class="icon-logout" href="{% url 'logout' %}?next={% url 'login' %}"></a>
                 </li>
                 <!-- END USER LOGIN DROPDOWN -->
             </ul>
         </div>
+
+
         <!-- END TOP NAVIGATION MENU -->
     </div>
     <!-- END PAGE TOP -->

@@ -4,7 +4,6 @@ from django.contrib import admin
 
 from dfp.models import Country, Report, Dimension, Metric, DimesionCategory, ReportType, Community, Topic
 
-
 class ReportAdmin(admin.ModelAdmin):
 	list_display = ('name', 'created_at')
 

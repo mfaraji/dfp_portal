@@ -1,0 +1,67 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+    <!--<![endif]-->
+    <!-- BEGIN HEAD -->
+
+    <head>
+        <meta charset="utf-8" />
+        <title>Inspire Sales Portal</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta content="width=device-width, initial-scale=1" name="viewport" />
+        <meta content="Moe Faraji<faraji66@gmail.com>" name="author" />
+        <!-- BEGIN GLOBAL MANDATORY STYLES -->
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+        <link href="{% static 'libs/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'libs/simple-line-icons/css/simple-line-icons.css' %}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'libs/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'libs/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css' %}" rel="stylesheet" type="text/css" />
+        
+
+        <link href="{% static 'css/components.css' %}" rel="stylesheet" type="text/css" id="style_components" />
+        <link href="{% static 'css/plugins.css' %}" rel="stylesheet" type="text/css" />
+        
+        <link href="{% static 'css/login.css' %}" rel="stylesheet" type="text/css" />
+        <link rel="shortcut icon" href="favicon.ico" /> </head>
+    
+    <body class=" login">
+        <!-- BEGIN LOGO -->
+        <div class="logo">
+            <a href="index.html">
+                <img src="{% static 'img/logo-big.png' %}" alt="" /> </a>
+        </div>
+        <!-- END LOGO -->
+        <!-- BEGIN LOGIN -->
+        <div class="content">
+            {% block content %}{% endblock %}
+        </div>
+        <!-- END LOGIN -->
+        <!-- BEGIN COPYRIGHT -->
+        <div class="copyright"> &copy; Copyright 2017<script>new Date().getFullYear()>2017&&document.write("-"+new Date().getFullYear());</script>, Inspire· All Rights Reserved </div>
+
+        <!-- END COPYRIGHT -->
+        <!--[if lt IE 9]>
+<script src="../assets/global/plugins/respond.min.js"></script>
+<script src="../assets/global/plugins/excanvas.min.js"></script> 
+<script src="../assets/global/plugins/ie8.fix.min.js"></script> 
+<![endif]-->
+        <!-- BEGIN CORE PLUGINS -->
+        <script src="{% static 'libs/jquery/dist/jquery.min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'libs/bootstrap/dist/js/bootstrap.min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'libs/js-cookie/src/js.cookie.js' %}" type="text/javascript"></script>
+        <script src="{% static 'libs/jquery-slimscroll/jquery.slimscroll.min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'libs/blockUI/jquery.blockUI.js' %}" type="text/javascript"></script>
+        <script src="{% static 'libs/bootstrap-switch/dist/js/bootstrap-switch.min.js' %}" type="text/javascript"></script>
+
+
+        <script src="{% static 'libs/jquery-validation/dist/jquery.validate.min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'libs/jquery-validation/dist/additional-methods.min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'libs/jquery-backstretch/jquery.backstretch.min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'js/app.js' %}" type="text/javascript"></script>
+        <script src="{% static 'js/login.js' %}" type="text/javascript"></script>
+    </body>
+
+</html>

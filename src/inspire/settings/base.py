@@ -144,7 +144,18 @@ MESSAGE_TAGS = {
 
 # Authentication Settings
 AUTH_USER_MODEL = 'authtools.User'
-LOGIN_REDIRECT_URL = reverse_lazy("profiles:show_self")
-LOGIN_URL = reverse_lazy("accounts:login")
-
+LOGIN_REDIRECT_URL = reverse_lazy("home")
+LOGIN_URL = reverse_lazy("login")
+LOGOUT_REDIRECT_URL = reverse_lazy("login") 
 THUMBNAIL_EXTENSION = 'png'     # Or any extn for your thumbnails
+
+
+
+EMAIL_BACKEND = 'django_ses.SESBackend'
+AWS_ACCESS_KEY_ID = 'AKIAIX45NYKAXYQOSWSQ'
+AWS_SECRET_ACCESS_KEY = 'o3mNbUFybqEHs44w4SYVy2HOp+bZ9REJ3G5iyIfl'
+
+AWS_SES_REGION_NAME = 'us-east-1'
+AWS_SES_REGION_ENDPOINT = 'email.us-east-1.amazonaws.com'
+
+DEFAULT_FROM_EMAIL = 'Inspire Sales Portal <admins@inspire.com>'
