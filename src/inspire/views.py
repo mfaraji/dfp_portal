@@ -1,11 +1,11 @@
 from django.views import generic
-from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
 class HomePage(generic.TemplateView):
     template_name = "index.html"
 
-    @method_decorator(staff_member_required)
+    @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
     	return super(HomePage, self).dispatch(*args, **kwargs)
 

@@ -7,6 +7,8 @@ from django.conf import settings
 from django.core.cache import cache
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+
 from dfp.models import Country, Report, Dimension, Metric, DimesionCategory, Community, Topic, ReportType
 
 from inspire.logger import logger
@@ -15,10 +17,12 @@ from dfp.utils import ReportFormatter, SaleReportFormatter
 from dfp.aws_db import generate_aws_report, search_interests
 
 
+@login_required
 def list_countries(request):
     objs = [obj.as_json() for obj in Country.objects.all()]
     return  JsonResponse({'result': objs})
 
+@login_required
 def dimensions(request):
     # dims = {category.name: category.as_json() for category in DimesionCategory.objects.all()}
     result = []
@@ -26,19 +30,22 @@ def dimensions(request):
         result.extend(category.as_json())
     return  JsonResponse({'result': result})
 
-
+@login_required
 def communities(request):
     objs = [obj.as_json() for obj in Community.objects.all()]
     return  JsonResponse({'result': objs})
 
+@login_required
 def topics(request):
     objs = [obj.as_json() for obj in Topic.objects.all()]
     return  JsonResponse({'result': objs})
 
+@login_required
 def metrics(request):
     objs = [obj.as_json() for obj in Metric.objects.all()]
     return  JsonResponse({'result': objs})
 
+@login_required
 def download_report(request, pk):
     report = Report.objects.get(id=pk)
     data = generate_report(report)
@@ -51,6 +58,7 @@ def download_report(request, pk):
     return response
 
 @csrf_exempt
+@login_required
 def reports(request):
     if request.method == 'GET':
         reports = [obj.as_json() for obj in Report.objects.all()]
@@ -63,6 +71,7 @@ def reports(request):
         return JsonResponse({'result': 'success'})
 
 @csrf_exempt
+@login_required
 def report(request, pk):
     if request.method == 'DELETE':
         report = Report.objects.get(id=pk)
@@ -88,6 +97,7 @@ def report(request, pk):
         return HttpResponse(status=200)
 
 @csrf_exempt
+@login_required
 def search(request):
     if request.method == 'GET':
         interest_name = request.GET['interest']
@@ -95,6 +105,7 @@ def search(request):
         return JsonResponse({'result': search_interests(interest_name)})
 
 @csrf_exempt
+@login_required
 def report_config(request, pk):
     report = Report.objects.get(id=pk)
     if report:
