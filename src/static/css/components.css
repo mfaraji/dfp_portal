@@ -12325,6 +12325,11 @@ Customized Bootstrap Tables
 .table.table-bordered thead > tr > th {
   border-bottom: 0; }
 
+
+.table.table-bordered thead > tr > th:not(.banner):not(.email) {
+  border-bottom: 0;
+  background-color: #bfbfbf;
+   }
 .table td .img-responsive {
   width: 100%; }
 
@@ -22339,3 +22344,14 @@ Color library demo
       width: 100%; }
       .mt-content-row .mt-content-col-fixed .mt-content-sidebar {
         margin-left: 0; } }
+
+
+.color_rect {
+  float: left;
+  width: 20px;
+  height: 20px;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  border: 1px solid rgba(0, 0, 0, .2);
+}

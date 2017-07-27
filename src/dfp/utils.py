@@ -101,25 +101,26 @@ class SaleReportFormatter(object):
     def format_metrics(self):
         metrics = []
         for metric in self.report.metrics:
-            metrics.append({'name': metric.name, 'code': metric.code})
+            metrics.append({'name': metric.name, 'code': metric.code, 'group':'banner'})
             if metric.code == 'SELL_THROUGH_AVAILABLE_IMPRESSIONS':
-                metrics.append({'name':'Banner Price', 'code':'banner_price'})
-                metrics.append({'name':'Banner Total','code':'banner_total'})
+                metrics.append({'name':'Banner Price', 'code':'banner_price', 'group':'banner'})
+                metrics.append({'name':'Banner Total','code':'banner_total', 'group':'banner'})
 
         # if self.include_cpm:
         #     metrics.append({'name': 'CPM', 'code': 'cpm'})
-
+         
         for metric in self.params['email_metrics']:
+            metric.update({'group':'email'})
             metrics.append(metric)
             if metric['code'] == 'n_sent':
-                metrics.append({'name':'Email Price', 'code':'email_price'})
-                metrics.append({'name':'Total Emails','code':'total_emails'})
+                metrics.append({'name':'Email Price', 'code':'email_price', 'group':'email'})
+                metrics.append({'name':'Total Emails','code':'total_emails', 'group':'email'})
 
         # if self.include_cps
         return metrics
 
     def format_headers(self):
-        return ['Community']+ [metric['name'] for metric in self.metrics]
+        return [{'name':'Community', 'code': 'community', 'group':'default'}]+ self.metrics
 
     def format(self):
         return {
