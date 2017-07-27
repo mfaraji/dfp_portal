@@ -107,6 +107,7 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
         });
     }
     $scope.setStep = function(value) {
+        console.log($scope.step);
         if (value == '2' && $scope.report.type == 'sale') {
             $scope.step = '3';
         } else if (value == '4') {

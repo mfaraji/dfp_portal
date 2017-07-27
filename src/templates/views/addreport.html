@@ -1,412 +1,358 @@
 <!-- BEGIN PAGE HEADER-->
 <div class="page-bar">
-    <ul class="page-breadcrumb">
-        <li>
-            <i class="fa fa-home"></i>
-            <a ui-sref="dashboard">Home</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a ui-sref="dashboard">Dashboard</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a ui-sref="addreport">Add Report</a>
-        </li>
-    </ul>   
-</div>             
-                    <div ng-switch="step">
-
-                                    <div class="portlet light" ng-switch-default>
-                                            <div class="portlet-title">
-                                                <div class="caption">
-                                                    <i class="icon-equalizer font-green-haze"></i>
-                                                    <span class="caption-subject font-green-haze bold uppercase">Add A New Report</span>
-                                                </div>
-
-                                            </div>
-
-                                            <div class="portlet-body form">
-                                                <!-- BEGIN FORM-->
-                                                <form action="#" class="form-horizontal">
-                                                    <div class="form-body">
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                            <div class="col-md-4">
-                                                                    <label class="control-label">Name</label>
-                                                            </div>
-                                                                
-                                                                    <div class="col-md-8">
-                                                                        <div class="form-group">
-                                                                            <input type="text" required ng-model="report.name" class="form-control" placeholder="Report 1">
-                                                                        </div>
-                                                                </div>
-                                                                </div>
-                                                            </div>
-
-                                                        <div class="row">
-
-                                                                <div class="col-md-6">
-                                                                    <div class="col-md-4">
-                                                                        <label class="control-label col-md-2">Type</label>
-                                                                    </div>
-                                                                <div class="col-md-8">
-                                                                    
-                                                                    <div class="form-group">
-
-                                                                                <select class="bs-select form-control" tabindex="-98" ng-model="report.type">
-                                                                                <option value="banner">Banner Inventory</option>
-                                                                                <option value="sale">Banner, AS and Email Inventory</option>
-                                                                                </select>
-                                                                    </div>
-                                                                    </div>
-                                                                </div>
-                                                                </div>
-                                    
-                                                        </div>
-
-                                                    <div class="form-actions">
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="row">
-                                                                    <div class="col-md-offset-3 col-md-9">
-                                                                        <button ng-click="setStep(2)" class="btn green">Next</button>
-                                                                        <!-- <a ui-sref="dashboard" type="button" class="btn default">Cancel</a> -->
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6"> </div>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                                <!-- END FORM-->
-                                            </div>
-                                    </div>
-
-                                    <div class="portlet light " ng-switch-when="2" data-ng-init="intialize_report_options()">
-                                            <div class="portlet-title">
-                                                <div class="caption">
-                                                    <i class="icon-equalizer font-green-haze"></i>
-                                                    <span class="caption-subject font-green-haze bold uppercase">Configure DFP</span>
-                                                </div>
-                                            </div>
-                                            <div class="portlet-body form">
-                                                <!-- BEGIN FORM-->
-                                                <form action="#" class="form-horizontal">
-                                                    <div class="form-body">
-
-                                                        <!-- row -->
-                                                        <div class="row">
-                                                            
-                                                                <!-- Dimesion -->
-                                                                <div class="col-md-2">
-                                                                <label class="control-label col-md-2">Dimensions</label>
-                                                                </div>
-                                                                <div class="col-md-9">
-                                                                <div class="form-group">
-
-                                                                    <ui-select multiple ng-model="report.dimensions" sortable="true" theme="bootstrap" close-on-select="false" id="dim_selector">
-                                                                        <ui-select-match placeholder="Select or search a Dimension in the list...">{[$item.name]}</ui-select-match>
-                                                                        <ui-select-choices group-by="'category'" repeat="dim in dimensions | filter: $select.search">
-                                                                            <div ng-bind-html="dim.name | highlight: $select.search"></div>
-                                                                        </ui-select-choices>
-                                                                      </ui-select>
-                                                                </div>
-                                                                </div>
-                                                            
-                                                            </div>
-                                                            <div class="row">
-
-
-                                                                <div class="col-md-2">
-                                                                <label class="control-label col-md-3">Metrics</label>
-                                                                </div>
-                                                                <div class="col-md-9">
-                                                                <div class="form-group">
-                                                                    <ui-select multiple ng-model="report.metrics" theme="bootstrap" sortable="true">
-                                                                        <ui-select-match placeholder="Select or search a Metric in the list...">{[$item.name]}</ui-select-match>
-                                                                        <ui-select-choices repeat="metric in metrics | filter: $select.search">
-                                                                            <div ng-bind-html="metric.name | highlight: $select.search"></div>
-                                                                        </ui-select-choices>
-                                                                      </ui-select>
-                                                                </div>
-                                                                </div>
-
-                                                        </div>
-
-                                                        <!--/row-->
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                            
-                                                                    <label class="col-md-4">From</label>
-                                                                    <div class="col-md-8 form-group">
-                                                                        <input ng-model="report.from" type="text" class="form-control date-picker" placeholder="dd/mm/yyyy" required> </div>
-                                                        
-                                                            </div>
-                                                            <!--/span-->
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label class="col-md-4">To</label>
-                                                                    <div class="col-md-8 form-group">
-                                                                        <input ng-model="report.to" type="text" class="form-control date-picker" placeholder="dd/mm/yyyy" required> </div>
-                                                                </div>
-                                                            </div>
-                                                            <!--/span-->
-                                                        </div>
-                                                        <!--/row-->
-                                                        <div class="row">
-                                                                <div class="col-md-6">
-                                                                <div class="col-md-3">
-                                                                    <label class="control-label col-md-3">Community</label>
-                                                                </div>
-                                                                <div class="col-md-9">
-                                                                <div class="form-group">
-                                                                    <ui-select multiple ng-model="report.communities" sortable="true" theme="bootstrap" close-on-select="false">
-                                                                        <ui-select-match placeholder="Select or search a community in the list...">{[$item.name]}</ui-select-match>
-                                                                        <ui-select-choices repeat="community in communities | filter: $select.search">
-                                                                            <div ng-bind-html="community.name | highlight: $select.search"></div>
-                                                                        </ui-select-choices>
-                                                                      </ui-select>
-                                                                </div>
-                                                                </div>
-                                                                </div>
-                                                                <div class="col-md-5 col-md-offset-1">
-                                                                <div class="form-group">
-                                                                    <ui-select ng-model="report.country" theme="bootstrap">
-                                                                        <ui-select-match placeholder="Select or search a Country in the list...">{[$select.selected.name]}</ui-select-match>
-                                                                        <ui-select-choices repeat="country in countries | filter: $select.search">
-                                                                            <div ng-bind-html="country.name | highlight: $select.search"></div>
-                                                                        </ui-select-choices>
-                                                                    </ui-select>
-
-
-                                                                </div>
-                                                           </div>
-                                                        </div>
-
-                                                        <div class="row col-md-offset-1">
-                                                            <div class="col-md-6">
-                                                            <label class="mt-checkbox mt-checkbox-outline">
-                                                                <input type="checkbox" ng-model="report.include_cpm"> Add CPM
-                                                            <span></span>
-                                                        </label>
-                                                        </div>
-                                                        </div>
-                                                        
-                                                    </div>
-                                                    <div class="form-actions">
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="row">
-                                                                    <div class="col-md-offset-3 col-md-9">
-                                                                        <button ng-click="save()" class="btn green">Save</button>
-                                                                        <button ng-click="setStep(1)" class="btn default">Back</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6"> </div>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                                <!-- END FORM-->
-                                            </div>
-                                    </div>
-
-                                    <div class="portlet light " ng-switch-when="3" data-ng-init="intialize_report_options()">
-                                            <div class="portlet-title">
-                                                <div class="caption">
-                                                    <i class="icon-equalizer font-green-haze"></i>
-                                                    <span class="caption-subject font-green-haze bold uppercase">Configure DFP</span>
-                                                </div>
-                                            </div>
-                                            <div class="portlet-body form">
-                                                <!-- BEGIN FORM-->
-                                                <form action="#" class="form-horizontal">
-                                                    <div class="form-body">
-
-                                                        <!-- row -->
-                                                        <div class="row">
-                                                            
-                                                                <!-- Dimesion -->
-                                                                <div class="col-md-2">
-                                                                <label class="control-label col-md-2">Communities</label>
-                                                                </div>
-                                                                <div class="col-md-9">
-                                                                <div class="form-group">
-
-                                                                    <ui-select multiple ng-model="report.communities" sortable="true" theme="bootstrap" close-on-select="false">
-                                                                        <ui-select-match placeholder="Select or search a Community in the list...">{[$item.name]}</ui-select-match>
-                                                                        <ui-select-choices repeat="community in communities | filter: $select.search">
-                                                                            <div ng-bind-html="community.name | highlight: $select.search"></div>
-                                                                        </ui-select-choices>
-                                                                      </ui-select>
-                                                                </div>
-                                                                </div>
-                                                            
-                                                            </div>
-                                                            <div class="row">
-
-
-                                                                <div class="col-md-2">
-                                                                <label class="control-label col-md-3">Metrics</label>
-                                                                </div>
-                                                                <div class="col-md-9">
-                                                                <div class="form-group">
-                                                                    <ui-select multiple ng-model="report.metrics" theme="bootstrap" sortable="true">
-                                                                        <ui-select-match placeholder="Select or search a Metric in the list...">{[$item.name]}</ui-select-match>
-                                                                        <ui-select-choices repeat="metric in metrics | filter: $select.search">
-                                                                            <div ng-bind-html="metric.name | highlight: $select.search"></div>
-                                                                        </ui-select-choices>
-                                                                      </ui-select>
-                                                                </div>
-                                                                </div>
-
-                                                        </div>
-
-                                                        <!--/row-->
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                            
-                                                                    <label class="control-label col-md-2">From</label>
-                                                                    <div class="col-md-9">
-                                                                        <input ng-model="report.from" type="text" class="form-control date-picker" placeholder="dd/mm/yyyy" required> </div>
-                                                        
-                                                            </div>
-                                                            <!--/span-->
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label class="control-label col-md-3">To</label>
-                                                                    <div class="col-md-9">
-                                                                        <input ng-model="report.to" type="text" class="form-control date-picker" placeholder="dd/mm/yyyy" required> </div>
-                                                                </div>
-                                                            </div>
-                                                            <!--/span-->
-                                                        </div>
-                                                        <!--/row-->
-                                                        <div class="row">
-                                                                <div class="col-md-6">
-                                                                <div class="col-md-3">
-                                                                    <label class="control-label">Country</label>
-                                                                </div>
-                                                                <div class="form-group col-md-6">
-                                                                    <ui-select ng-model="report.country" theme="bootstrap">
-                                                                        <ui-select-match placeholder="Select or search a Country in the list...">{[$select.selected.name]}</ui-select-match>
-                                                                        <ui-select-choices repeat="country in countries | filter: $select.search">
-                                                                            <div ng-bind-html="country.name | highlight: $select.search"></div>
-                                                                        </ui-select-choices>
-                                                                    </ui-select>
-
-
-                                                                </div>
-                                                           </div>
-                                                        </div>
-                                                        
-                                                        <div class="row col-md-offset-1">
-                                                            <div class="col-md-6">
-                                                            <label class="mt-checkbox mt-checkbox-outline">
-                                                                <input type="checkbox" ng-model="report.include_cpm"> Add CPM
-                                                            <span></span>
-                                                        </label>
-                                                        </div>
-                                                        </div>
-
-                                                    </div>
-                                                    <div class="form-actions">
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="row">
-                                                                    <div class="col-md-offset-3 col-md-9">
-                                                                        <button ng-click="setStep(4)" class="btn green">Next</button>
-                                                                        <button ng-click="setStep(1)" class="btn default">Back</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6"> </div>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                                <!-- END FORM-->
-                                            </div>
-                                    </div>
-
-                                    <div class="portlet light " ng-switch-when="4">
-                                            <div class="portlet-title">
-                                                <div class="caption">
-                                                    <i class="icon-equalizer font-green-haze"></i>
-                                                    <span class="caption-subject font-green-haze bold uppercase">Configure AWS Report</span>
-                                                </div>
-                                            </div>
-                                            <div class="portlet-body form">
-                                                <!-- BEGIN FORM-->
-                                                <form action="#" class="form-horizontal">
-                                                    <div class="form-body">
-
-                                                        <!-- row -->
-                                                        <div class="row">
-                                                            
-                                                                <!-- Metric -->
-                                                                <div class="col-md-2">
-                                                                <label class="control-label col-md-2">Metrics</label>
-                                                                </div>
-                                                                <div class="col-md-9">
-                                                                <div class="form-group">
-                                                                    <ui-select multiple ng-model="report.email_metrics" sortable="true" theme="bootstrap" close-on-select="false">
-                                                                        <ui-select-match placeholder="Select or search a Metric in the list...">{[$item.name]}</ui-select-match>
-                                                                        <ui-select-choices group-by="'category'" repeat="metric in email_metrics | filter: $select.search">
-                                                                            <div ng-bind-html="metric.name | highlight: $select.search"></div>
-                                                                        </ui-select-choices>
-                                                                      </ui-select>
-                                                                </div>
-                                                                </div>
-                                                            
-                                                        </div>
-
-                                                         <div class="row">
-                                                            
-                                                                <!-- Interest -->
-                                                                <div class="col-md-2">
-                                                                <label class="control-label col-md-2">Interest</label>
-                                                                </div>
-                                                                <div class="col-md-9">
-                                                                <div class="form-group">
-
-                                                                    <ui-select multiple ng-model="report.interests" theme="bootstrap" close-on-select="false">
-                                                                    <ui-select-match placeholder="Select or search an Interest in the list...">{[$item.name]}</ui-select-match>
-                                                                        <ui-select-choices repeat="interest in interests track by $index" refresh="refresh_interests($select.search)" refresh-delay="500">
-                                                                            <div ng-bind-html="interest.name | highlight: $select.search"></div>
-                                                                        </ui-select-choices>
-                                                                      </ui-select>
-                                                                </div>
-                                                                </div>
-
-                                                            
-                                                        </div>
-                                                    <div class="row col-md-offset-1">
-                                                            <div class="col-md-6">
-                                                            <label class="mt-checkbox mt-checkbox-outline">
-                                                                <input type="checkbox" ng-model="report.include_cps"> Add CPS
-                                                            <span></span>
-                                                        </label>
-                                                        </div>
-                                                        </div>
-
-                                                    </div>
-                                                    <div class="form-actions">
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="row">
-                                                                    <div class="col-md-offset-3 col-md-9">
-                                                                        <button ng-click="save()" class="btn green">Save</button>
-                                                                        <button ng-click="setStep(2)" class="btn default">Back</button>
-                                                                        <button ui-sref="dashboard" type="submit" class="btn default">Cancel</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6"> </div>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                                <!-- END FORM-->
-                                            </div>
-                                    </div>
-                    </div>
+   <ul class="page-breadcrumb">
+      <li>
+         <i class="fa fa-home"></i>
+         <a ui-sref="dashboard">Home</a>
+         <i class="fa fa-angle-right"></i>
+      </li>
+      <li>
+         <a ui-sref="dashboard">Dashboard</a>
+         <i class="fa fa-angle-right"></i>
+      </li>
+      <li>
+         <a ui-sref="addreport">Add Report</a>
+      </li>
+   </ul>
+</div>
+<div ng-switch="step">
+   <div class="portlet light" ng-switch-default>
+      <div class="portlet-title">
+         <div class="caption">
+            <i class="icon-equalizer font-green-haze"></i>
+            <span class="caption-subject font-green-haze bold uppercase">Add A New Report</span>
+         </div>
+      </div>
+      <div class="portlet-body form">
+         <!-- BEGIN FORM-->
+         <form action="#" class="form-horizontal">
+            <div class="form-body">
+               <div class="row">
+                  <div class="col-md-6">
+                     <div class="col-md-4">
+                        <label class="control-label">Name</label>
+                     </div>
+                     <div class="col-md-8">
+                        <div class="form-group">
+                           <input type="text" required ng-model="report.name" class="form-control" placeholder="Report 1">
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col-md-6">
+                     <div class="col-md-4">
+                        <label class="control-label col-md-2">Type</label>
+                     </div>
+                     <div class="col-md-8">
+                        <div class="form-group">
+                           <select class="bs-select form-control" tabindex="-98" ng-model="report.type">
+                              <option value="banner">Banner Inventory</option>
+                              <option value="sale">Banner, AS and Email Inventory</option>
+                           </select>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="form-actions">
+               <div class="row">
+                  <div class="col-md-6">
+                     <div class="row">
+                        <div class="col-md-offset-3 col-md-9">
+                           <button ng-click="setStep(2)" class="btn green">Next</button>
+                           <!-- <a ui-sref="dashboard" type="button" class="btn default">Cancel</a> -->
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-md-6"> </div>
+               </div>
+            </div>
+         </form>
+         <!-- END FORM-->
+      </div>
+   </div>
+   <div class="portlet light " ng-switch-when="2" data-ng-init="intialize_report_options()">
+      <div class="portlet-title">
+         <div class="caption">
+            <i class="icon-equalizer font-green-haze"></i>
+            <span class="caption-subject font-green-haze bold uppercase">Configure DFP</span>
+         </div>
+      </div>
+      <div class="portlet-body form">
+         <!-- BEGIN FORM-->
+         <form action="#" class="form-horizontal">
+            <div class="form-body">
+               <!-- row -->
+               <div class="row">
+                  <!-- Dimesion -->
+                  <div class="col-md-2">
+                     <label class="control-label">Dimensions</label>
+                  </div>
+                  <div class="col-md-9">
+                     <div class="form-group">
+                        <ui-select multiple ng-model="report.dimensions" sortable="true" theme="bootstrap" close-on-select="false" id="dim_selector">
+                           <ui-select-match placeholder="Select or search a Dimension in the list...">{[$item.name]}</ui-select-match>
+                           <ui-select-choices group-by="'category'" repeat="dim in dimensions | filter: $select.search">
+                              <div ng-bind-html="dim.name | highlight: $select.search"></div>
+                           </ui-select-choices>
+                        </ui-select>
+                     </div>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col-md-2">
+                     <label class="control-label">Metrics</label>
+                  </div>
+                  <div class="col-md-9">
+                     <div class="form-group">
+                        <ui-select multiple ng-model="report.metrics" theme="bootstrap" sortable="true">
+                           <ui-select-match placeholder="Select or search a Metric in the list...">{[$item.name]}</ui-select-match>
+                           <ui-select-choices repeat="metric in metrics | filter: $select.search">
+                              <div ng-bind-html="metric.name | highlight: $select.search"></div>
+                           </ui-select-choices>
+                        </ui-select>
+                     </div>
+                  </div>
+               </div>
+               <!--/row-->
+               <div class="row">
+                  <div class="col-md-6">
+                     <label class="col-md-4">From</label>
+                     <div class="col-md-8 form-group">
+                        <input ng-model="report.from" type="text" class="form-control date-picker" placeholder="dd/mm/yyyy" required> 
+                     </div>
+                  </div>
+                  <!--/span-->
+                  <div class="col-md-6">
+                     <div class="form-group">
+                        <label class="col-md-4">To</label>
+                        <div class="col-md-8 form-group">
+                           <input ng-model="report.to" type="text" class="form-control date-picker" placeholder="dd/mm/yyyy" required> 
+                        </div>
+                     </div>
+                  </div>
+                  <!--/span-->
+               </div>
+               <!--/row-->
+               <div class="row">
+                  <div class="col-md-6">
+                     <div class="col-md-3">
+                        <label class="control-label col-md-3">Community</label>
+                     </div>
+                     <div class="col-md-9">
+                        <div class="form-group">
+                           <ui-select multiple ng-model="report.communities" sortable="true" theme="bootstrap" close-on-select="false">
+                              <ui-select-match placeholder="Select or search a community in the list...">{[$item.name]}</ui-select-match>
+                              <ui-select-choices repeat="community in communities | filter: $select.search">
+                                 <div ng-bind-html="community.name | highlight: $select.search"></div>
+                              </ui-select-choices>
+                           </ui-select>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-md-5 col-md-offset-1">
+                     <div class="form-group">
+                        <ui-select ng-model="report.country" theme="bootstrap">
+                           <ui-select-match placeholder="Select or search a Country in the list...">{[$select.selected.name]}</ui-select-match>
+                           <ui-select-choices repeat="country in countries | filter: $select.search">
+                              <div ng-bind-html="country.name | highlight: $select.search"></div>
+                           </ui-select-choices>
+                        </ui-select>
+                     </div>
+                  </div>
+               </div>
+               <div class="row col-md-offset-1">
+                  <div class="col-md-6">
+                     <label class="mt-checkbox mt-checkbox-outline">
+                     <input type="checkbox" ng-model="report.include_cpm"> Add CPM
+                     <span></span>
+                     </label>
+                  </div>
+               </div>
+            </div>
+            <div class="form-actions">
+               <div class="row">
+                  <div class="col-md-6">
+                     <div class="row">
+                        <div class="col-md-offset-3 col-md-9">
+                           <button ng-click="save()" class="btn green">Save</button>
+                           <button ng-click="setStep(1)" class="btn default">Back</button>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-md-6"> </div>
+               </div>
+            </div>
+         </form>
+         <!-- END FORM-->
+      </div>
+   </div>
+   <div class="portlet light " ng-switch-when="3" data-ng-init="intialize_report_options()">
+      <div class="portlet-title">
+         <div class="caption">
+            <i class="icon-equalizer font-green-haze"></i>
+            <span class="caption-subject font-green-haze bold uppercase">Configure DFP</span>
+         </div>
+      </div>
+      <div class="portlet-body form">
+         <!-- BEGIN FORM-->
+         <form action="#" class="form-horizontal">
+            <div class="form-body">
+               <!-- row -->
+               <div class="row">
+                  <!-- Dimesion -->
+                  <div class="col-md-2">
+                     <label class="control-label">Communities</label>
+                  </div>
+                  <div class="col-md-9">
+                     <div class="form-group">
+                        <ui-select multiple ng-model="report.communities" sortable="true" theme="bootstrap" close-on-select="false">
+                           <ui-select-match placeholder="Select or search a Community in the list...">{[$item.name]}</ui-select-match>
+                           <ui-select-choices repeat="community in communities | filter: $select.search">
+                              <div ng-bind-html="community.name | highlight: $select.search"></div>
+                           </ui-select-choices>
+                        </ui-select>
+                     </div>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col-md-2">
+                     <label class="control-label">Metrics</label>
+                  </div>
+                  <div class="col-md-9">
+                     <div class="form-group">
+                        <ui-select multiple ng-model="report.metrics" theme="bootstrap" sortable="true">
+                           <ui-select-match placeholder="Select or search a Metric in the list...">{[$item.name]}</ui-select-match>
+                           <ui-select-choices repeat="metric in metrics | filter: $select.search">
+                              <div ng-bind-html="metric.name | highlight: $select.search"></div>
+                           </ui-select-choices>
+                        </ui-select>
+                     </div>
+                  </div>
+               </div>
+               <!--/row-->
+               <div class="row">
+                  <div class="col-md-2">
+                     <label class="control-label">From</label>
+                  </div>
+                  <div class="col-md-4 form-group">
+                     <input ng-model="report.from" type="text" class="form-control date-picker" placeholder="dd/mm/yyyy" required>
+                  </div>
+                  <div class="col-md-2">
+                     <span class="pull-right"><label class="control-label">To</label></span>
+                  </div>
+                  <div class="col-md-4 form-group">
+                     <input ng-model="report.to" type="text" class="form-control date-picker" placeholder="dd/mm/yyyy" required> 
+                  </div>
+               </div>
+            <!--/row-->
+            <div class="row">
+               <div class="col-md-2">
+                  <label class="control-label">Country</label>
+               </div>
+               <div class="form-group col-md-4">
+                  <ui-select ng-model="report.country" theme="bootstrap">
+                     <ui-select-match placeholder="Select or search a Country in the list...">{[$select.selected.name]}</ui-select-match>
+                     <ui-select-choices repeat="country in countries | filter: $select.search">
+                        <div ng-bind-html="country.name | highlight: $select.search"></div>
+                     </ui-select-choices>
+                  </ui-select>
+               </div>
+               <div class="col-md-6">
+                  <label class="mt-checkbox mt-checkbox-outline">
+                  <input type="checkbox" ng-model="report.include_cpm"> Add CPM
+                  <span></span>
+                  </label>
+               </div>
+            </div>
+      </div>
+      <div class="form-actions">
+      <div class="row">
+      <div class="col-md-6">
+      <div class="row">
+      <div class="col-md-offset-3 col-md-9">
+      <button ng-click="setStep(4)" class="btn green">Next</button>
+      <button ng-click="setStep(1)" class="btn default">Back</button>
+      </div>
+      </div>
+      </div>
+      <div class="col-md-6"> </div>
+      </div>
+      </div>
+      </form>
+      <!-- END FORM-->
+   </div>
+</div>
+<div class="portlet light " ng-switch-when="4">
+   <div class="portlet-title">
+      <div class="caption">
+         <i class="icon-equalizer font-green-haze"></i>
+         <span class="caption-subject font-green-haze bold uppercase">Configure AWS Report</span>
+      </div>
+   </div>
+   <div class="portlet-body form">
+      <!-- BEGIN FORM-->
+      <form action="#" class="form-horizontal">
+         <div class="form-body">
+            <!-- row -->
+            <div class="row">
+               <!-- Metric -->
+               <div class="col-md-2">
+                  <label class="control-label col-md-2">Metrics</label>
+               </div>
+               <div class="col-md-9">
+                  <div class="form-group">
+                     <ui-select multiple ng-model="report.email_metrics" sortable="true" theme="bootstrap" close-on-select="false">
+                        <ui-select-match placeholder="Select or search a Metric in the list...">{[$item.name]}</ui-select-match>
+                        <ui-select-choices group-by="'category'" repeat="metric in email_metrics | filter: $select.search">
+                           <div ng-bind-html="metric.name | highlight: $select.search"></div>
+                        </ui-select-choices>
+                     </ui-select>
+                  </div>
+               </div>
+            </div>
+            <div class="row">
+               <!-- Interest -->
+               <div class="col-md-2">
+                  <label class="control-label col-md-2">Interest</label>
+               </div>
+               <div class="col-md-9">
+                  <div class="form-group">
+                     <ui-select multiple ng-model="report.interests" theme="bootstrap" close-on-select="false">
+                        <ui-select-match placeholder="Select or search an Interest in the list...">{[$item.name]}</ui-select-match>
+                        <ui-select-choices repeat="interest in interests track by $index" refresh="refresh_interests($select.search)" refresh-delay="500">
+                           <div ng-bind-html="interest.name | highlight: $select.search"></div>
+                        </ui-select-choices>
+                     </ui-select>
+                  </div>
+               </div>
+            </div>
+            <div class="row col-md-offset-1">
+               <div class="col-md-6">
+                  <label class="mt-checkbox mt-checkbox-outline">
+                  <input type="checkbox" ng-model="report.include_cps"> Add CPS
+                  <span></span>
+                  </label>
+               </div>
+            </div>
+         </div>
+         <div class="form-actions">
+            <div class="row">
+               <div class="col-md-6">
+                  <div class="row">
+                     <div class="col-md-offset-3 col-md-9">
+                        <button ng-click="save()" class="btn green">Save</button>
+                        <button ng-click="setStep(2)" class="btn default">Back</button>
+                        <button ui-sref="dashboard" type="submit" class="btn default">Cancel</button>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-6"> </div>
+            </div>
+         </div>
+      </form>
+      <!-- END FORM-->
+   </div>
+</div>
+</div>
