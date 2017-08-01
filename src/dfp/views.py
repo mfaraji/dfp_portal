@@ -13,7 +13,7 @@ from dfp.models import Country, Report, Dimension, Metric, DimesionCategory, Com
 
 from inspire.logger import logger
 from dfp.apis.report import ReportManager
-from dfp.utils import ReportFormatter, SaleReportFormatter
+from dfp.utils import ReportFormatter, SaleReportFormatter, Formatter
 from dfp.aws_db import generate_aws_report, search_interests
 
 
@@ -120,19 +120,23 @@ def generate_report(report, cached=True):
         if value:
             logger.debug('Returning cached data')
             return json.loads(value)
-    report_params = json.loads(report.query)
-    report_manager = ReportManager()
-    job_id, file_name = report_manager.run(report)
+    report_config = report.as_dict()
     content = None
-    logger.debug('Reading content of the report')
-    with open(file_name, 'r') as f:
-        content = csv.DictReader(f)
-        if report.r_type.name != 'sale':
-            data = ReportFormatter(content, report).format()
-        else:
-            summary, market_research, offers = generate_emails_report(report_params)
-            data = SaleReportFormatter(content, report, summary=summary, market_research=market_research, offers=offers).format()
-    os.remove(file_name)
+    if report_config.get('metrics'):
+        report_manager = ReportManager()
+        job_id, file_name = report_manager.run(report)
+        logger.debug('Reading content of the report')
+        fd = open(file_name, 'r')
+        content = csv.DictReader(fd)
+    if report.r_type.name != 'sale':
+        data = ReportFormatter(content, report).format()
+    else:
+        summary, market_research, offers = generate_emails_report(report_config)
+        data = Formatter(report, dfp_content=content, asat_summary=summary, market_research=market_research, offers=offers).format()
+    try:
+        os.remove(file_name)
+    except:
+        pass
     cache.set(cache_key, json.dumps(data), 3600)
     return data
 

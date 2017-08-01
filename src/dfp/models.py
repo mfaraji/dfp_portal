@@ -13,6 +13,9 @@ class Tier(models.Model):
     tierType = models.CharField(max_length=10, choices=TYPES)
     price = models.FloatField()
 
+    def __str__(self):
+        return "%s %s" % (self.tierType, self.code)
+
 
 class Country(models.Model):
     name = models.CharField(max_length=256)
@@ -104,6 +107,9 @@ class Report(models.Model):
                 'status': self.status,
                 'job': json.loads(self.query)
             }
+
+    def as_dict(self):
+        return json.loads(self.query)
 
     def __unicode__(self):
         return self.name

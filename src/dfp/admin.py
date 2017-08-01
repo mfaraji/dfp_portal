@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from dfp.models import Country, Report, Dimension, Metric, DimesionCategory, ReportType, Community, Topic
+from dfp.models import Country, Report, Dimension, Metric, DimesionCategory, ReportType, Community, Topic, Tier
 
 class ReportAdmin(admin.ModelAdmin):
 	list_display = ('name', 'created_at')
@@ -18,3 +18,4 @@ admin.site.register(DimesionCategory)
 admin.site.register(ReportType)
 admin.site.register(Community, CommunityAdmin)
 admin.site.register(Topic)
+admin.site.register(Tier)

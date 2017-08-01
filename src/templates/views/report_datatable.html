@@ -36,7 +36,7 @@
                 </div>
             </div>
             <div class="portlet-body table-both-scroll">
-                <div class="row">
+                <div class="row" ng-show="report.dfp">
                 <div class="font-dark col-md-6">
                     <span class="caption-subject bold uppercase"> DFP Date: </span> <span class="caption-subject"> {[report.dateRange]}</span>
                 </div>
@@ -48,7 +48,7 @@
                 </div>
 
                 </div>
-                <div class="mt-title">
+                <div class="mt-title" ng-show="report.dfp">
                 <div class="color_rect bg-blue-soft"></div>
                     <div>
                         <h4 class=" strong mt-content-title">DFP Banner Report</h4>
