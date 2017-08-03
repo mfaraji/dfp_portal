@@ -48,20 +48,6 @@
                 </div>
 
                 </div>
-                <div class="mt-title" ng-show="report.dfp">
-                <div class="color_rect bg-blue-soft"></div>
-                    <div>
-                        <h4 class=" strong mt-content-title">DFP Banner Report</h4>
-                    </div>
-                </div>
-                
-                <div class="mt-title">
-                <div class="color_rect bg-green-seagreen"></div>
-                    <div>
-                        <h4 class=" strong mt-content-title">AWS Email Report</h4>
-                    </div>
-                </div>
-
 
                 <div id="sample_3_wrapper" class="dataTables_wrapper no-footer DTS">
                      <div class="table-scrollable">
@@ -71,7 +57,8 @@
                 <table class="table table-striped table-bordered table-hover order-column dataTable no-footer" id="sample_3" role="grid" aria-describedby="sample_3_info" style="width: 997px; position: absolute; top: 0px; left: 0px;">
                     <thead>
                         <tr role="row">
-                            <th class="sorting" tabindex="0" rowspan="1" colspan="1" style="width: 161px;" ng-repeat="header in report.headers" ng-class="{'bg-blue-soft': header.group=='banner', 'bg-green-seagreen':header.group=='email'}">{[header.name]}</th>
+                            <th class="sorting" tabindex="0" rowspan="1" colspan="1" style="width: 161px;" ng-repeat="header in report.headers" ng-class="{'bg-blue-soft': header.group=='banner', 'bg-green-seagreen':header.group=='email', 'bg-purple-studio': header.group==
+                            'market_research', 'bg-grey-mint': header.group=='offer'}">{[header.name]}</th>
                         </tr>
                     </thead>
                     <tbody>

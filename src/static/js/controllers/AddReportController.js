@@ -24,13 +24,16 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
             }),
             "email_metrics": [{
                 'name': 'AS Emails Sent',
-                'code': 'n_sent'
+                'code': 'n_sent',
+                'group': 'email'
             }, {
                 'name': 'AS Emails Opened',
-                'code': 'n_opened'
+                'code': 'n_opened',
+                'group': 'email'
             }, {
                 'name': 'AS Emails Clicked',
-                'code': 'n_clicked'
+                'code': 'n_clicked',
+                'group': 'email'
             }],
             "include_cpm": true,
             "include_cps": true
@@ -120,22 +123,28 @@ angular.module('InspireApp').controller('AddReportController', function($rootSco
 
     $scope.email_metrics = [{
         'name': 'AS Emails Sent',
-        'code': 'n_sent'
+        'code': 'n_sent',
+        'group': 'email'
     }, {
         'name': 'AS Emails Opened',
-        'code': 'n_opened'
+        'code': 'n_opened',
+        'group': 'email'
     }, {
         'name': 'AS Emails Clicked',
-        'code': 'n_clicked'
+        'code': 'n_clicked',
+        'group': 'email'
     }, {
         'name': 'AS Number of Clicks',
-        'code': 'n_clicks'
+        'code': 'n_clicks',
+        'group': 'email'
     }, {
         'name': 'Market Research',
-        'code': 'market_research'
+        'code': 'market_research',
+        'group': 'market_research'
     }, {
         'name': 'Offers',
-        'code': 'offers'
+        'code': 'offers',
+        'group': 'offer'
     }];
 
 

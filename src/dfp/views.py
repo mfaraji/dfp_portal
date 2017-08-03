@@ -13,7 +13,7 @@ from dfp.models import Country, Report, Dimension, Metric, DimesionCategory, Com
 
 from inspire.logger import logger
 from dfp.apis.report import ReportManager
-from dfp.utils import ReportFormatter, SaleReportFormatter, Formatter
+from dfp.utils import ReportFormatter, Formatter
 from dfp.aws_db import generate_aws_report, search_interests
 
 

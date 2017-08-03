@@ -28,11 +28,11 @@
          <form action="#" class="form-horizontal">
             <div class="form-body">
                <div class="row">
-                  <div class="col-md-6">
-                     <div class="col-md-4">
+                  <div class="col-xs-6">
+                     <div class="col-xs-4">
                         <label class="control-label">Name</label>
                      </div>
-                     <div class="col-md-8">
+                     <div class="col-xs-8">
                         <div class="form-group">
                            <input type="text" required ng-model="report.name" class="form-control" placeholder="Report 1">
                         </div>
@@ -40,11 +40,11 @@
                   </div>
                </div>
                <div class="row">
-                  <div class="col-md-6">
-                     <div class="col-md-4">
-                        <label class="control-label col-md-2">Type</label>
+                  <div class="col-xs-6">
+                     <div class="col-xs-4">
+                        <label class="control-label col-xs-2">Type</label>
                      </div>
-                     <div class="col-md-8">
+                     <div class="col-xs-8">
                         <div class="form-group">
                            <select class="bs-select form-control" tabindex="-98" ng-model="report.type">
                               <option value="banner">Banner Inventory</option>
@@ -86,10 +86,10 @@
                <!-- row -->
                <div class="row">
                   <!-- Dimesion -->
-                  <div class="col-md-2">
+                  <div class="col-xs-2">
                      <label class="control-label">Dimensions</label>
                   </div>
-                  <div class="col-md-9">
+                  <div class="col-xs-9">
                      <div class="form-group">
                         <ui-select multiple ng-model="report.dimensions" sortable="true" theme="bootstrap" close-on-select="false" id="dim_selector">
                            <ui-select-match placeholder="Select or search a Dimension in the list...">{[$item.name]}</ui-select-match>
@@ -101,10 +101,10 @@
                   </div>
                </div>
                <div class="row">
-                  <div class="col-md-2">
+                  <div class="col-xs-2">
                      <label class="control-label">Metrics</label>
                   </div>
-                  <div class="col-md-9">
+                  <div class="col-xs-9">
                      <div class="form-group">
                         <ui-select multiple ng-model="report.metrics" theme="bootstrap" sortable="true">
                            <ui-select-match placeholder="Select or search a Metric in the list...">{[$item.name]}</ui-select-match>
@@ -117,17 +117,17 @@
                </div>
                <!--/row-->
                <div class="row">
-                  <div class="col-md-6">
-                     <label class="col-md-4">From</label>
-                     <div class="col-md-8 form-group">
+                  <div class="col-xs-6">
+                     <label class="col-xs-4">From</label>
+                     <div class="col-xs-8 form-group">
                         <input ng-model="report.from" type="text" class="form-control date-picker" placeholder="dd/mm/yyyy" required> 
                      </div>
                   </div>
                   <!--/span-->
-                  <div class="col-md-6">
+                  <div class="col-xs-6">
                      <div class="form-group">
-                        <label class="col-md-4">To</label>
-                        <div class="col-md-8 form-group">
+                        <label class="col-xs-4">To</label>
+                        <div class="col-xs-8 form-group">
                            <input ng-model="report.to" type="text" class="form-control date-picker" placeholder="dd/mm/yyyy" required> 
                         </div>
                      </div>
@@ -136,11 +136,10 @@
                </div>
                <!--/row-->
                <div class="row">
-                  <div class="col-md-6">
-                     <div class="col-md-3">
-                        <label class="control-label col-md-3">Community</label>
+                    <div class="col-xs-2">
+                        <label class="control-label">Community</label>
                      </div>
-                     <div class="col-md-9">
+                     <div class="col-xs-5">
                         <div class="form-group">
                            <ui-select multiple ng-model="report.communities" sortable="true" theme="bootstrap" close-on-select="false">
                               <ui-select-match placeholder="Select or search a community in the list...">{[$item.name]}</ui-select-match>
@@ -150,8 +149,8 @@
                            </ui-select>
                         </div>
                      </div>
-                  </div>
-                  <div class="col-md-5 col-md-offset-1">
+                  
+                  <div class="col-xs-3 col-xs-offset-1">
                      <div class="form-group">
                         <ui-select ng-model="report.country" theme="bootstrap">
                            <ui-select-match placeholder="Select or search a Country in the list...">{[$select.selected.name]}</ui-select-match>
@@ -202,10 +201,10 @@
                <!-- row -->
                <div class="row">
                   <!-- Dimesion -->
-                  <div class="col-md-2">
+                  <div class="col-xs-2">
                      <label class="control-label">Communities</label>
                   </div>
-                  <div class="col-md-9">
+                  <div class="col-xs-9">
                      <div class="form-group">
                         <ui-select multiple ng-model="report.communities" sortable="true" theme="bootstrap" close-on-select="false">
                            <ui-select-match placeholder="Select or search a Community in the list...">{[$item.name]}</ui-select-match>
@@ -217,10 +216,10 @@
                   </div>
                </div>
                <div class="row">
-                  <div class="col-md-2">
+                  <div class="col-xs-2">
                      <label class="control-label">Metrics</label>
                   </div>
-                  <div class="col-md-9">
+                  <div class="col-xs-9">
                      <div class="form-group">
                         <ui-select multiple ng-model="report.metrics" theme="bootstrap" sortable="true">
                            <ui-select-match placeholder="Select or search a Metric in the list...">{[$item.name]}</ui-select-match>
@@ -233,25 +232,25 @@
                </div>
                <!--/row-->
                <div class="row">
-                  <div class="col-md-2">
+                  <div class="col-xs-2">
                      <label class="control-label">From</label>
                   </div>
-                  <div class="col-md-4 form-group">
+                  <div class="col-xs-4 form-group">
                      <input ng-model="report.from" type="text" class="form-control date-picker" placeholder="dd/mm/yyyy" required>
                   </div>
-                  <div class="col-md-2">
+                  <div class="col-xs-2">
                      <span class="pull-right"><label class="control-label">To</label></span>
                   </div>
-                  <div class="col-md-4 form-group">
+                  <div class="col-xs-4 form-group">
                      <input ng-model="report.to" type="text" class="form-control date-picker" placeholder="dd/mm/yyyy" required> 
                   </div>
                </div>
             <!--/row-->
             <div class="row">
-               <div class="col-md-2">
+               <div class="col-xs-2">
                   <label class="control-label">Country</label>
                </div>
-               <div class="form-group col-md-4">
+               <div class="form-group col-xs-4">
                   <ui-select ng-model="report.country" theme="bootstrap">
                      <ui-select-match placeholder="Select or search a Country in the list...">{[$select.selected.name]}</ui-select-match>
                      <ui-select-choices repeat="country in countries | filter: $select.search">
@@ -259,7 +258,7 @@
                      </ui-select-choices>
                   </ui-select>
                </div>
-               <div class="col-md-6">
+               <div class="col-xs-6">
                   <label class="mt-checkbox mt-checkbox-outline">
                   <input type="checkbox" ng-model="report.include_cpm"> Add CPM
                   <span></span>
@@ -298,10 +297,10 @@
             <!-- row -->
             <div class="row">
                <!-- Metric -->
-               <div class="col-md-2">
+               <div class="col-xs-2">
                   <label class="control-label col-md-2">Metrics</label>
                </div>
-               <div class="col-md-9">
+               <div class="col-xs-9">
                   <div class="form-group">
                      <ui-select multiple ng-model="report.email_metrics" sortable="true" theme="bootstrap" close-on-select="false">
                         <ui-select-match placeholder="Select or search a Metric in the list...">{[$item.name]}</ui-select-match>
@@ -314,10 +313,10 @@
             </div>
             <div class="row">
                <!-- Interest -->
-               <div class="col-md-2">
+               <div class="col-xs-2">
                   <label class="control-label col-md-2">Interest</label>
                </div>
-               <div class="col-md-9">
+               <div class="col-xs-9">
                   <div class="form-group">
                      <ui-select multiple ng-model="report.interests" theme="bootstrap" close-on-select="false">
                         <ui-select-match placeholder="Select or search an Interest in the list...">{[$item.name]}</ui-select-match>
@@ -329,7 +328,7 @@
                </div>
             </div>
             <div class="row col-md-offset-1">
-               <div class="col-md-6">
+               <div class="col-xs-6">
                   <label class="mt-checkbox mt-checkbox-outline">
                   <input type="checkbox" ng-model="report.include_cps"> Add CPS
                   <span></span>
@@ -339,16 +338,15 @@
          </div>
          <div class="form-actions">
             <div class="row">
-               <div class="col-md-6">
+               <div class="col-xs-6">
                   <div class="row">
-                     <div class="col-md-offset-3 col-md-9">
+                     <div class="col-md-offset-3 col-xs-9">
                         <button ng-click="save()" class="btn green">Save</button>
                         <button ng-click="setStep(2)" class="btn default">Back</button>
                         <button ui-sref="dashboard" type="submit" class="btn default">Cancel</button>
                      </div>
                   </div>
                </div>
-               <div class="col-md-6"> </div>
             </div>
          </div>
       </form>
