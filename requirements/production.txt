@@ -1,4 +1,5 @@
 -r base.txt
+uwsgi
 django-ses
 
 # Extra stuff required for production like Prod Database interfacing packages

@@ -1,27 +1,14 @@
-db:
-  image: mysql:5.7
-  volumes:
-    - db_data:/var/lib/mysql
-  restart: always
-  environment:
-    MYSQL_ROOT_PASSWORD: somewordpress
-    MYSQL_DATABASE: wordpress
-    MYSQL_USER: wordpress
-    MYSQL_PASSWORD: wordpress
-
-web:
-  restart: always
-  build: .
-  expose:
-    - "8000"
+version: '3.3'
+services:
+  web:
+    container_name: web
+    build: .
+    expose:
+      - "8000"
+    volumes:
+      - .:/code
+    environment:
+      - DATABASE_URL
 
 
-nginx:
-  restart: always
-  build: ./nginx/
-  ports:
-    - "80:80"
-  volumes_from:
-    - web
-  links:
-    - web:web
+  

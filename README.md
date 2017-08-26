@@ -2,18 +2,35 @@
 
 # inspire
 
-inspire is a _short description_. It is built with [Python][0] using the [Django Web Framework][1].
+inspire is a an inventory tools to aggragate data comming from DFP and stored on Inspire Inc. database. It is built with [Python][0] using the [Django Web Framework][1].
 
 This project has the following basic apps:
 
-* App1 (short desc)
-* App2 (short desc)
-* App3 (short desc)
+* dfp: contains all modules to fetch data from dfp and aws and aggreate them
+* inspire: contains the settings for the project
 
 ## Installation
 
+### 1. virtualenv / virtualenvwrapper
+You should already know what is [virtualenv](http://www.virtualenv.org/), preferably [virtualenvwrapper](http://www.doughellmann.com/projects/virtualenvwrapper/) at this stage. So, simply create it in the project folder.
+```
+$ easy_install pip
+$ pip install virtualenv
+$ virtualenv venv
+$ source venv/bin/activate
+$ pip install -r requirements/development.txt
+$ python setup.py develop
+$ export DATABASE_URL=<DATABASE_URL>
+$ export AWS_DB_URL=<AWS_DB_URL>
+```
+Alternatively, you can run 
+
+### 2. Create tables/ load fixtures
+After setting up the environment, you need
 ### Quick start
 
+The product is shipped as a docker image. The docker image requires the following variables in order to run:
+* DATABASE_URL: which contains the data 
 To set up a development environment quickly, first install Python 3. It
 comes with virtualenv built-in. So create a virtual env by:
 
