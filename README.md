@@ -19,14 +19,10 @@ $ pip install virtualenv
 $ virtualenv venv
 $ source venv/bin/activate
 $ pip install -r requirements/development.txt
-$ python setup.py develop
-$ export DATABASE_URL=<DATABASE_URL>
-$ export AWS_DB_URL=<AWS_DB_URL>
 ```
-Alternatively, you can run 
 
 ### 2. Create tables/ load fixtures
-After setting up the environment, you need
+After setting up the environment, you need to create the tables and load the fixtures
 ### Quick start
 
 The product is shipped as a docker image. The docker image requires the following variables in order to run:

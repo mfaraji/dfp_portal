@@ -1,7 +1,7 @@
 # Byte-compiled / optimized / DLL files
 venv
 
-src/static/libs
+node_modules
 
 __pycache__/
 *.py[cod]
@@ -61,3 +61,6 @@ Desktop.ini
 
 # Project settings
 ./site/
+
+yarn-error.log
+yarn.lock

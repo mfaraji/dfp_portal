@@ -11,13 +11,14 @@ from django.core.urlresolvers import reverse_lazy
 from os.path import dirname, join, exists
 
 # Build paths inside the project like this: join(BASE_DIR, "directory")
+TOPDIR=dirname(dirname(dirname(dirname(__file__))))
 BASE_DIR = dirname(dirname(dirname(__file__)))
-STATICFILES_DIRS = [join(BASE_DIR, 'static')]
+STATICFILES_DIRS = [join(TOPDIR, '/src/static'), join(TOPDIR, 'node_modules')]
 MEDIA_ROOT = join(BASE_DIR, 'media')
 MEDIA_URL = "/media/"
 
 # Define STATIC_ROOT for the collectstatic command
-STATIC_ROOT = join(BASE_DIR, '..', 'static')
+STATIC_ROOT = join(TOPDIR, 'static')
 
 
 CACHES = {
