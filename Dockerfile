@@ -23,22 +23,12 @@ RUN apt-get update && apt-get install -y \
     memcached
 
 
-# setup nginx
-RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+RUN mkdir /code/
+WORKDIR /code/
+ADD . /code/
+RUN pip install -r requirements/production.txt
+
 COPY ./config/nginx-app.conf /etc/nginx/sites-available/default
 COPY ./config/supervisor-app.conf /etc/supervisor/conf.d/
 
-
-RUN mkdir /code/
-WORKDIR /code/
-
-COPY requirements requirements
-
-RUN pip install -r requirements/production.txt
-
-RUN npm -g install bower
-RUN bower install
-
-
-RUN python /code/src/manage.py collectstatic --noinput
 EXPOSE 8000

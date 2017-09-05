@@ -63,4 +63,5 @@ Desktop.ini
 ./site/
 
 yarn-error.log
-yarn.lock
+
+node_modules/

@@ -44,9 +44,6 @@ InspireApp.factory('settings', ['$rootScope', function($rootScope) {
             pageBodySolid: false, // solid body color state
             pageAutoScrollOnLoad: 1000 // auto scroll to top on page load
         },
-        assetsPath: '../assets',
-        globalPath: '../assets/global',
-        layoutPath: '../assets/layouts/layout2',
     };
 
     $rootScope.settings = settings;
@@ -57,8 +54,8 @@ InspireApp.factory('settings', ['$rootScope', function($rootScope) {
 InspireApp.controller('AppController', ['$scope', '$rootScope', function($scope, $rootScope) {
     $scope.$on('$viewContentLoaded', function() {
         console.log('Main controller is loaded');
-        //App.initComponents(); // init core components
-        // Layout.init(); //  Init entire layout(header, footer, sidebar, etc) on page load if the partials included in server side instead of loading with ng-include directive 
+        App.initComponents(); // init core components
+         Layout.init(); //  Init entire layout(header, footer, sidebar, etc) on page load if the partials included in server side instead of loading with ng-include directive 
     });
 }]);
 
@@ -72,20 +69,6 @@ InspireApp.controller('HeaderController', ['$scope', function($scope) {
 InspireApp.controller('SidebarController', ['$state', '$scope', function($state, $scope) {
     $scope.$on('$includeContentLoaded', function() {
         Layout.initSidebar($state); // init sidebar
-    });
-}]);
-
-// InspireApp.controller('QuickSidebarController', ['$scope', function($scope) {    
-//     $scope.$on('$includeContentLoaded', function() {
-//        setTimeout(function(){
-//             QuickSidebar.init(); // init quick sidebar        
-//         }, 2000)
-//     });
-// }]);
-
-InspireApp.controller('ThemePanelController', ['$scope', function($scope) {    
-    $scope.$on('$includeContentLoaded', function() {
-        Demo.init(); // init theme panel
     });
 }]);
 
@@ -113,7 +96,6 @@ InspireApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvid
                         name: 'InspireApp',
                         insertBefore: '#ng_load_plugins_before', // load the above css files before a LINK element with this ID. Dynamic CSS files must be loaded between core and theme css files
                         files: [
-                            // '/static/libs/datatables.net/js/jquery.dataTables.min.js',
                             '/static/js/dashboard.js',
                             '/static/js/controllers/DashboardController.js',
                         ] 
@@ -121,25 +103,6 @@ InspireApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvid
                 }]
             }
         })
-
-    // // Aduience Page
-    // .state('audience', {
-    //     url: "/audience",
-    //     templateUrl: "views/audience",            
-    //     data: {pageTitle: 'Blank Page Template'},
-    //     controller: "BlankController",
-    //     resolve: {
-    //         deps: ['$ocLazyLoad', function($ocLazyLoad) {
-    //             return $ocLazyLoad.load({
-    //                 name: 'InspireApp',
-    //                 insertBefore: '#ng_load_plugins_before', // load the above css files before a LINK element with this ID. Dynamic CSS files must be loaded between core and theme css files
-    //                 files: [
-    //                     '/static/js/controllers/BlankController.js'
-    //                 ] 
-    //             });
-    //         }]
-    //     }
-    // })
 
         // Add Report Page
         .state('addreport', {
@@ -153,11 +116,11 @@ InspireApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvid
                         name: 'InspireApp',
                         insertBefore: '#ng_load_plugins_before', // load the above css files before a LINK element with this ID. Dynamic CSS files must be loaded between core and theme css files
                         files: [
-                            '/static/libs/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css',
-                            '/static/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
-                            '/static/libs/angular-ui-select/dist/select.min.js',
-                            '/static/libs/angular-ui-select/dist/select.min.css',
-                            '/static/libs/angular-bootstrap-multiselect/dist/angular-bootstrap-multiselect.min.js',
+                            '/static/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css',
+                            '/static/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
+                            '/static/angular-ui-select/select.min.js',
+                            '/static/angular-ui-select/select.min.css',
+                            '/static/angular-bootstrap-multiselect/dist/angular-bootstrap-multiselect.min.js',
                             '/static/js/controllers/AddReportController.js'
                         ] 
                     });
@@ -178,10 +141,10 @@ InspireApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvid
                         insertBefore: '#ng_load_plugins_before', // load the above css files before a LINK element with this ID. Dynamic CSS files must be loaded between core and theme css files
                         files: [
                             '/static/js/controllers/ViewReportController.js',
-                            '/static/libs/datatables.net-bs/css/dataTables.bootstrap.min.css',
-                            '/static/libs/datatables.net-bs/js/dataTables.bootstrap.min.js',
-                            '/static/libs/datatables.net-scroller/js/dataTables.scroller.min.js',
-                            '/static/libs/datatables.net-scroller-bs/css/scroller.bootstrap.min.css',
+                            '/static/datatables.net-bs/css/dataTables.bootstrap.min.css',
+                            '/static/datatables.net-bs/js/dataTables.bootstrap.min.js',
+                            '/static/datatables.net-scroller/js/dataTables.scroller.min.js',
+                            '/static/datatables.net-scroller-bs/css/scroller.bootstrap.min.css',
 
                         ] 
                     });
@@ -200,11 +163,11 @@ InspireApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvid
                         name: 'InspireApp',
                         insertBefore: '#ng_load_plugins_before', // load the above css files before a LINK element with this ID. Dynamic CSS files must be loaded between core and theme css files
                         files: [
-                            '/static/libs/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css',
-                            '/static/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
-                            '/static/libs/angular-ui-select/dist/select.min.js',
-                            '/static/libs/angular-ui-select/dist/select.min.css',
-                            '/static/libs/angular-bootstrap-multiselect/dist/angular-bootstrap-multiselect.min.js',
+                            '/static/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css',
+                            '/static/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
+                            '/static/angular-ui-select/dist/select.min.js',
+                            '/static/angular-ui-select/dist/select.min.css',
+                            '/static/angular-bootstrap-multiselect/dist/angular-bootstrap-multiselect.min.js',
                             '/static/js/controllers/AddReportController.js'
                         ] 
                     });

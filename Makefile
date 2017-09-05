@@ -25,25 +25,13 @@ db:
        python manage.py migrate; \
     )
 
+image:
+	init
+	rm -rf ./statcs
+	yarn install
 
-cleanup:
 	@( \
        source ./venv/bin/activate; \
-       python manage.py stacks-delete; \
+       python manage.py collectstatic; \
     )
-
-list:
-	@( \
-       source ./venv/bin/activate; \
-       python manage.py stacks; \
-    )
-
-update:
-	git pull
-	bower install
-	@( \
-		source ./venv/bin/activate; \
-		pip install -r requirements/prod; \
-		python src/manage.py migrate; \
-		python src/manage.py collectstatic; \
-    )
+    

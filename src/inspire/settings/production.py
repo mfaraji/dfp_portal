@@ -2,14 +2,14 @@
 #    DJANGO_SETTINGS_MODULE=inspire.settings.production
 from .base import *             # NOQA
 import logging.config
-
+import os
 # For security and performance reasons, DEBUG is turned off
 DEBUG = False
 TEMPLATE_DEBUG = False
 
 # Must mention ALLOWED_HOSTS in production!
-ALLOWED_HOSTS = ["inspire.mfaraji.me"]
-
+ALLOWED_HOSTS = ["localhost"]
+TOPDIR='/code/inspire'
 # Cache the templates in memory for speed-up
 loaders = [
     ('django.template.loaders.cached.Loader', [
@@ -22,8 +22,7 @@ TEMPLATES[0]['OPTIONS'].update({"loaders": loaders})
 TEMPLATES[0].update({"APP_DIRS": False})
 
 # Log everything to the logs directory at the top
-LOGFILE_ROOT = join(dirname(BASE_DIR), 'logs')
-
+LOGFILE_ROOT = join(TOPDIR, 'logs')
 # Reset logging
 LOGGING_CONFIG = None
 # LOGGING = {
@@ -105,8 +104,7 @@ LOGGING = {
 
 logging.config.dictConfig(LOGGING)
 
-SECRET_KEY = env('SECRET_KEY', '1234')
-
+SECRET_KEY = env('SECRET_KEY')
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
