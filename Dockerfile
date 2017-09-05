@@ -1,4 +1,4 @@
-FROM python:2.7
+FROM ubuntu:16.04
 
 ENV PYTHONUNBUFFERED 1
 
@@ -18,17 +18,26 @@ RUN apt-get update && apt-get install -y \
     python-setuptools \
     supervisor \
     vim \
-    npm \
-    nodejs-legacy \
     memcached
-
 
 RUN mkdir /code/
 WORKDIR /code/
-ADD . /code/
-RUN pip install -r requirements/production.txt
+COPY ./requirements/base.txt .
+COPY ./requirements/production.txt .
 
+RUN pip install -r production.txt
+
+ADD . /code/
+COPY local.env /code/src/inspire/settings/local.env
+
+
+RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 COPY ./config/nginx-app.conf /etc/nginx/sites-available/default
 COPY ./config/supervisor-app.conf /etc/supervisor/conf.d/
 
+RUN service supervisor start
+RUN supervisorctl start inspire
+
 EXPOSE 8000
+
+CMD ["supervisord", "-n"]

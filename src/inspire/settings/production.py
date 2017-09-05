@@ -9,7 +9,7 @@ TEMPLATE_DEBUG = False
 
 # Must mention ALLOWED_HOSTS in production!
 ALLOWED_HOSTS = ["localhost"]
-TOPDIR='/code/inspire'
+TOPDIR='/code'
 # Cache the templates in memory for speed-up
 loaders = [
     ('django.template.loaders.cached.Loader', [
@@ -17,6 +17,15 @@ loaders = [
         'django.template.loaders.app_directories.Loader',
     ]),
 ]
+
+EMAIL_BACKEND = 'django_ses.SESBackend'
+AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
+
+AWS_SES_REGION_NAME = 'us-east-1'
+AWS_SES_REGION_ENDPOINT = 'email.us-east-1.amazonaws.com'
+
+DEFAULT_FROM_EMAIL = 'Inspire Sales Portal <admins@inspire.com>'
 
 TEMPLATES[0]['OPTIONS'].update({"loaders": loaders})
 TEMPLATES[0].update({"APP_DIRS": False})
