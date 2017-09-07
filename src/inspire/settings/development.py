@@ -40,7 +40,6 @@ CACHES = {
     }
 }
 
-AWS_DATABASE_URL = 'mysql://inventory:inventory_for_all@chaos-cluster.cluster-c6ziwtzns3sb.us-east-1.rds.amazonaws.com/mfaraji_bc'
 # Log everything to the logs directory at the top
 LOGFILE_ROOT = join(dirname(BASE_DIR), 'logs')
 

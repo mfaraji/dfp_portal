@@ -67,3 +67,4 @@ yarn-error.log
 node_modules/
 
 local.env
+static/

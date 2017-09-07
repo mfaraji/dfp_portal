@@ -73,6 +73,8 @@ if exists(env_file):
 # SECURITY WARNING: keep the secret key used in production secret!
 # Raises ImproperlyConfigured exception if SECRET_KEY not in os.environ
 
+AWS_DATABASE_URL = env('AWS_DATABASE_URL')
+
 ALLOWED_HOSTS = []
 
 # Application definition
