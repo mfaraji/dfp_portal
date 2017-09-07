@@ -4,7 +4,7 @@
 init:
 	virtualenv venv
 	. venv/bin/activate
-	pip install -r requirements.txt
+	pip install -r requirements/development
 
 clean:
 	rm -rf venv
@@ -22,7 +22,13 @@ server:
 db:
 	@( \
        source ./venv/bin/activate; \
-       python manage.py migrate; \
+       python src/manage.py migrate; \
+    )
+
+fixture:
+	@( \
+       source ./venv/bin/activate; \
+       python src/manage.py loaddata fixtures/fixture.json; \
     )
 
 image:

@@ -9,7 +9,7 @@ This project has the following basic apps:
 * dfp: contains all modules to fetch data from dfp and aws and aggreate them
 * inspire: contains the settings for the project
 
-## Installation
+## Setup
 
 ### 1. virtualenv / virtualenvwrapper
 You should already know what is [virtualenv](http://www.virtualenv.org/), preferably [virtualenvwrapper](http://www.doughellmann.com/projects/virtualenvwrapper/) at this stage. So, simply create it in the project folder.
@@ -21,29 +21,29 @@ $ source venv/bin/activate
 $ pip install -r requirements/development.txt
 ```
 
+or 
+
+```
+make init
+```
+
 ### 2. Create tables/ load fixtures
-After setting up the environment, you need to create the tables and load the fixtures
-### Quick start
+After setting up the environment, you need to create the tables and load the fixtures:
 
-The product is shipped as a docker image. The docker image requires the following variables in order to run:
-* DATABASE_URL: which contains the data 
-To set up a development environment quickly, first install Python 3. It
-comes with virtualenv built-in. So create a virtual env by:
+First, you need to set database url
+```
+export DATABASE_URL="mysql://test:test@localhost/db"
+```
+Then, run the migration
 
-    1. `$ python3 -m venv inspire`
-    2. `$ . inspire/bin/activate`
+```
+make db
+make fixture
+```
+### 3. Run the docker image
+First setup the environment variables in a file named local.env in the root of the project. You can find a sample file there.
+Then, run the docker image by:
 
-Install all dependencies:
-
-    pip install -r requirements.txt
-
-Run migrations:
-
-    python manage.py migrate
-
-### Detailed instructions
-
-Take a look at the docs for more information.
-
-[0]: https://www.python.org/
-[1]: https://www.djangoproject.com/
+```
+docker-compose run -d web
+```
