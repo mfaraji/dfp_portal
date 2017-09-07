@@ -28,7 +28,6 @@ COPY ./requirements/production.txt .
 RUN pip install -r production.txt
 
 ADD . /code/
-COPY local.env /code/src/inspire/settings/local.env
 
 
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
