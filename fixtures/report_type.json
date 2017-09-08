@@ -1,0 +1,1 @@
+[{"model": "dfp.reporttype", "pk": 2, "fields": {"name": "sale"}}, {"model": "dfp.reporttype", "pk": 3, "fields": {"name": "banner"}}]
