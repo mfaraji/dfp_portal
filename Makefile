@@ -14,23 +14,20 @@ assets:
 	bower install
 
 server:
-	@( \
-       source ./venv/bin/activate; \
-       python src/manage.py runserver 0.0.0.0:8000; \
-    )
+	venv/bin/python src/manage.py runserver 0.0.0.0:8000
 
 db:
 	@( \
-       source ./venv/bin/activate; \
-       python src/manage.py migrate; \
-    )
+		export AWS_DATABASE_URL='test'; \
+		venv/bin/python src/manage.py migrate; \
+	)
 
 fixture:
 	@( \
-       source ./venv/bin/activate; \
-       python src/manage.py loaddata fixtures/fixture.json; \
-    )
-
+		export AWS_DATABASE_URL='test'; \
+		venv/bin/python src/manage.py loaddata fixtures/*; \
+	)
+	
 image:
 	init
 	rm -rf ./statcs
