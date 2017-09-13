@@ -1,3 +1,6 @@
+"""
+View serving the requests 
+"""
 import os
 import json
 import csv

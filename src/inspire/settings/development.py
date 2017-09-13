@@ -11,7 +11,7 @@ TEMPLATES[0]['OPTIONS'].update({'debug': True})
 if "celery" in sys.argv[0]:
     DEBUG = False
 
-ALLOWED_HOSTS=['10.10.10.11', 'localhost', '127.0.0.1', '52.204.88.251']
+ALLOWED_HOSTS=['*']
 # Django Debug Toolbar
 INSTALLED_APPS += (
     'debug_toolbar',

@@ -9,3 +9,6 @@ PyOpenSSL
 sqlalchemy>=1.1.13
 babel>=2.5.0
 MySQL-python
+djangorestframework
+markdown
+django-filter
