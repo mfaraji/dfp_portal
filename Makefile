@@ -4,7 +4,7 @@
 init:
 	virtualenv venv
 	. venv/bin/activate
-	pip install -r requirements/development
+	pip install -r requirements/development.txt
 
 clean:
 	rm -rf venv
