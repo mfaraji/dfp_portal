@@ -3,8 +3,10 @@
 
 init:
 	virtualenv venv
-	. venv/bin/activate
-	pip install -r requirements/development.txt
+	(\
+		source venv/bin/activate; \
+		pip install -r requirements/development.txt; \
+	)
 
 clean:
 	rm -rf venv
@@ -19,12 +21,14 @@ server:
 db:
 	@( \
 		export AWS_DATABASE_URL='test'; \
+		source venv/bin/activate; \
 		venv/bin/python src/manage.py migrate; \
 	)
 
 fixture:
 	@( \
 		export AWS_DATABASE_URL='test'; \
+		source venv/bin/activate; \
 		venv/bin/python src/manage.py loaddata fixtures/*; \
 	)
 	

@@ -10,7 +10,6 @@ urlpatterns = [
 	url(r'^$', views.HomePage.as_view(), name='home'),
 	url(r'^accounts/password/reset/$', PasswordResetView.as_view(html_email_template_name='registration/password_reset_email.html'), name='password_reset'),
 	url(r'^accounts/', include('authtools.urls'), name="accounts"),
-	url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 	url(r'^tpl/header$', views.Header.as_view(), name='header'),
 	url(r'^tpl/footer$', views.Footer.as_view(), name='footer'),
 	url(r'^tpl/sidebar$', views.Sidebar.as_view(), name='sidebar'),
