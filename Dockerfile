@@ -20,9 +20,6 @@ RUN apt-get update && apt-get install -y \
     vim \
     memcached
 
-RUN mkdir /static
-COPY static /static
-
 RUN mkdir /code/
 WORKDIR /code/
 COPY ./requirements/base.txt .
