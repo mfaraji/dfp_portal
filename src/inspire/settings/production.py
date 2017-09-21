@@ -8,7 +8,7 @@ DEBUG = False
 TEMPLATE_DEBUG = False
 
 # Must mention ALLOWED_HOSTS in production!
-ALLOWED_HOSTS = ["localhost"]
+ALLOWED_HOSTS = ["*"]
 TOPDIR='/code'
 # Cache the templates in memory for speed-up
 loaders = [

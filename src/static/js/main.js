@@ -141,10 +141,6 @@ InspireApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvid
                         insertBefore: '#ng_load_plugins_before', // load the above css files before a LINK element with this ID. Dynamic CSS files must be loaded between core and theme css files
                         files: [
                             '/static/js/controllers/ViewReportController.js',
-                            '/static/datatables.net-bs/css/dataTables.bootstrap.min.css',
-                            '/static/datatables.net-bs/js/dataTables.bootstrap.min.js',
-                            '/static/datatables.net-scroller/js/dataTables.scroller.min.js',
-                            '/static/datatables.net-scroller-bs/css/scroller.bootstrap.min.css',
 
                         ] 
                     });
