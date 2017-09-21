@@ -3,7 +3,7 @@ version: '3.3'
 services:
   web:
     container_name: inspire_inventory
-    image: inventory:latest
+    image: 687433828854.dkr.ecr.us-east-1.amazonaws.com/inventory:latest
     build: .
     ports:
       - "8000:8000"
