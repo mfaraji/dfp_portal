@@ -1,4 +1,5 @@
 FROM ubuntu:16.04
+MAINTAINER Moe Faraji <faraji66@gmail.com>
 
 ENV PYTHONUNBUFFERED 1
 
@@ -22,14 +23,14 @@ RUN apt-get update && apt-get install -y \
 
 RUN mkdir /code/
 WORKDIR /code/
+ADD requirements .
+RUN pip install -r requirements/production.txt
 ADD . /code/
-RUN pip install -r production.txt
-RUN touch supervisor.sock
+
 
 
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 COPY ./config/nginx-app.conf /etc/nginx/sites-available/default
-COPY ./config/supervisord.conf /etc/supervisor/supervisord.conf
 COPY ./config/supervisor-app.conf /etc/supervisor/conf.d/
 
 RUN service supervisor start
@@ -37,4 +38,4 @@ RUN supervisorctl start inspire
 
 EXPOSE 8000
 
-CMD ["supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]
+CMD ["supervisord", "-n"]
