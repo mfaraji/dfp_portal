@@ -23,8 +23,9 @@ RUN apt-get update && apt-get install -y \
 
 RUN mkdir /code/
 WORKDIR /code/
-ADD requirements .
-RUN pip install -r requirements/production.txt
+ADD requirements/base.txt .
+ADD requirements/production.txt .
+RUN pip install -r production.txt
 ADD . /code/
 
 
@@ -33,9 +34,9 @@ RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 COPY ./config/nginx-app.conf /etc/nginx/sites-available/default
 COPY ./config/supervisor-app.conf /etc/supervisor/conf.d/
 
-RUN service supervisor start
-RUN supervisorctl start inspire
+#RUN service supervisor start
+#RUN supervisorctl start inspire
 
 EXPOSE 8000
 
-CMD ["supervisord", "-n"]
+CMD ["/usr/bin/supervisord","-n", "-c", "/etc/supervisor/supervisord.conf"]
