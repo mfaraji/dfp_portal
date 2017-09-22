@@ -11,7 +11,7 @@ from babel.numbers import format_currency
 
 FUTURE_METRICS = ('SELL_THROUGH_AVAILABLE_IMPRESSIONS')
 
-locale.setlocale( locale.LC_ALL, 'en_CA.UTF-8' )
+locale.setlocale(locale.LC_ALL,'en_US.UTF-8')
 
 class ReportFormatter(object):
 
@@ -24,15 +24,14 @@ class ReportFormatter(object):
         self.include_cpm = self.params.get('include_cpm', True)
 
     def format_headers(self):
-        dims = [item.name for item in self.report.dimensions]
+        headers = [{'name': item.name} for item in self.report.dimensions]
         metrics = []
         for metric in self.report.metrics:
-            metrics.append(metric.name)
+            headers.append({'name': metric.name})
             if metric.code == 'SELL_THROUGH_AVAILABLE_IMPRESSIONS':
-                metrics.append('Price')
-                metrics.append('Total')
-        _headers = dims + metrics
-        return _headers
+                headers.append({'name': 'Price'})
+                headers.append({'name': 'Total'})
+        return headers
 
     def format(self):
         result = {
