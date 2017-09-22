@@ -11,7 +11,7 @@ from babel.numbers import format_currency
 
 FUTURE_METRICS = ('SELL_THROUGH_AVAILABLE_IMPRESSIONS')
 
-locale.setlocale( locale.LC_ALL, '' )
+locale.setlocale( locale.LC_ALL, 'en_CA.UTF-8' )
 
 class ReportFormatter(object):
 
