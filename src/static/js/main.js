@@ -118,8 +118,8 @@ InspireApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvid
                         files: [
                             '/static/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css',
                             '/static/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
-                            '/static/angular-ui-select/select.min.js',
-                            '/static/angular-ui-select/select.min.css',
+                            '/static/ui-select/dist/select.min.js',
+                            '/static/ui-select/dist/select.min.css',
                             '/static/angular-bootstrap-multiselect/dist/angular-bootstrap-multiselect.min.js',
                             '/static/js/controllers/AddReportController.js'
                         ] 
@@ -161,8 +161,8 @@ InspireApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvid
                         files: [
                             '/static/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css',
                             '/static/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
-                            '/static/angular-ui-select/dist/select.min.js',
-                            '/static/angular-ui-select/dist/select.min.css',
+                            '/static/ui-select/dist/select.min.js',
+                            '/static/ui-select/dist/select.min.css',
                             '/static/angular-bootstrap-multiselect/dist/angular-bootstrap-multiselect.min.js',
                             '/static/js/controllers/AddReportController.js'
                         ] 
