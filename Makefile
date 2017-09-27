@@ -34,11 +34,14 @@ fixture:
 	
 image:
 	init
-	rm -rf ./statcs
+	rm -rf ./statics
+	rm -rf ./node_modules
 	yarn install
-
 	@( \
+	   export AWS_DATABASE_URL='test';\
+	   export DATABASE_URL='test';\
        source ./venv/bin/activate; \
        python manage.py collectstatic; \
     )
+    sudo docker-compose build web	
     
