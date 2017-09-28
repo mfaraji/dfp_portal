@@ -3,6 +3,7 @@
 from .base import *             # NOQA
 import logging.config
 import os
+import raven
 # For security and performance reasons, DEBUG is turned off
 DEBUG = False
 TEMPLATE_DEBUG = False
@@ -17,6 +18,9 @@ loaders = [
         'django.template.loaders.app_directories.Loader',
     ]),
 ]
+
+INSTALLED_APPS += (
+    'raven.contrib.django.raven_compat',)
 
 EMAIL_BACKEND = 'django_ses.SESBackend'
 AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
@@ -121,4 +125,11 @@ CACHES = {
             '127.0.0.1:11211',
         ]
     }
+}
+
+RAVEN_CONFIG = {
+    'dsn': 'https://cc93dc82d57249ddbcf563f932f5e345:9c6ae9ea05d34aae9049d8463305cc0d@sentry.io/223567',
+    # If you are using git, you can also automatically configure the
+    # release based on the git info.
+    'release': open(os.path.join([TOPDIR, 'VERSION'])).read.strip(),
 }
