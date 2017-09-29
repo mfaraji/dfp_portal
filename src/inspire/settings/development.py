@@ -22,6 +22,8 @@ INSTALLED_APPS += (
 MIDDLEWARE_CLASSES += (
     'debug_toolbar.middleware.DebugToolbarMiddleware',)
 
+AWS_DATABASE_URL = 'mysql://inventory:inventory_for_all@chaos-cluster.cluster-c6ziwtzns3sb.us-east-1.rds.amazonaws.com/mfaraji_bc'
+
 # Show emails to console in DEBUG mode
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 

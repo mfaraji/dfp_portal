@@ -7,9 +7,6 @@ from django.core.cache import cache
 from django.conf import settings
 from inspire.logger import logger
 
-AWS_DATABASE_URL = 'mysql://inventory:inventory_for_all@chaos-cluster.cluster-c6ziwtzns3sb.us-east-1.rds.amazonaws.com/mfaraji_bc'
-
-
 def generate_aws_report(communities=[], interests=[], metrics=[]):
     summary = None
     market_research = None
@@ -28,7 +25,7 @@ def generate_aws_report(communities=[], interests=[], metrics=[]):
     return summary, market_research, offers
 
 def db_connect():
-    return create_engine(AWS_DATABASE_URL)
+    return create_engine(settings.AWS_DATABASE_URL)
 
 def get_activity_summary(communities=[]):
     logger.info('Fetching Acitivity Summary')
