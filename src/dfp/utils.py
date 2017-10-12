@@ -247,7 +247,7 @@ class Formatter(object):
         community = Community.objects.filter(code=str(row[0])).first()         
         
         if not community:
-            logger.error('Community Not Found: %s', community)
+            logger.error('Community Not Found: %s', str(row[0]))
             return
 
         if self.communities and community.code not in self.communities:

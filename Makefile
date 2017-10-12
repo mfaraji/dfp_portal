@@ -41,7 +41,7 @@ image:
 	   export AWS_DATABASE_URL='test';\
 	   export DATABASE_URL='test';\
        source ./venv/bin/activate; \
-       python manage.py collectstatic; \
+       python src/manage.py collectstatic; \
     )
     sudo docker-compose build web	
     

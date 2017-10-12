@@ -55,7 +55,7 @@ def download_report(request, pk):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment;filename=%s.csv' % report.name
     writer = csv.writer(response)
-    writer.writerow(data['headers'])
+    writer.writerow([header['name'] for header in data['headers']])
     for row in data['rows']:
         writer.writerow(row)
     return response
