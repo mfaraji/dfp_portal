@@ -45,3 +45,5 @@ image:
     )
     sudo docker-compose build web	
     
+upload:
+	./script/upload_docker_image.sh
