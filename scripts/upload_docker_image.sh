@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 
 AWS_ENV=${AWS_ENV:-/home/ubuntu/aws_env}
 source $AWS_ENV/bin/activate

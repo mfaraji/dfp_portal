@@ -35,7 +35,7 @@ ADD requirements/production.txt .
 RUN pip install -r production.txt
 ADD . /code/
 
-
+ENV TERM dumb
 
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 COPY ./config/nginx-app.conf /etc/nginx/sites-available/default

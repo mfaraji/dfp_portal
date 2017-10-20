@@ -17,7 +17,7 @@ from dfp.models import Country, Report, Dimension, Metric, DimesionCategory, Com
 from inspire.logger import logger
 from dfp.apis.report import ReportManager
 from dfp.utils import ReportFormatter, Formatter
-from dfp.aws_db import generate_aws_report, search_interests
+from aurora.query import generate_aws_report, search_interests
 
 
 @login_required
@@ -137,6 +137,7 @@ def generate_report(report, cached=True):
         summary, market_research, offers = generate_emails_report(report_config)
         data = Formatter(report, dfp_content=content, asat_summary=summary, market_research=market_research, offers=offers).format()
     try:
+        logger.debug('Deleting file %s', file_name)
         os.remove(file_name)
     except:
         pass
