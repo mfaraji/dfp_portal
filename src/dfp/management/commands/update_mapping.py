@@ -1,7 +1,13 @@
-import csv
-from django.core.management.base import BaseCommand, CommandError
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+from __future__ import unicode_literals
 
-from dfp.models import Community, Topic
+import csv
+
+from dfp.models import Community
+from dfp.models import Topic
+from django.core.management.base import BaseCommand
+from django.core.management.base import CommandError
 
 
 class Command(BaseCommand):
@@ -18,13 +24,16 @@ class Command(BaseCommand):
         try:
             while item:
                 community_name = item[2]
-                community = Community.objects.filter(name=community_name).first()
+                community = Community.objects.filter(
+                    name=community_name).first()
 
                 if community:
                     self.stdout.write('Community Exist: %s' % community_name)
                 else:
-                    self.stdout.write('Creating community: %s' % community_name)
-                    community = Community.objects.create(name=community_name, code=item[0])
+                    self.stdout.write('Creating community: %s' %
+                                      community_name)
+                    community = Community.objects.create(
+                        name=community_name, code=item[0])
 
                 while item:
                     if item[2] != community_name:
@@ -32,7 +41,8 @@ class Command(BaseCommand):
                     topic = Topic.objects.filter(code=item[3])
                     if not topic:
                         self.stdout.write('Creating Topic: %s' % item[4])
-                        Topic.objects.create(name=item[4], code=item[3], community=community)
+                        Topic.objects.create(
+                            name=item[4], code=item[3], community=community)
                     item = reader.next()
         except StopIteration:
             pass

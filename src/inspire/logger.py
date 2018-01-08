@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Support new str.format syntax in log messages
 #
 # Based on http://stackoverflow.com/a/25433007 and
@@ -12,7 +13,8 @@
 # a further note, this implementation also silently ignores misspelled
 # keywords meant for the Logger (eg. ectra).
 #
-
+from __future__ import absolute_import
+from __future__ import unicode_literals
 
 import logging
 
@@ -29,6 +31,7 @@ class NewStyleLogMessage(object):
                       for k, v in self.kwargs.items())
 
         return self.message.format(*args, **kwargs)
+
 
 N = NewStyleLogMessage
 

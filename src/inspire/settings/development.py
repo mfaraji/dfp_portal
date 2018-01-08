@@ -1,6 +1,11 @@
-from .base import *             # NOQA
-import sys
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
 import logging.config
+import sys
+
+from .base import *             # NOQA
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -11,7 +16,7 @@ TEMPLATES[0]['OPTIONS'].update({'debug': True})
 if "celery" in sys.argv[0]:
     DEBUG = False
 
-ALLOWED_HOSTS=['*']
+ALLOWED_HOSTS = ['*']
 # Django Debug Toolbar
 INSTALLED_APPS += (
     'debug_toolbar',

@@ -1,13 +1,18 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
 from googleads import dfp
 
 from .base import Resource
 
+
 class CustomTargetService(Resource):
-    
 
     def get(self):
         # Initialize appropriate service.
-        custom_targeting_service = self.client.GetService('CustomTargetingService', version='v201611')
+        custom_targeting_service = self.client.GetService(
+            'CustomTargetingService', version='v201611')
 
         # Create statement to get all targeting keys.
         targeting_key_statement = dfp.FilterStatement()
@@ -16,7 +21,8 @@ class CustomTargetService(Resource):
 
         # Get custom targeting keys by statement.
         while True:
-            response = custom_targeting_service.getCustomTargetingKeysByStatement(targeting_key_statement.ToStatement())
+            response = custom_targeting_service.getCustomTargetingKeysByStatement(
+                targeting_key_statement.ToStatement())
             if 'results' in response:
                 all_keys.extend(response['results'])
                 targeting_key_statement.offset += dfp.SUGGESTED_PAGE_LIMIT

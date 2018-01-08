@@ -1,15 +1,20 @@
+# -*- coding: utf-8 -*-
 # In production set the environment variable like this:
 #    DJANGO_SETTINGS_MODULE=inspire.settings.production
-from .base import *             # NOQA
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
 import logging.config
 import os
+
+from .base import *             # NOQA
 # For security and performance reasons, DEBUG is turned off
 DEBUG = False
 TEMPLATE_DEBUG = False
 
 # Must mention ALLOWED_HOSTS in production!
 ALLOWED_HOSTS = ["*"]
-TOPDIR='/code'
+TOPDIR = '/code'
 # Cache the templates in memory for speed-up
 loaders = [
     ('django.template.loaders.cached.Loader', [
@@ -35,6 +40,39 @@ TEMPLATES[0].update({"APP_DIRS": False})
 LOGFILE_ROOT = join(TOPDIR, 'logs')
 # Reset logging
 LOGGING_CONFIG = None
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'formatters': {
+#         'verbose': {
+#             'format': "[%(asctime)s] %(levelname)s [%(pathname)s:%(lineno)s] %(message)s",
+#             'datefmt': "%d/%b/%Y %H:%M:%S"
+#         },
+#         'simple': {
+#             'format': '%(levelname)s %(message)s'
+#         },
+#     },
+#     'handlers': {
+#         'proj_log_file': {
+#             'level': 'DEBUG',
+#             'class': 'logging.FileHandler',
+#             'filename': join(LOGFILE_ROOT, 'project.log'),
+#             'formatter': 'verbose'
+#         },
+#         'console': {
+#             'level': 'DEBUG',
+#             'class': 'logging.StreamHandler',
+#             'formatter': 'simple'
+#         }
+#     },
+#     'loggers': {
+#         'project': {
+#             'handlers': ['proj_log_file'],
+#             'level': 'DEBUG',
+#         },
+#     }
+# }
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -48,6 +86,12 @@ LOGGING = {
         },
     },
     'handlers': {
+        'django_log_file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': join(LOGFILE_ROOT, 'django.log'),
+            'formatter': 'verbose'
+        },
         'proj_log_file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
@@ -61,6 +105,11 @@ LOGGING = {
         }
     },
     'loggers': {
+        'django': {
+            'handlers': ['django_log_file'],
+            'propagate': True,
+            'level': 'DEBUG',
+        },
         'project': {
             'handlers': ['proj_log_file'],
             'level': 'DEBUG',

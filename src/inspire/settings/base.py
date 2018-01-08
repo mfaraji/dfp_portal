@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Django settings for pire project.
 
@@ -7,11 +8,17 @@ https://docs.djangoproject.com/en/dev/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/dev/ref/settings/
 """
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
+from os.path import dirname
+from os.path import exists
+from os.path import join
+
 from django.core.urlresolvers import reverse_lazy
-from os.path import dirname, join, exists
 
 # Build paths inside the project like this: join(BASE_DIR, "directory")
-TOPDIR=dirname(dirname(dirname(dirname(__file__))))
+TOPDIR = dirname(dirname(dirname(dirname(__file__))))
 BASE_DIR = dirname(dirname(dirname(__file__)))
 STATICFILES_DIRS = [join(TOPDIR, 'src/static'), join(TOPDIR, 'node_modules')]
 MEDIA_ROOT = join(BASE_DIR, 'media')
@@ -149,9 +156,8 @@ MESSAGE_TAGS = {
 AUTH_USER_MODEL = 'authtools.User'
 LOGIN_REDIRECT_URL = reverse_lazy("home")
 LOGIN_URL = reverse_lazy("login")
-LOGOUT_REDIRECT_URL = reverse_lazy("login") 
+LOGOUT_REDIRECT_URL = reverse_lazy("login")
 THUMBNAIL_EXTENSION = 'png'     # Or any extn for your thumbnails
-
 
 
 REST_FRAMEWORK = {

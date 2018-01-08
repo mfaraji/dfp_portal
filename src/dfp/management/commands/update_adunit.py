@@ -1,7 +1,12 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
 import csv
-from django.core.management.base import BaseCommand, CommandError
 
 from dfp.models import Community
+from django.core.management.base import BaseCommand
+from django.core.management.base import CommandError
 
 
 class Command(BaseCommand):

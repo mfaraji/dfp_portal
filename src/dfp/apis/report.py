@@ -1,43 +1,48 @@
-import os
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
 import json
-from datetime import datetime, timedelta
+import os
+import subprocess
 import tempfile
+from datetime import datetime
+from datetime import timedelta
+
+from dfp.models import Dimension
+from dfp.models import Metric
 from googleads import dfp
 from googleads import errors
-
-
-from dfp.models import Dimension, Metric
 from inspire.logger import logger
 
 from .base import Resource
 
-import subprocess
-
 
 def parse_date(date_str):
-    date_obj =  datetime.strptime(date_str, '%m/%d/%Y')
+    date_obj = datetime.strptime(date_str, '%m/%d/%Y')
     return {
         'year': date_obj.year,
         'month': date_obj.month,
         'day': date_obj.day
     }
 
+
 def make_report_job(params):
     report_job = {
-            'reportQuery': {
-                'dimensions': [],
-                # 'statement': filter_statement,
-                'columns': [],
-                # 'dateRangeType': 'CUSTOM_DATE',
-                # 'dateRangeType': 'LAST_WEEK',
-                # 'startDate': {'year': start_date.year,
-                #             'month': start_date.month,
-                #             'day': start_date.day},
-                # 'endDate': {'year': end_date.year,
-                #           'month': end_date.month,
-                #           'day': end_date.day}
-          }
+        'reportQuery': {
+            'dimensions': [],
+            # 'statement': filter_statement,
+            'columns': [],
+            # 'dateRangeType': 'CUSTOM_DATE',
+            # 'dateRangeType': 'LAST_WEEK',
+            # 'startDate': {'year': start_date.year,
+            #             'month': start_date.month,
+            #             'day': start_date.day},
+            # 'endDate': {'year': end_date.year,
+            #           'month': end_date.month,
+            #           'day': end_date.day}
         }
+    }
 
     values = []
     filter_statement = {}
@@ -53,9 +58,9 @@ def make_report_job(params):
                 report_job['reportQuery']['adUnitView'] = 'HIERARCHICAL'
             report_job['reportQuery']['dimensions'].append(str(dimobj.code))
 
-
     for metric in params['metrics']:
-        report_job['reportQuery']['columns'].append(Metric.objects.get(pk=metric['id']).code)
+        report_job['reportQuery']['columns'].append(
+            Metric.objects.get(pk=metric['id']).code)
 
     if 'country' in params:
         conditions.append('COUNTRY_NAME = :country')
@@ -69,7 +74,8 @@ def make_report_job(params):
         values.append(val)
 
     if 'communities' in params and params['communities']:
-        conditions.append('PARENT_AD_UNIT_ID  IN (%s)' % ",".join([community['ad_unit_code'] for community in params['communities']]))
+        conditions.append('PARENT_AD_UNIT_ID  IN (%s)' % ",".join(
+            [community['ad_unit_code'] for community in params['communities']]))
         # val = {
         #     'key': 'units',
         #     'value': {
@@ -79,7 +85,6 @@ def make_report_job(params):
         #     }
         # }
         # values.append(val)
- 
 
     if conditions:
         CONDITIONS = ' AND '.join(conditions)
@@ -91,7 +96,6 @@ def make_report_job(params):
     report_job['reportQuery']['dateRangeType'] = 'CUSTOM_DATE'
     report_job['reportQuery']['startDate'] = parse_date(params['from'])
     report_job['reportQuery']['endDate'] = parse_date(params['to'])
-    
 
     if filter_statement:
         report_job['reportQuery']['statement'] = filter_statement
@@ -110,14 +114,15 @@ class ReportManager(Resource):
             logger.error('Failed to generate report. Error was: %s' % e)
             raise Exception('Coud not run the report')
         export_format = 'CSV_DUMP'
-        report_file = tempfile.NamedTemporaryFile(suffix='.csv.gz', delete=False)
+        report_file = tempfile.NamedTemporaryFile(
+            suffix='.csv.gz', delete=False)
         report_downloader.DownloadReportToFile(
             report_job_id, export_format, report_file)
         report_file.close()
         logger.debug('Report job with id \'%s\' downloaded to:\n%s' % (
-                report_job_id, report_file.name))
+            report_job_id, report_file.name))
         subprocess.call(['gunzip', report_file.name])
-        return report_job_id, report_file.name[:-3]        
+        return report_job_id, report_file.name[:-3]
 
     def run(self, report):
         logger.debug('Query report %s', report.name)

@@ -1,6 +1,10 @@
-from django.core.management.base import BaseCommand, CommandError
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+from __future__ import unicode_literals
 
-from dfp.aws_db import update_us_users_ratio
+from aurora.query import update_us_users_ratio
+from django.core.management.base import BaseCommand
+from django.core.management.base import CommandError
 
 
 class Command(BaseCommand):

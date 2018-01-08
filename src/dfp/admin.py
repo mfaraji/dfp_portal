@@ -1,14 +1,26 @@
-from django.contrib import admin
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+from __future__ import unicode_literals
 
+from dfp.models import Community
+from dfp.models import Country
+from dfp.models import Dimension
+from dfp.models import DimesionCategory
+from dfp.models import Metric
+from dfp.models import Report
+from dfp.models import ReportType
+from dfp.models import Topic
+from django.contrib import admin
 # Register your models here.
 
-from dfp.models import Country, Report, Dimension, Metric, DimesionCategory, ReportType, Community, Topic
 
 class ReportAdmin(admin.ModelAdmin):
-	list_display = ('name', 'created_at')
+    list_display = ('name', 'created_at')
+
 
 class CommunityAdmin(admin.ModelAdmin):
-	ordering = ('name',)
+    ordering = ('name',)
+
 
 admin.site.register(Country)
 admin.site.register(Report, ReportAdmin)

@@ -1,11 +1,16 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
 import datetime
+
+from django.conf import settings
+from django.core.cache import cache
+from inspire.logger import logger
 from sqlalchemy import *
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql import *
-from django.core.cache import cache
 
-from django.conf import settings
-from inspire.logger import logger
 
 def generate_aws_report(communities=[], interests=[], metrics=[]):
     summary = None
@@ -16,7 +21,8 @@ def generate_aws_report(communities=[], interests=[], metrics=[]):
         summary = get_activity_summary(communities=communities)
 
     if 'market_research' in metrics:
-        market_research = fetch_market_research(interests=interests, communities=communities)
+        market_research = fetch_market_research(
+            interests=interests, communities=communities)
 
     if 'offers' in metrics:
         offers = fetch_offers(interests=interests, communities=communities)
@@ -24,8 +30,10 @@ def generate_aws_report(communities=[], interests=[], metrics=[]):
 
     return summary, market_research, offers
 
+
 def db_connect():
     return create_engine(settings.AWS_DATABASE_URL)
+
 
 def get_activity_summary(communities=[]):
     logger.info('Fetching Acitivity Summary')
@@ -38,18 +46,19 @@ def get_activity_summary(communities=[]):
     summary = Table('asat_summary', meta, autoload=True, autoload_with=db)
     logger.debug('ASAT Summary from %s to %s', today, last_month)
     if not communities:
-        query = (select([summary.c.group_id.label('community_id'), func.sum(summary.c.n_sent).label('n_sent'), func.sum(summary.c.n_opened).label('n_opened'), \
-            func.sum(summary.c.n_clicked).label('n_clicked'), func.sum(summary.c.n_clicks).label('n_clicks')])\
-            .where(summary.c.d_sent >= last_month).group_by(summary.c.group_id))
+        query = (select([summary.c.group_id.label('community_id'), func.sum(summary.c.n_sent).label('n_sent'), func.sum(summary.c.n_opened).label('n_opened'),
+                         func.sum(summary.c.n_clicked).label('n_clicked'), func.sum(summary.c.n_clicks).label('n_clicks')])
+                 .where(summary.c.d_sent >= last_month).group_by(summary.c.group_id))
         logger.debug("AS %s", str(query))
     else:
-        query = (select([summary.c.group_id.label('community_id'), func.sum(summary.c.n_sent).label('n_sent'), func.sum(summary.c.n_opened).label('n_opened'), \
-            func.sum(summary.c.n_clicked).label('n_clicked'), func.sum(summary.c.n_clicks).label('n_clicks')])\
-            .where(and_(summary.c.d_sent >= last_month, summary.c.group_id.in_(communities))).group_by(summary.c.group_id))
+        query = (select([summary.c.group_id.label('community_id'), func.sum(summary.c.n_sent).label('n_sent'), func.sum(summary.c.n_opened).label('n_opened'),
+                         func.sum(summary.c.n_clicked).label('n_clicked'), func.sum(summary.c.n_clicks).label('n_clicks')])
+                 .where(and_(summary.c.d_sent >= last_month, summary.c.group_id.in_(communities))).group_by(summary.c.group_id))
     logger.debug('ASAT query: %s', str(query))
     result = session.execute(query)
     logger.info('Acitivity Summary: %s' % result.rowcount)
     return result
+
 
 def list_interests():
     db = db_connect()
@@ -63,6 +72,7 @@ def filter_result(iterator, position=None, objs=[]):
         return [item for item in iterator if item[position] in objs]
     else:
         return [item for item in iterator]
+
 
 def fetch_market_research(interests=[], communities=[]):
     logger.info('Fetching market research')
@@ -93,7 +103,8 @@ def fetch_market_research(interests=[], communities=[]):
     result = db.engine.execute(query)
     logger.info('Market Research: %s' % result.rowcount)
     return result
-    
+
+
 def fetch_offers(interests=[], communities=[]):
     logger.info('Fetching Offers')
     db = db_connect()
@@ -135,15 +146,13 @@ def update_us_users_ratio():
     for row in result:
         if row[0] not in (None, 0):
             logger.debug('setting us_ratio_%s to %s', row[0], float(row[1]))
-            cache.set('us_ratio_%s' % row[0], float(row[1]), 24*3600)
+            cache.set('us_ratio_%s' % row[0], float(row[1]), 24 * 3600)
 
 
 def search_interests(word):
     db = db_connect()
-    query =  """select * from (select condition_id as id, name from conditions union select id, name from treatments) as s where name like '%{0}%' limit 10;""".format(word)
+    query = """select * from (select condition_id as id, name from conditions union select id, name from treatments) as s where name like '%{0}%' limit 10;""".format(
+        word)
     logger.debug('The search query is %s', query)
     result = db.engine.execute(text(query))
-    return [{'id':row[0], 'name': row[1]} for row in result]
-
-
-    
+    return [{'id': row[0], 'name': row[1]} for row in result]

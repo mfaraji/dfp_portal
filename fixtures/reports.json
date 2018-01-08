@@ -1,1 +1,93 @@
-[{"model": "dfp.report", "pk": 34, "fields": {"name": "Alex's Test (Banner)", "query": "{\"from\":\"01/01/2018\",\"name\":\"Alex's Test (Banner)\",\"country\":{\"name\":\"United States\",\"id\":\"US\"},\"metrics\":[{\"default\":true,\"name\":\"Forecasted impressions\",\"id\":4},{\"default\":true,\"name\":\"Available impressions\",\"id\":5},{\"default\":true,\"name\":\"Reserved impressions\",\"id\":6}],\"to\":\"05/30/2018\",\"communities\":[{\"ad_unit_code\":\"64321133\",\"code\":\"200211\",\"name\":\"talk-psoriasis\"},{\"ad_unit_code\":\"64309973\",\"code\":\"200101\",\"name\":\"american-lung-association-lung-cancer-survivors\"},{\"ad_unit_code\":\"64304093\",\"code\":\"200048\",\"name\":\"bladder-cancer-advocacy-network\"}],\"type\":\"banner\",\"dimensions\":[{\"category\":\"Inventory\",\"name\":\"Ad Unit\",\"id\":5},{\"category\":\"Time Unit\",\"name\":\"Month and Year\",\"id\":19}]}", "created_at": "2017-06-15T13:00:46.741Z", "updated_at": "2017-08-03T02:58:03.530Z", "status": "complete", "user": 3, "r_type": 3}}, {"model": "dfp.report", "pk": 44, "fields": {"name": "Lung Cancer", "query": "{\"interests\":[{\"id\":1000027,\"name\":\"COPD\"}],\"from\":\"09/01/2017\",\"name\":\"Lung Cancer\",\"country\":{\"name\":\"United States\",\"id\":\"US\"},\"metrics\":[{\"default\":true,\"name\":\"Forecasted impressions\",\"id\":4},{\"default\":true,\"name\":\"Available impressions\",\"id\":5},{\"default\":true,\"name\":\"Reserved impressions\",\"id\":6}],\"to\":\"12/31/2017\",\"communities\":[{\"ad_unit_code\":\"64309973\",\"code\":\"200101\",\"name\":\"american-lung-association-lung-cancer-survivors\"}],\"type\":\"sale\",\"email_metrics\":[{\"name\":\"AS Emails Sent\",\"code\":\"n_sent\",\"group\":\"email\"},{\"name\":\"AS Emails Opened\",\"code\":\"n_opened\",\"group\":\"email\"},{\"name\":\"AS Emails Clicked\",\"code\":\"n_clicked\",\"group\":\"email\"},{\"name\":\"Market Research\",\"code\":\"market_research\",\"group\":\"market_research\"},{\"name\":\"Offers\",\"code\":\"offers\",\"group\":\"offer\"}],\"include_cpm\":true,\"include_cps\":true}", "created_at": "2017-07-11T14:07:12.012Z", "updated_at": "2017-08-10T19:15:43.157Z", "status": "complete", "user": 8, "r_type": 2}}, {"model": "dfp.report", "pk": 45, "fields": {"name": "Depression", "query": "{\"interests\":[{\"id\":1000113,\"name\":\"Depression\"}],\"from\":\"08/01/2017\",\"name\":\"Depression\",\"country\":{\"name\":\"United States\",\"id\":\"US\"},\"metrics\":[{\"default\":true,\"name\":\"Forecasted impressions\",\"id\":4},{\"default\":true,\"name\":\"Available impressions\",\"id\":5},{\"default\":true,\"name\":\"Reserved impressions\",\"id\":6}],\"to\":\"08/31/2017\",\"communities\":[],\"type\":\"sale\",\"email_metrics\":[{\"name\":\"AS Emails Sent\",\"code\":\"n_sent\",\"group\":\"email\"},{\"name\":\"AS Emails Opened\",\"code\":\"n_opened\",\"group\":\"email\"},{\"name\":\"AS Emails Clicked\",\"code\":\"n_clicked\",\"group\":\"email\"},{\"name\":\"Market Research\",\"code\":\"market_research\",\"group\":\"market_research\"}]}", "created_at": "2017-07-11T14:14:09.676Z", "updated_at": "2017-08-03T03:00:42.613Z", "status": "complete", "user": 8, "r_type": 2}}, {"model": "dfp.report", "pk": 49, "fields": {"name": "Ovarian Cancer", "query": "{\"interests\":[{\"id\":1000348,\"name\":\"Ovarian Cancer\"}],\"from\":\"08/01/2017\",\"name\":\"Ovarian Cancer\",\"country\":{\"name\":\"United States\",\"id\":\"US\"},\"metrics\":[],\"to\":\"08/31/2017\",\"communities\":[{\"ad_unit_code\":\"74863973\",\"code\":\"200037\",\"name\":\"ovarian-cancer\"}],\"include_cpm\":true,\"include_cps\":true,\"dimensions\":[{\"category\":\"Inventory\",\"name\":\"Ad Unit\",\"id\":5},{\"category\":\"Time Unit\",\"name\":\"Month and Year\",\"id\":19}],\"type\":\"sale\",\"email_metrics\":[{\"name\":\"Market Research\",\"code\":\"market_research\",\"group\":\"market_research\"},{\"name\":\"Offers\",\"code\":\"offers\",\"group\":\"offer\"}]}", "created_at": "2017-07-17T19:15:12.271Z", "updated_at": "2017-08-03T03:00:22.548Z", "status": "complete", "user": 3, "r_type": 2}}, {"model": "dfp.report", "pk": 50, "fields": {"name": "Bladder Cancer", "query": "{\"interests\":[],\"include_cpm\":true,\"name\":\"Bladder Cancer\",\"country\":{\"name\":\"United States\",\"id\":\"US\"},\"metrics\":[{\"default\":true,\"name\":\"Forecasted impressions\",\"id\":4},{\"default\":true,\"name\":\"Available impressions\",\"id\":5},{\"default\":true,\"name\":\"Reserved impressions\",\"id\":6}],\"to\":\"12/31/2017\",\"communities\":[{\"ad_unit_code\":\"64304093\",\"code\":\"200048\",\"name\":\"bladder-cancer-advocacy-network\"}],\"from\":\"09/01/2017\",\"include_cps\":true,\"type\":\"sale\",\"email_metrics\":[{\"name\":\"AS Emails Sent\",\"code\":\"n_sent\",\"group\":\"email\"},{\"name\":\"AS Emails Opened\",\"code\":\"n_opened\",\"group\":\"email\"},{\"name\":\"Market Research\",\"code\":\"market_research\",\"group\":\"market_research\"},{\"name\":\"Offers\",\"code\":\"offers\",\"group\":\"offer\"},{\"name\":\"AS Emails Clicked\",\"code\":\"n_clicked\",\"group\":\"email\"}]}", "created_at": "2017-07-31T20:37:38.444Z", "updated_at": "2017-08-23T17:24:01.028Z", "status": "complete", "user": 3, "r_type": 2}}, {"model": "dfp.report", "pk": 51, "fields": {"name": "Smaller Community", "query": "{\"include_cpm\":true,\"name\":\"Smaller Community\",\"country\":{\"name\":\"United States\",\"id\":\"US\"},\"metrics\":[{\"default\":true,\"name\":\"Forecasted impressions\",\"id\":4},{\"default\":true,\"name\":\"Available impressions\",\"id\":5},{\"default\":true,\"name\":\"Reserved impressions\",\"id\":6}],\"to\":\"12/31/2017\",\"communities\":[{\"ad_unit_code\":\"64318973\",\"code\":\"200187\",\"name\":\"scleroderma-foundation\"}],\"from\":\"09/01/2017\",\"include_cps\":true,\"type\":\"sale\",\"email_metrics\":[{\"code\":\"n_sent\",\"name\":\"AS Emails Sent\"},{\"code\":\"n_opened\",\"name\":\"AS Emails Opened\"},{\"code\":\"n_clicked\",\"name\":\"AS Emails Clicked\"},{\"code\":\"market_research\",\"name\":\"Market Research\"},{\"code\":\"offers\",\"name\":\"Offers\"}]}", "created_at": "2017-08-03T15:31:00.116Z", "updated_at": "2017-08-03T15:38:12.212Z", "status": "complete", "user": 3, "r_type": 2}}, {"model": "dfp.report", "pk": 52, "fields": {"name": "Melanoma", "query": "{\"type\":\"sale\",\"metrics\":[{\"default\":true,\"name\":\"Forecasted impressions\",\"id\":4},{\"default\":true,\"name\":\"Available impressions\",\"id\":5},{\"default\":true,\"name\":\"Reserved impressions\",\"id\":6}],\"country\":{\"name\":\"United States\",\"id\":\"US\"},\"email_metrics\":[{\"name\":\"AS Emails Sent\",\"code\":\"n_sent\",\"group\":\"email\"},{\"name\":\"AS Emails Opened\",\"code\":\"n_opened\",\"group\":\"email\"},{\"name\":\"AS Emails Clicked\",\"code\":\"n_clicked\",\"group\":\"email\"}],\"include_cpm\":true,\"include_cps\":true,\"name\":\"Melanoma\",\"communities\":[{\"ad_unit_code\":\"64324493\",\"code\":\"200239\",\"name\":\"melanoma\"}],\"from\":\"09/01/2017\",\"to\":\"12/31/2017\"}", "created_at": "2017-08-28T17:53:41.613Z", "updated_at": "2017-08-28T17:53:41.613Z", "status": "complete", "user": 3, "r_type": 2}}]
+[
+    {
+        "fields": {
+            "created_at": "2017-06-15T13:00:46.741Z",
+            "name": "Alex's Test (Banner)",
+            "query": "{\"from\":\"01/01/2018\",\"name\":\"Alex's Test (Banner)\",\"country\":{\"name\":\"United States\",\"id\":\"US\"},\"metrics\":[{\"default\":true,\"name\":\"Forecasted impressions\",\"id\":4},{\"default\":true,\"name\":\"Available impressions\",\"id\":5},{\"default\":true,\"name\":\"Reserved impressions\",\"id\":6}],\"to\":\"05/30/2018\",\"communities\":[{\"ad_unit_code\":\"64321133\",\"code\":\"200211\",\"name\":\"talk-psoriasis\"},{\"ad_unit_code\":\"64309973\",\"code\":\"200101\",\"name\":\"american-lung-association-lung-cancer-survivors\"},{\"ad_unit_code\":\"64304093\",\"code\":\"200048\",\"name\":\"bladder-cancer-advocacy-network\"}],\"type\":\"banner\",\"dimensions\":[{\"category\":\"Inventory\",\"name\":\"Ad Unit\",\"id\":5},{\"category\":\"Time Unit\",\"name\":\"Month and Year\",\"id\":19}]}",
+            "r_type": 3,
+            "status": "complete",
+            "updated_at": "2017-08-03T02:58:03.530Z",
+            "user": 3
+        },
+        "model": "dfp.report",
+        "pk": 34
+    },
+    {
+        "fields": {
+            "created_at": "2017-07-11T14:07:12.012Z",
+            "name": "Lung Cancer",
+            "query": "{\"interests\":[{\"id\":1000027,\"name\":\"COPD\"}],\"from\":\"09/01/2017\",\"name\":\"Lung Cancer\",\"country\":{\"name\":\"United States\",\"id\":\"US\"},\"metrics\":[{\"default\":true,\"name\":\"Forecasted impressions\",\"id\":4},{\"default\":true,\"name\":\"Available impressions\",\"id\":5},{\"default\":true,\"name\":\"Reserved impressions\",\"id\":6}],\"to\":\"12/31/2017\",\"communities\":[{\"ad_unit_code\":\"64309973\",\"code\":\"200101\",\"name\":\"american-lung-association-lung-cancer-survivors\"}],\"type\":\"sale\",\"email_metrics\":[{\"name\":\"AS Emails Sent\",\"code\":\"n_sent\",\"group\":\"email\"},{\"name\":\"AS Emails Opened\",\"code\":\"n_opened\",\"group\":\"email\"},{\"name\":\"AS Emails Clicked\",\"code\":\"n_clicked\",\"group\":\"email\"},{\"name\":\"Market Research\",\"code\":\"market_research\",\"group\":\"market_research\"},{\"name\":\"Offers\",\"code\":\"offers\",\"group\":\"offer\"}],\"include_cpm\":true,\"include_cps\":true}",
+            "r_type": 2,
+            "status": "complete",
+            "updated_at": "2017-08-10T19:15:43.157Z",
+            "user": 8
+        },
+        "model": "dfp.report",
+        "pk": 44
+    },
+    {
+        "fields": {
+            "created_at": "2017-07-11T14:14:09.676Z",
+            "name": "Depression",
+            "query": "{\"interests\":[{\"id\":1000113,\"name\":\"Depression\"}],\"from\":\"08/01/2017\",\"name\":\"Depression\",\"country\":{\"name\":\"United States\",\"id\":\"US\"},\"metrics\":[{\"default\":true,\"name\":\"Forecasted impressions\",\"id\":4},{\"default\":true,\"name\":\"Available impressions\",\"id\":5},{\"default\":true,\"name\":\"Reserved impressions\",\"id\":6}],\"to\":\"08/31/2017\",\"communities\":[],\"type\":\"sale\",\"email_metrics\":[{\"name\":\"AS Emails Sent\",\"code\":\"n_sent\",\"group\":\"email\"},{\"name\":\"AS Emails Opened\",\"code\":\"n_opened\",\"group\":\"email\"},{\"name\":\"AS Emails Clicked\",\"code\":\"n_clicked\",\"group\":\"email\"},{\"name\":\"Market Research\",\"code\":\"market_research\",\"group\":\"market_research\"}]}",
+            "r_type": 2,
+            "status": "complete",
+            "updated_at": "2017-08-03T03:00:42.613Z",
+            "user": 8
+        },
+        "model": "dfp.report",
+        "pk": 45
+    },
+    {
+        "fields": {
+            "created_at": "2017-07-17T19:15:12.271Z",
+            "name": "Ovarian Cancer",
+            "query": "{\"interests\":[{\"id\":1000348,\"name\":\"Ovarian Cancer\"}],\"from\":\"08/01/2017\",\"name\":\"Ovarian Cancer\",\"country\":{\"name\":\"United States\",\"id\":\"US\"},\"metrics\":[],\"to\":\"08/31/2017\",\"communities\":[{\"ad_unit_code\":\"74863973\",\"code\":\"200037\",\"name\":\"ovarian-cancer\"}],\"include_cpm\":true,\"include_cps\":true,\"dimensions\":[{\"category\":\"Inventory\",\"name\":\"Ad Unit\",\"id\":5},{\"category\":\"Time Unit\",\"name\":\"Month and Year\",\"id\":19}],\"type\":\"sale\",\"email_metrics\":[{\"name\":\"Market Research\",\"code\":\"market_research\",\"group\":\"market_research\"},{\"name\":\"Offers\",\"code\":\"offers\",\"group\":\"offer\"}]}",
+            "r_type": 2,
+            "status": "complete",
+            "updated_at": "2017-08-03T03:00:22.548Z",
+            "user": 3
+        },
+        "model": "dfp.report",
+        "pk": 49
+    },
+    {
+        "fields": {
+            "created_at": "2017-07-31T20:37:38.444Z",
+            "name": "Bladder Cancer",
+            "query": "{\"interests\":[],\"include_cpm\":true,\"name\":\"Bladder Cancer\",\"country\":{\"name\":\"United States\",\"id\":\"US\"},\"metrics\":[{\"default\":true,\"name\":\"Forecasted impressions\",\"id\":4},{\"default\":true,\"name\":\"Available impressions\",\"id\":5},{\"default\":true,\"name\":\"Reserved impressions\",\"id\":6}],\"to\":\"12/31/2017\",\"communities\":[{\"ad_unit_code\":\"64304093\",\"code\":\"200048\",\"name\":\"bladder-cancer-advocacy-network\"}],\"from\":\"09/01/2017\",\"include_cps\":true,\"type\":\"sale\",\"email_metrics\":[{\"name\":\"AS Emails Sent\",\"code\":\"n_sent\",\"group\":\"email\"},{\"name\":\"AS Emails Opened\",\"code\":\"n_opened\",\"group\":\"email\"},{\"name\":\"Market Research\",\"code\":\"market_research\",\"group\":\"market_research\"},{\"name\":\"Offers\",\"code\":\"offers\",\"group\":\"offer\"},{\"name\":\"AS Emails Clicked\",\"code\":\"n_clicked\",\"group\":\"email\"}]}",
+            "r_type": 2,
+            "status": "complete",
+            "updated_at": "2017-08-23T17:24:01.028Z",
+            "user": 3
+        },
+        "model": "dfp.report",
+        "pk": 50
+    },
+    {
+        "fields": {
+            "created_at": "2017-08-03T15:31:00.116Z",
+            "name": "Smaller Community",
+            "query": "{\"include_cpm\":true,\"name\":\"Smaller Community\",\"country\":{\"name\":\"United States\",\"id\":\"US\"},\"metrics\":[{\"default\":true,\"name\":\"Forecasted impressions\",\"id\":4},{\"default\":true,\"name\":\"Available impressions\",\"id\":5},{\"default\":true,\"name\":\"Reserved impressions\",\"id\":6}],\"to\":\"12/31/2017\",\"communities\":[{\"ad_unit_code\":\"64318973\",\"code\":\"200187\",\"name\":\"scleroderma-foundation\"}],\"from\":\"09/01/2017\",\"include_cps\":true,\"type\":\"sale\",\"email_metrics\":[{\"code\":\"n_sent\",\"name\":\"AS Emails Sent\"},{\"code\":\"n_opened\",\"name\":\"AS Emails Opened\"},{\"code\":\"n_clicked\",\"name\":\"AS Emails Clicked\"},{\"code\":\"market_research\",\"name\":\"Market Research\"},{\"code\":\"offers\",\"name\":\"Offers\"}]}",
+            "r_type": 2,
+            "status": "complete",
+            "updated_at": "2017-08-03T15:38:12.212Z",
+            "user": 3
+        },
+        "model": "dfp.report",
+        "pk": 51
+    },
+    {
+        "fields": {
+            "created_at": "2017-08-28T17:53:41.613Z",
+            "name": "Melanoma",
+            "query": "{\"type\":\"sale\",\"metrics\":[{\"default\":true,\"name\":\"Forecasted impressions\",\"id\":4},{\"default\":true,\"name\":\"Available impressions\",\"id\":5},{\"default\":true,\"name\":\"Reserved impressions\",\"id\":6}],\"country\":{\"name\":\"United States\",\"id\":\"US\"},\"email_metrics\":[{\"name\":\"AS Emails Sent\",\"code\":\"n_sent\",\"group\":\"email\"},{\"name\":\"AS Emails Opened\",\"code\":\"n_opened\",\"group\":\"email\"},{\"name\":\"AS Emails Clicked\",\"code\":\"n_clicked\",\"group\":\"email\"}],\"include_cpm\":true,\"include_cps\":true,\"name\":\"Melanoma\",\"communities\":[{\"ad_unit_code\":\"64324493\",\"code\":\"200239\",\"name\":\"melanoma\"}],\"from\":\"09/01/2017\",\"to\":\"12/31/2017\"}",
+            "r_type": 2,
+            "status": "complete",
+            "updated_at": "2017-08-28T17:53:41.613Z",
+            "user": 3
+        },
+        "model": "dfp.report",
+        "pk": 52
+    }
+]

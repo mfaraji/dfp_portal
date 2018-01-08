@@ -1,14 +1,17 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
 from __future__ import unicode_literals
+
 import json
 
-from django.db import models
 from authtools.models import User
+from django.db import models
 
 
 class Country(models.Model):
     name = models.CharField(max_length=256)
     code = models.CharField(max_length=30)
-    
+
     class Meta:
         verbose_name_plural = 'countries'
 
@@ -24,13 +27,14 @@ class Country(models.Model):
             'id': self.code
         }
 
+
 class Community(models.Model):
     name = models.CharField(max_length=256)
     code = models.CharField(max_length=256)
     ad_unit_code = models.CharField(max_length=256, blank=True, null=True)
     banner_rate = models.IntegerField(default=0)
     email_rate = models.IntegerField(default=0)
-    
+
     class Meta:
         verbose_name_plural = 'communities'
 
@@ -47,10 +51,12 @@ class Community(models.Model):
             'ad_unit_code': self.ad_unit_code
         }
 
+
 class Topic(models.Model):
     name = models.CharField(max_length=256)
     code = models.CharField(max_length=256)
-    community = models.ForeignKey(Community, on_delete=models.CASCADE, blank=True, null=True)
+    community = models.ForeignKey(
+        Community, on_delete=models.CASCADE, blank=True, null=True)
 
     def __unicode__(self):
         return self.name
@@ -62,11 +68,13 @@ class Topic(models.Model):
             'community': self.community.name
         }
 
+
 class ReportType(models.Model):
     name = models.CharField(max_length=256)
 
     def __unicode__(self):
         return self.name
+
 
 class Report(models.Model):
     name = models.CharField(max_length=256)
@@ -74,8 +82,10 @@ class Report(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=256, null=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
-    r_type = models.ForeignKey(ReportType, on_delete=models.CASCADE, blank=True, null=True)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, blank=True, null=True)
+    r_type = models.ForeignKey(
+        ReportType, on_delete=models.CASCADE, blank=True, null=True)
 
     def as_json(self, full=False):
         if not full:
@@ -87,7 +97,7 @@ class Report(models.Model):
                 'status': self.status
             }
         else:
-             return {
+            return {
                 'id': self.id,
                 'name': self.name,
                 'status': self.status,
@@ -122,7 +132,7 @@ class Report(models.Model):
 
 
 class DimesionCategory(models.Model):
-    name =  models.CharField(max_length=256)
+    name = models.CharField(max_length=256)
 
     def __unicode__(self):
         return self.name
@@ -130,11 +140,13 @@ class DimesionCategory(models.Model):
     def as_json(self):
         return sorted([dimesion.as_json() for dimesion in self.dimension_set.all()], key=lambda k: k['name'])
 
+
 class Dimension(models.Model):
     name = models.CharField(max_length=256)
     code = models.CharField(max_length=256)
-    category = models.ForeignKey(DimesionCategory, on_delete=models.CASCADE, blank=True, null=True)
-    
+    category = models.ForeignKey(
+        DimesionCategory, on_delete=models.CASCADE, blank=True, null=True)
+
     def __unicode__(self):
         return self.name
 
@@ -149,11 +161,12 @@ class Dimension(models.Model):
     def column_name(self):
         return 'Dimension.%s' % self.code
 
+
 class Metric(models.Model):
     name = models.CharField(max_length=256)
     code = models.CharField(max_length=256)
     is_default = models.BooleanField(default=False)
-    
+
     def __unicode__(self):
         return self.name
 
