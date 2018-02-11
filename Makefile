@@ -31,19 +31,3 @@ fixture:
 		source venv/bin/activate; \
 		venv/bin/python src/manage.py loaddata fixtures/*; \
 	)
-	
-image:
-	init
-	rm -rf ./statics
-	rm -rf ./node_modules
-	yarn install
-	@( \
-	   export AWS_DATABASE_URL='test';\
-	   export DATABASE_URL='test';\
-       source ./venv/bin/activate; \
-       python src/manage.py collectstatic; \
-    )
-    sudo docker-compose build web	
-    
-upload:
-	./script/upload_docker_image.sh

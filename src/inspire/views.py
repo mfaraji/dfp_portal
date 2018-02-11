@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views import generic
-
+from django.http import HttpResponse
 
 class HomePage(generic.TemplateView):
     template_name = "index.html"
@@ -49,3 +49,7 @@ class AudienceView(generic.TemplateView):
 
 class ReportDataTableView(generic.TemplateView):
     template_name = "views/report_datatable.html"
+
+
+def healthcheck(request):
+    return HttpResponse('OK')
