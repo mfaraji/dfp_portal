@@ -20,7 +20,9 @@ RUN apt-get update && apt-get install -y \
     supervisor \
     vim \
     memcached \
-    locales
+    locales \
+    xmlsec1 \
+    xmlsec1-openssl \
 
 
 RUN locale-gen en_US.UTF-8 && dpkg-reconfigure locales

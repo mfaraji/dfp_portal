@@ -2,6 +2,7 @@
 uwsgi
 django-ses
 python-memcached
+pysaml2
 
 # Extra stuff required for production like Prod Database interfacing packages
 # psycopg2

@@ -34,5 +34,9 @@
                     <p> no worries, click
                         <a href="{% url 'password_reset' %}" id="forget-password"> here </a> to reset your password. </p>
                 </div>
+                <a href="{% url 'signin' %}">
+                <button class="loginBtn loginBtn--google">
+                        Login with Google
+                </button></a>
 </form>
 {% endblock %}

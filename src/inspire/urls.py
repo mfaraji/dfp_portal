@@ -14,6 +14,7 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.HomePage.as_view(), name='home'),
+    url(r'^user/', include('user.urls'), name='user'),
     url(r'^accounts/password/reset/$', PasswordResetView.as_view(
         html_email_template_name='registration/password_reset_email.html'), name='password_reset'),
     url(r'^accounts/', include('authtools.urls'), name="accounts"),
@@ -30,7 +31,7 @@ urlpatterns = [
     url(r'^views/audience$', views.AudienceView.as_view(), name='audience'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^dfp/', include('dfp.urls')),
-    url(r'^healthcheck/', views.healthcheck)
+    url(r'^healthcheck/', views.healthcheck),
 
 ]
 

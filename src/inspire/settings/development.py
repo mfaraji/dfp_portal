@@ -4,6 +4,8 @@ from __future__ import unicode_literals
 
 import logging.config
 import sys
+import os
+from django.urls import reverse
 
 from .base import *             # NOQA
 
@@ -20,7 +22,8 @@ ALLOWED_HOSTS = ['*']
 # Django Debug Toolbar
 INSTALLED_APPS += (
     'debug_toolbar',
-    'django_extensions',)
+    'django_extensions',
+    'user')
 
 # Additional middleware introduced by debug toolbar
 MIDDLEWARE_CLASSES += (
@@ -102,6 +105,9 @@ logging.config.dictConfig(LOGGING)
 
 SECRET_KEY = 'test'
 
+SAML2_AUTH = {
+    'metadata': os.path.join(TOPDIR, 'cert/metadata.xml'),
+}
 
 CACHES = {
     'default': {
