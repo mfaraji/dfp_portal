@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-
+import logging
 
 from saml2 import (
     BINDING_HTTP_POST,
@@ -29,7 +29,7 @@ except:
 from django.utils.module_loading import import_string
 
 User = get_user_model()
-
+logging.basicConfig(level=logging.DEBUG)
 def get_current_domain(r):
     if 'ASSERTION_URL' in settings.SAML2_AUTH:
         return settings.SAML2_AUTH['ASSERTION_URL']
@@ -168,7 +168,6 @@ def signin(r):
         import urllib.parse as _urlparse
         from urllib.parse import unquote
     next_url = r.GET.get('next', settings.SAML2_AUTH.get('DEFAULT_NEXT_URL', get_reverse('home')))
-
     try:
         if 'next=' in unquote(next_url):
             next_url = _urlparse.parse_qs(_urlparse.urlparse(unquote(next_url)).query)['next'][0]
@@ -182,15 +181,16 @@ def signin(r):
     r.session['login_next_url'] = next_url
 
     saml_client = _get_saml_client(get_current_domain(r))
-    _, info = saml_client.prepare_for_authenticate()
+    _, info = saml_client.prepare_for_authenticate(response_binding=BINDING_HTTP_REDIRECT)
 
+    import pdb; pdb.set_trace()
     redirect_url = None
 
     for key, value in info['headers']:
         if key == 'Location':
             redirect_url = value
             break
-
+    print redirect_url
     return HttpResponseRedirect(redirect_url)
 
 
